@@ -1,6 +1,28 @@
 /**
  * aivan.vn - Landing Page Application
  * Optimized with security and performance fixes
+ *
+ * SETUP INSTRUCTIONS:
+ * ==================
+ *
+ * 1. Formspree Setup:
+ *    - Tạo account tại https://formspree.io
+ *    - Tạo 3 forms: consultation, newsletter, quick_contact
+ *    - Copy form IDs vào FORMSPREE_ENDPOINTS bên dưới
+ *
+ * 2. Google Sheets Setup:
+ *    - Tạo Google Sheet mới
+ *    - Mở Extensions > Apps Script
+ *    - Copy code từ file google-apps-script.js (nếu có)
+ *    - Deploy as Web App
+ *    - Copy URL vào GOOGLE_SHEETS_URL
+ *
+ * 3. Google Analytics:
+ *    - Thay GA_MEASUREMENT_ID trong index.html
+ *    - Thay YOUR_GA_ID ở dòng ~12
+ *
+ * 4. Facebook Pixel (optional):
+ *    - Thêm Facebook Pixel code vào index.html
  */
 
 (function() {
@@ -9,11 +31,1978 @@
     // Configuration
     const CONFIG = {
         STORAGE_KEY: 'aivan_selectedIndustry',
-        ANALYTICS_ID: 'GA_MEASUREMENT_ID', // Replace with actual ID
+        ANALYTICS_ID: 'G-XXXXXXXXXX', // Replace with your actual GA4 Measurement ID
         DEFAULT_PAGE: 'home',
         AVAILABLE_PAGES: ['home', 'services', 'results'],
-        AVAILABLE_INDUSTRIES: ['beauty', 'education', 'health']
+        AVAILABLE_INDUSTRIES: ['healthcare', 'finance', 'education', 'ecommerce', 'manufacturing', 'agriculture', 'transportation', 'cybersecurity', 'hospitality', 'marketing', 'programming', 'beauty', 'retail', 'food'],
+
+        // Formspree Configuration
+        // Tạo account tại https://formspree.io và thay thế các ID bên dưới
+        FORMSPREE: {
+            consultation: 'https://formspree.io/f/YOUR_FORM_ID',
+            newsletter: 'https://formspree.io/f/YOUR_FORM_ID',
+            quick: 'https://formspree.io/f/YOUR_FORM_ID'
+        },
+
+        // Google Sheets Web App URL
+        // Xem hướng dẫn setup trong SETUP_INSTRUCTIONS ở đầu file
+        GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'
     };
+
+    // ============================================
+    // DATA LAYER - Phase 1
+    // ============================================
+
+    /**
+     * INDUSTRIES_DATA - 10 ngành với essential/recommended/optional tools
+     * Mỗi ngành có workflows với primaryTool và supportingTools
+     */
+    const INDUSTRIES_DATA = {
+        healthcare: {
+            id: 'healthcare',
+            name: 'Y tế',
+            subtitle: 'Bệnh viện, Phòng khám, Y tế tư nhân',
+            icon: 'medical_services',
+            gradient: 'from-[#84fab0] to-[#8fd3f4]',
+            description: 'Giải pháp AI cho chẩn đoán, quản lý bệnh án và chăm sóc sức khỏe',
+
+            essentialTools: ['vinai', 'fptai', 'misaaai'],
+            recommendedTools: ['chatgpt', 'botstar', 'stringee'],
+            optionalTools: ['googlevision', 'cvs'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Tiếp nhận & Sàng lọc',
+                    description: 'AI chatbot tư vấn triệu chứng ban đầu, phân loại mức độ khẩn cấp',
+                    primaryTool: 'fptai',
+                    supportingTools: ['botstar'],
+                    icon: 'support_agent',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Chẩn đoán Hỗ trợ',
+                    description: 'Phân tích hình ảnh y tế, xử lý dữ liệu bệnh án',
+                    primaryTool: 'vinai',
+                    supportingTools: ['googlevision'],
+                    icon: 'biotech',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Quản lý & Theo dõi',
+                    description: 'Tự động hóa lịch hẹn, nhắc thuốc, theo dõi sau điều trị',
+                    primaryTool: 'misaaai',
+                    supportingTools: ['stringee'],
+                    icon: 'calendar_month',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+45%',
+                timeSaved: '3.5h',
+                roi: 'x3.2',
+                description: 'Giảm thờ i gian chờ đợi, tăng chất lượng chăm sóc'
+            }
+        },
+
+        finance: {
+            id: 'finance',
+            name: 'Tài chính - Ngân hàng',
+            subtitle: 'Ngân hàng, Bảo hiểm, Fintech',
+            icon: 'account_balance',
+            gradient: 'from-[#f093fb] to-[#f5576c]',
+            description: 'AI cho phân tích rủi ro, gian lận và tự động hóa dịch vụ khách hàng',
+
+            essentialTools: ['fptai', 'claude', 'salesforce'],
+            recommendedTools: ['powerbi', 'lacvietocr', 'stringee'],
+            optionalTools: ['zohocrm', 'botstar'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Onboarding Khách hàng',
+                    description: 'OCR giấy tờ, KYC tự động, xác minh danh tính',
+                    primaryTool: 'lacvietocr',
+                    supportingTools: ['fptai'],
+                    icon: 'badge',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Phân tích Rủi ro',
+                    description: 'Đánh giá tín dụng, phát hiện gian lận, dự báo rủi ro',
+                    primaryTool: 'claude',
+                    supportingTools: ['powerbi'],
+                    icon: 'analytics',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'CSKH Thông minh',
+                    description: 'Tư vấn tài chính tự động, hỗ trợ 24/7',
+                    primaryTool: 'salesforce',
+                    supportingTools: ['stringee', 'botstar'],
+                    icon: 'support_agent',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+55%',
+                timeSaved: '4.2h',
+                roi: 'x4.5',
+                description: 'Giảm thiểu rủi ro, tăng tốc độ xử lý giao dịch'
+            }
+        },
+
+        education: {
+            id: 'education',
+            name: 'Giáo dục',
+            subtitle: 'Trường học, E-learning, Đào tạo',
+            icon: 'school',
+            gradient: 'from-[#a18cd1] to-[#fbc2eb]',
+            description: 'AI cá nhân hóa học tập, tự động chấm điểm và hỗ trợ giảng dạy',
+
+            essentialTools: ['chatgpt', 'vbee', 'canvaai'],
+            recommendedTools: ['claude', 'gemini', 'copyai'],
+            optionalTools: ['midjourney', 'powerbi'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Tạo Nội dung',
+                    description: 'Soạn giáo án, tạo bài giảng, thiết kế tài liệu học tập',
+                    primaryTool: 'canvaai',
+                    supportingTools: ['chatgpt', 'copyai'],
+                    icon: 'edit_note',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Hỗ trợ Học tập',
+                    description: 'Gia sư AI, giải đáp thắc mắc, cá nhân hóa lộ trình',
+                    primaryTool: 'claude',
+                    supportingTools: ['chatgpt'],
+                    icon: 'psychology',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Đánh giá & Voice',
+                    description: 'Chấm điểm tự động, tạo audio bài giảng tiếng Việt',
+                    primaryTool: 'vbee',
+                    supportingTools: ['gemini'],
+                    icon: 'record_voice_over',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+40%',
+                timeSaved: '3h',
+                roi: 'x2.8',
+                description: 'Tăng tương tác học sinh, giảm thờ i gian chuẩn bị bài giảng'
+            }
+        },
+
+        ecommerce: {
+            id: 'ecommerce',
+            name: 'Thương mại điện tử',
+            subtitle: 'Bán hàng online, Dropshipping',
+            icon: 'shopping_bag',
+            gradient: 'from-[#ffecd2] to-[#fcb69f]',
+            description: 'AI tối ưu sản phẩm, cá nhân hóa trải nghiệm mua sắm',
+
+            essentialTools: ['marketplaceai', 'chatgpt', 'zaloai'],
+            recommendedTools: ['kiotviet', 'haravan', 'canvaai'],
+            optionalTools: ['midjourney', 'copyai'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Tạo Nội dung',
+                    description: 'Viết mô tả sản phẩm, thiết kế hình ảnh, quảng cáo',
+                    primaryTool: 'canvaai',
+                    supportingTools: ['chatgpt', 'midjourney'],
+                    icon: 'brush',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Chạy Quảng cáo',
+                    description: 'Tối ưu giá thầu, targeting, tự động hóa campaign',
+                    primaryTool: 'marketplaceai',
+                    supportingTools: ['zaloai'],
+                    icon: 'campaign',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'CSKH & Vận hành',
+                    description: 'Trả lời khách hàng, quản lý đơn hàng, kho hàng',
+                    primaryTool: 'kiotviet',
+                    supportingTools: ['haravan', 'zaloai'],
+                    icon: 'store',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+60%',
+                timeSaved: '5h',
+                roi: 'x5.2',
+                description: 'Tăng tỷ lệ chuyển đổi, giảm chi phí vận hành'
+            }
+        },
+
+        manufacturing: {
+            id: 'manufacturing',
+            name: 'Sản xuất',
+            subtitle: 'Nhà máy, Công nghiệp',
+            icon: 'precision_manufacturing',
+            gradient: 'from-[#667eea] to-[#764ba2]',
+            description: 'AI kiểm soát chất lượng, bảo trì dự đoán và tối ưu sản xuất',
+
+            essentialTools: ['cvs', 'googlevision', 'powerbi'],
+            recommendedTools: ['fptai', 'misaaai', 'salesforce'],
+            optionalTools: ['claude', 'tableau'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Kiểm tra Chất lượng',
+                    description: 'Phát hiện lỗi sản phẩm, kiểm tra bằng computer vision',
+                    primaryTool: 'cvs',
+                    supportingTools: ['googlevision'],
+                    icon: 'visibility',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Bảo trì Dự đoán',
+                    description: 'Phân tích dữ liệu sensor, dự báo hỏng hóc thiết bị',
+                    primaryTool: 'powerbi',
+                    supportingTools: ['tableau'],
+                    icon: 'engineering',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Quản lý ERP',
+                    description: 'Tối ưu tồn kho, lập kế hoạch sản xuất',
+                    primaryTool: 'misaaai',
+                    supportingTools: ['salesforce'],
+                    icon: 'inventory',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+50%',
+                timeSaved: '4h',
+                roi: 'x4.0',
+                description: 'Giảm lỗi sản xuất, tăng tuổ i thọ thiết bị'
+            }
+        },
+
+        agriculture: {
+            id: 'agriculture',
+            name: 'Nông nghiệp',
+            subtitle: 'Nông trại, Chăn nuôi, Nông nghiệp công nghệ cao',
+            icon: 'agriculture',
+            gradient: 'from-[#96e6a1] to-[#d4fc79]',
+            description: 'AI theo dõi cây trồng, dự báo thờ i tiết và tối ưu năng suất',
+
+            essentialTools: ['fptsmartfarm', 'powerbi', 'googlevision'],
+            recommendedTools: ['cvs', 'looker'],
+            optionalTools: ['gemini'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Giám sát Canh tác',
+                    description: 'Phân tích hình ảnh drone, theo dõi sức khỏe cây trồng',
+                    primaryTool: 'fptsmartfarm',
+                    supportingTools: ['cvs'],
+                    icon: 'satellite_alt',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Phát hiện Sâu bệnh',
+                    description: 'Nhận diện bệnh cây, đề xuất giải pháp điều trị',
+                    primaryTool: 'googlevision',
+                    supportingTools: ['gemini'],
+                    icon: 'pest_control',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Dự báo Năng suất',
+                    description: 'Phân tích dữ liệu thờ i tiết, dự báo thu hoạch',
+                    primaryTool: 'powerbi',
+                    supportingTools: ['looker'],
+                    icon: 'ssid_chart',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+35%',
+                timeSaved: '2.5h',
+                roi: 'x2.5',
+                description: 'Tăng năng suất, giảm thiệt hại do sâu bệnh'
+            }
+        },
+
+        transportation: {
+            id: 'transportation',
+            name: 'Vận tải - Logistics',
+            subtitle: 'Logistics, Vận tải, Giao hàng',
+            icon: 'local_shipping',
+            gradient: 'from-[#4facfe] to-[#00f2fe]',
+            description: 'AI tối ưu lộ trình, dự báo nhu cầu và quản lý đội xe',
+
+            essentialTools: ['viettelpostai', 'powerbi', 'stringee'],
+            recommendedTools: ['chatgpt', 'cvs', 'freshchat'],
+            optionalTools: ['claude'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Tối ưu Lộ trình',
+                    description: 'Tính toán đường đi tối ưu, giảm thờ i gian giao hàng',
+                    primaryTool: 'viettelpostai',
+                    supportingTools: ['cvs'],
+                    icon: 'route',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Quản lý Kho',
+                    description: 'Dự báo nhu cầu, tối ưu vị trí lưu trữ',
+                    primaryTool: 'powerbi',
+                    supportingTools: ['claude'],
+                    icon: 'warehouse',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Theo dõi Đơn hàng',
+                    description: 'Cập nhật real-time, CSKH tự động',
+                    primaryTool: 'stringee',
+                    supportingTools: ['freshchat'],
+                    icon: 'package',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+45%',
+                timeSaved: '3.5h',
+                roi: 'x3.8',
+                description: 'Giảm chi phí vận chuyển, tăng tốc độ giao hàng'
+            }
+        },
+
+        cybersecurity: {
+            id: 'cybersecurity',
+            name: 'An ninh mạng',
+            subtitle: 'SOC, Pentesting, Bảo mật',
+            icon: 'security',
+            gradient: 'from-[#ff6b6b] to-[#ee5a6f]',
+            description: 'AI phát hiện mối đe dọa, phân tích bảo mật và ứng phó sự cố',
+
+            essentialTools: ['cvs', 'chatgpt', 'claude'],
+            recommendedTools: ['salesforce', 'powerbi'],
+            optionalTools: ['gemini', 'googlevision'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Giám sát An ninh',
+                    description: 'Phân tích log, phát hiện hành vi bất thường',
+                    primaryTool: 'cvs',
+                    supportingTools: ['powerbi'],
+                    icon: 'visibility',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Phân tích Mối đe dọa',
+                    description: 'Nhận diện malware, dự báo vector tấn công',
+                    primaryTool: 'claude',
+                    supportingTools: ['chatgpt'],
+                    icon: 'bug_report',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Ứng phó Sự cố',
+                    description: 'Tự động hóa response, ghi nhận và báo cáo',
+                    primaryTool: 'salesforce',
+                    supportingTools: ['gemini'],
+                    icon: 'crisis_alert',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+70%',
+                timeSaved: '6h',
+                roi: 'x6.5',
+                description: 'Giảm thờ i gian phát hiện và ứng phó sự cố'
+            }
+        },
+
+        hospitality: {
+            id: 'hospitality',
+            name: 'Khách sạn - Nhà hàng',
+            subtitle: 'Khách sạn, Resort, F&B',
+            icon: 'hotel',
+            gradient: 'from-[#fa709a] to-[#fee140]',
+            description: 'AI quản lý đặt phòng, cá nhân hóa trải nghiệm khách hàng',
+
+            essentialTools: ['botstar', 'kiotviet', 'canvaai'],
+            recommendedTools: ['chatgpt', 'zaloai', 'midjourney'],
+            optionalTools: ['copyai', 'hubspot'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Đặt phòng & Tư vấn',
+                    description: 'Chatbot tư vấn, xử lý đặt phòng 24/7',
+                    primaryTool: 'botstar',
+                    supportingTools: ['zaloai'],
+                    icon: 'booking',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Marketing & Content',
+                    description: 'Tạo nội dung quảng cáo, thiết kế ảnh đẹp',
+                    primaryTool: 'canvaai',
+                    supportingTools: ['midjourney', 'copyai'],
+                    icon: 'campaign',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Vận hành & CSKH',
+                    description: 'Quản lý bán hàng, chăm sóc khách hàng thân thiết',
+                    primaryTool: 'kiotviet',
+                    supportingTools: ['hubspot'],
+                    icon: 'room_service',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+40%',
+                timeSaved: '3h',
+                roi: 'x3.0',
+                description: 'Tăng tỷ lệ lấp đầy, cải thiện trải nghiệm khách hàng'
+            }
+        },
+
+        marketing: {
+            id: 'marketing',
+            name: 'Marketing & Agency',
+            subtitle: 'Digital Marketing, Content, Agency',
+            icon: 'campaign',
+            gradient: 'from-[#a8edea] to-[#fed6e3]',
+            description: 'AI tạo content, phân tích data và tối ưu chiến dịch',
+
+            essentialTools: ['chatgpt', 'canvaai', 'copyai'],
+            recommendedTools: ['midjourney', 'hubspot', 'looker'],
+            optionalTools: ['claude', 'gemini', 'powerbi'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Nghiên cứu & Insight',
+                    description: 'Phân tích trend, đối thủ, insight khách hàng',
+                    primaryTool: 'chatgpt',
+                    supportingTools: ['looker'],
+                    icon: 'trending_up',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Sản xuất Content',
+                    description: 'Viết bài, thiết kế hình ảnh, video quảng cáo',
+                    primaryTool: 'canvaai',
+                    supportingTools: ['midjourney', 'copyai'],
+                    icon: 'design_services',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Phân phối & Tối ưu',
+                    description: 'Lên lịch đăng bài, phân tích hiệu quả, tối ưu ROI',
+                    primaryTool: 'hubspot',
+                    supportingTools: ['powerbi'],
+                    icon: 'analytics',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+65%',
+                timeSaved: '5.5h',
+                roi: 'x5.8',
+                description: 'Tăng hiệu quả chiến dịch, giảm thờ i gian sản xuất content'
+            }
+        },
+
+        programming: {
+            id: 'programming',
+            name: 'Lập trình & Software',
+            subtitle: 'Development, DevOps, Tech Startup',
+            icon: 'code',
+            gradient: 'from-[#00c9ff] to-[#92fe9d]',
+            description: 'AI cho phát triển phần mềm, code review, testing và DevOps automation',
+
+            essentialTools: ['chatgpt', 'claude', 'githubcopilot'],
+            recommendedTools: ['gemini', 'tabnine', 'replit'],
+            optionalTools: ['codeium', 'amazonq'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Code Assistant',
+                    description: 'AI gợi ý code, hoàn thành function, giải thích code phức tạp',
+                    primaryTool: 'githubcopilot',
+                    supportingTools: ['chatgpt'],
+                    icon: 'code',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Code Review',
+                    description: 'Phân tích code quality, phát hiện bug, đề xuất refactor',
+                    primaryTool: 'claude',
+                    supportingTools: ['gemini'],
+                    icon: 'fact_check',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Documentation',
+                    description: 'Tự động viết docs, comments, API documentation',
+                    primaryTool: 'chatgpt',
+                    supportingTools: ['claude'],
+                    icon: 'description',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+55%',
+                timeSaved: '4h',
+                roi: 'x4.2',
+                description: 'Giảm thờ i gian viết boilerplate code, tăng chất lượng code'
+            }
+        },
+
+        beauty: {
+            id: 'beauty',
+            name: 'Làm đẹp',
+            subtitle: 'Spa, Thẩm mỹ viện, Salon',
+            icon: 'spa',
+            gradient: 'from-[#ff9a9e] to-[#fecfef]',
+            description: 'AI cho booking, tư vấn sản phẩm, content marketing và CSKH',
+
+            essentialTools: ['botstar', 'zaloai', 'canvaai'],
+            recommendedTools: ['chatgpt', 'midjourney', 'copyai'],
+            optionalTools: ['stringee', 'hubspot'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Booking & Tư vấn',
+                    description: 'Chatbot đặt lịch, tư vấn dịch vụ, reminder tự động',
+                    primaryTool: 'botstar',
+                    supportingTools: ['zaloai'],
+                    icon: 'calendar_today',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Content Creation',
+                    description: 'Tạo hình ảnh before/after, video ngắn, captions',
+                    primaryTool: 'canvaai',
+                    supportingTools: ['midjourney', 'copyai'],
+                    icon: 'brush',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'CSKH & Upsell',
+                    description: 'Chăm sóc khách hàng sau dịch vụ, đề xuất gói nâng cấp',
+                    primaryTool: 'zaloai',
+                    supportingTools: ['hubspot'],
+                    icon: 'favorite',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+40%',
+                timeSaved: '3h',
+                roi: 'x3.0',
+                description: 'Tăng booking rate, giảm no-show, cải thiện retention'
+            }
+        },
+
+        retail: {
+            id: 'retail',
+            name: 'Shop Offline',
+            subtitle: 'Bán lẻ, Cửa hàng, Showroom',
+            icon: 'storefront',
+            gradient: 'from-[#a8edea] to-[#fed6e3]',
+            description: 'AI cho quản lý kho, loyalty program, foot traffic analysis',
+
+            essentialTools: ['kiotviet', 'chatgpt', 'canvaai'],
+            recommendedTools: ['cvs', 'powerbi', 'zaloai'],
+            optionalTools: ['stringee', 'crmviet'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Inventory Management',
+                    description: 'Dự báo nhu cầu, cảnh báo hết hàng, tối ưu reorder',
+                    primaryTool: 'kiotviet',
+                    supportingTools: ['powerbi'],
+                    icon: 'inventory',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Customer Analytics',
+                    description: 'Phân tích hành vi mua sắm, loyalty scoring, segmentation',
+                    primaryTool: 'cvs',
+                    supportingTools: ['powerbi'],
+                    icon: 'analytics',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Marketing Local',
+                    description: 'Content cho social, chạy ads, SMS marketing',
+                    primaryTool: 'canvaai',
+                    supportingTools: ['chatgpt', 'zaloai'],
+                    icon: 'campaign',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+35%',
+                timeSaved: '2.5h',
+                roi: 'x2.8',
+                description: 'Giảm thất thoát kho, tăng khách quay lại'
+            }
+        },
+
+        food: {
+            id: 'food',
+            name: 'Quán ăn & F&B',
+            subtitle: 'Nhà hàng, Cafe, Fast Food',
+            icon: 'restaurant',
+            gradient: 'from-[#ffecd2] to-[#fcb69f]',
+            description: 'AI cho order management, menu optimization, review response',
+
+            essentialTools: ['kiotviet', 'botstar', 'canvaai'],
+            recommendedTools: ['zaloai', 'chatgpt', 'vbee'],
+            optionalTools: ['hubspot', 'stringee'],
+
+            workflows: [
+                {
+                    step: 1,
+                    title: 'Order Management',
+                    description: 'Chatbot nhận order, gợi ý món, xử lý delivery',
+                    primaryTool: 'botstar',
+                    supportingTools: ['zaloai'],
+                    icon: 'fastfood',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Menu Optimization',
+                    description: 'Phân tích best-seller, đề xuất combo, pricing',
+                    primaryTool: 'kiotviet',
+                    supportingTools: ['powerbi'],
+                    icon: 'menu_book',
+                    color: '#60a5fa'
+                },
+                {
+                    step: 3,
+                    title: 'Review & Marketing',
+                    description: 'Auto-reply review, tạo content, voice cho drive-thru',
+                    primaryTool: 'chatgpt',
+                    supportingTools: ['vbee', 'canvaai'],
+                    icon: 'reviews',
+                    color: '#ec4899'
+                }
+            ],
+
+            stats: {
+                efficiency: '+50%',
+                timeSaved: '4h',
+                roi: 'x3.5',
+                description: 'Tăng tốc độ phục vụ, cải thiện rating'
+            }
+        }
+    };
+
+    /**
+     * TOOLS_DATA - 30 công cụ AI với đầy đủ metadata
+     */
+    const TOOLS_DATA = {
+        // ========== A. FOUNDATION MODELS ==========
+        chatgpt: {
+            id: 'chatgpt',
+            name: 'ChatGPT',
+            provider: 'OpenAI',
+            category: 'foundation',
+            icon: 'chat',
+            color: '#10a37f',
+            description: 'Mô hình ngôn ngữ lớn hàng đầu cho tư vấn, soạn thảo và phân tích',
+            features: ['Chatbot thông minh', 'Phân tích tài liệu', 'Code assistant', 'API tích hợp'],
+            useCases: ['CSKH', 'Content creation', 'Data analysis', 'Automation'],
+            pricing: 'Freemium ($20/tháng cho Plus)',
+            website: 'https://chat.openai.com',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        claude: {
+            id: 'claude',
+            name: 'Claude',
+            provider: 'Anthropic',
+            category: 'foundation',
+            icon: 'psychology',
+            color: '#cc785c',
+            description: 'AI assistant với khả năng xử lý context dài (200K tokens), an toàn và đáng tin cậy',
+            features: ['200K context window', 'Phân tích & lý luận', 'Code generation', 'Document Q&A'],
+            useCases: ['Research', 'Legal analysis', 'Long-form content', 'Data processing'],
+            pricing: 'Freemium ($20/tháng)',
+            website: 'https://claude.ai',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        gemini: {
+            id: 'gemini',
+            name: 'Google Gemini',
+            provider: 'Google',
+            category: 'foundation',
+            icon: 'stars',
+            color: '#4285f4',
+            description: 'Multimodal AI từ Google, tích hợp sâu với Google Workspace',
+            features: ['Multimodal (text, image, video)', 'Google Workspace integration', 'Real-time search', 'Code execution'],
+            useCases: ['Workspace automation', 'Content creation', 'Research', 'Development'],
+            pricing: 'Freemium ($20/tháng)',
+            website: 'https://gemini.google.com',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        // ========== B. AI VIỆT NAM ==========
+        misaaai: {
+            id: 'misaaai',
+            name: 'MISA AMIS OneAI',
+            provider: 'MISA',
+            category: 'vietnam',
+            icon: 'account_balance',
+            color: '#0066cc',
+            description: 'Nền tảng AI tổng thể cho doanh nghiệp Việt Nam, tích hợp ERP',
+            features: ['Chatbot nội bộ', 'Tự động hóa quy trình', 'Phân tích dữ liệu', 'Voice AI'],
+            useCases: ['ERP integration', 'HR automation', 'Customer service', 'Document processing'],
+            pricing: 'Subscription (liên hệ)',
+            website: 'https://amis.misa.vn',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        fptai: {
+            id: 'fptai',
+            name: 'FPT.AI',
+            provider: 'FPT',
+            category: 'vietnam',
+            icon: 'memory',
+            color: '#00a651',
+            description: 'Bộ công cụ AI toàn diện: OCR, Chatbot, Speech, Vision',
+            features: ['OCR/Document Reader', 'Chatbot platform', 'Text-to-Speech', 'Speech-to-Text', 'Computer Vision'],
+            useCases: ['Document digitization', 'Customer support', 'Voice applications', 'KYC'],
+            pricing: 'Pay-per-use',
+            website: 'https://fpt.ai',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        zaloai: {
+            id: 'zaloai',
+            name: 'Zalo AI',
+            provider: 'VNG',
+            category: 'vietnam',
+            icon: 'chat_bubble',
+            color: '#0068ff',
+            description: 'AI platform tích hợp với hệ sinh thái Zalo (90M+ users)',
+            features: ['Zalo Chatbot', 'Zalo OA automation', 'Voice AI', 'NLP APIs'],
+            useCases: ['Social commerce', 'Customer engagement', 'Broadcast messaging', 'Lead generation'],
+            pricing: 'Freemium',
+            website: 'https://zalo.ai',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        vinai: {
+            id: 'vinai',
+            name: 'VinAI',
+            provider: 'Vingroup',
+            category: 'vietnam',
+            icon: 'biotech',
+            color: '#1e88e5',
+            description: 'Nghiên cứu AI hàng đầu VN: PhoBERT, VinBrain, Medical AI',
+            features: ['PhoBERT (NLP)', 'Face recognition', 'Medical imaging', 'Autonomous driving'],
+            useCases: ['Healthcare AI', 'Security systems', 'Smart city', 'Research'],
+            pricing: 'Enterprise',
+            website: 'https://vinai.io',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        vbee: {
+            id: 'vbee',
+            name: 'Vbee AIVoice',
+            provider: 'Vbee',
+            category: 'vietnam',
+            icon: 'record_voice_over',
+            color: '#ff6b35',
+            description: 'Giải pháp Text-to-Speech tiếng Việt tự nhiên nhất',
+            features: ['Vietnamese TTS', 'Multiple voices', 'Voice cloning', 'API integration'],
+            useCases: ['IVR systems', 'E-learning', 'Content narration', 'Accessibility'],
+            pricing: 'Pay-per-use',
+            website: 'https://vbee.vn',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        // ========== C. CHATBOT & CUSTOMER SERVICE ==========
+        botstar: {
+            id: 'botstar',
+            name: 'BotStar',
+            provider: 'BotStar Vietnam',
+            category: 'chatbot',
+            icon: 'smart_toy',
+            color: '#6366f1',
+            description: 'Nền tảng chatbot đa kênh không cần code',
+            features: ['Visual flow builder', 'Multi-channel', 'Live chat handover', 'Analytics'],
+            useCases: ['Website chat', 'Facebook Messenger', 'Zalo OA', 'Customer support'],
+            pricing: 'Freemium ($15/tháng)',
+            website: 'https://botstar.com',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        stringee: {
+            id: 'stringee',
+            name: 'Stringee',
+            provider: 'Stringee Vietnam',
+            category: 'chatbot',
+            icon: 'phone_in_talk',
+            color: '#00bcd4',
+            description: 'Nền tảng Contact Center và Communication APIs',
+            features: ['Voice call API', 'Video call', 'SMS/Viber/Zalo messaging', 'Call center'],
+            useCases: ['Customer support', 'Telemedicine', 'Sales calls', 'Verification'],
+            pricing: 'Pay-per-use',
+            website: 'https://stringee.com',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        freshchat: {
+            id: 'freshchat',
+            name: 'Freshchat',
+            provider: 'Freshworks',
+            category: 'chatbot',
+            icon: 'support_agent',
+            color: '#ff6b6b',
+            description: 'Omnichannel customer messaging với AI chatbot Freddy',
+            features: ['AI chatbot', 'Omnichannel inbox', 'Proactive messaging', 'Bot-to-agent handover'],
+            useCases: ['Customer support', 'Sales engagement', 'Marketing automation'],
+            pricing: 'Freemium ($19/tháng)',
+            website: 'https://freshworks.com/live-chat-software',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        // ========== D. COMPUTER VISION & OCR ==========
+        cvs: {
+            id: 'cvs',
+            name: 'CVS',
+            provider: 'Computer Vision Vietnam',
+            category: 'vision',
+            icon: 'visibility',
+            color: '#9c27b0',
+            description: 'Giải pháp thị giác máy tính cho doanh nghiệp VN',
+            features: ['Face recognition', 'Object detection', 'License plate recognition', 'Behavior analysis'],
+            useCases: ['Access control', 'Retail analytics', 'Security', 'Smart parking'],
+            pricing: 'Enterprise',
+            website: 'https://computer-vision.vn',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        lacvietocr: {
+            id: 'lacvietocr',
+            name: 'Lạc Việt OCR',
+            provider: 'Lạc Việt',
+            category: 'vision',
+            icon: 'document_scanner',
+            color: '#e91e63',
+            description: 'Nhận dạng ký tự tiếng Việt chuyên nghiệp',
+            features: ['Vietnamese OCR', 'Handwriting recognition', 'ID card scanning', 'Invoice processing'],
+            useCases: ['Document digitization', 'Form processing', 'KYC', 'Accounting'],
+            pricing: 'License',
+            website: 'https://lacviet.com.vn',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        googlevision: {
+            id: 'googlevision',
+            name: 'Google Cloud Vision',
+            provider: 'Google Cloud',
+            category: 'vision',
+            icon: 'image_search',
+            color: '#4285f4',
+            description: 'Cloud-based image analysis với machine learning',
+            features: ['Label detection', 'OCR đa ngôn ngữ', 'Face detection', 'Object localization'],
+            useCases: ['Content moderation', 'Cataloging', 'Document processing', 'Visual search'],
+            pricing: 'Pay-per-use ($1.50/1000 images)',
+            website: 'https://cloud.google.com/vision',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        // ========== E. CRM & MARKETING AUTOMATION ==========
+        hubspot: {
+            id: 'hubspot',
+            name: 'HubSpot CRM + AI',
+            provider: 'HubSpot',
+            category: 'crm',
+            icon: 'hub',
+            color: '#ff7a59',
+            description: 'CRM platform với AI-powered sales và marketing',
+            features: ['Predictive lead scoring', 'Email automation', 'Content assistant', 'Chatbot builder'],
+            useCases: ['Inbound marketing', 'Sales automation', 'Customer service'],
+            pricing: 'Freemium ($50/tháng)',
+            website: 'https://hubspot.com',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        salesforce: {
+            id: 'salesforce',
+            name: 'Salesforce Einstein',
+            provider: 'Salesforce',
+            category: 'crm',
+            icon: 'cloud',
+            color: '#00a1e0',
+            description: 'AI layer tích hợp trong Salesforce CRM',
+            features: ['Predictive analytics', 'Next best action', 'Automated insights', 'Natural language queries'],
+            useCases: ['Sales forecasting', 'Lead prioritization', 'Service automation'],
+            pricing: 'Enterprise ($75/tháng)',
+            website: 'https://salesforce.com',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        crmviet: {
+            id: 'crmviet',
+            name: 'CrmViet',
+            provider: 'CrmViet',
+            category: 'crm',
+            icon: 'people',
+            color: '#ff5722',
+            description: 'CRM made in Vietnam cho SME',
+            features: ['Contact management', 'Sales pipeline', 'Marketing automation', 'Customer support'],
+            useCases: ['Sales management', 'Customer tracking', 'Email marketing'],
+            pricing: 'Subscription (200k/tháng)',
+            website: 'https://crmviet.vn',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        zohocrm: {
+            id: 'zohocrm',
+            name: 'Zoho CRM Plus',
+            provider: 'Zoho',
+            category: 'crm',
+            icon: 'groups',
+            color: '#ff7043',
+            description: 'Unified CRM platform với AI assistant Zia',
+            features: ['Zia AI assistant', 'Sales automation', 'Omnichannel communication', 'Analytics'],
+            useCases: ['Sales management', 'Marketing automation', 'Customer support'],
+            pricing: 'Subscription ($50/tháng)',
+            website: 'https://zoho.com/crm',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        basecrm: {
+            id: 'basecrm',
+            name: 'Base CRM',
+            provider: 'FPT',
+            category: 'crm',
+            icon: 'foundation',
+            color: '#1976d2',
+            description: 'CRM platform từ FPT cho thị trường VN',
+            features: ['Lead management', 'Sales automation', 'Customer service', 'Mobile app'],
+            useCases: ['B2B sales', 'Real estate', 'Retail'],
+            pricing: 'Subscription (liên hệ)',
+            website: 'https://base.vn',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        // ========== F. E-COMMERCE & RETAIL AI ==========
+        kiotviet: {
+            id: 'kiotviet',
+            name: 'KiotViet AI',
+            provider: 'Citigo',
+            category: 'ecommerce',
+            icon: 'store',
+            color: '#4caf50',
+            description: 'Quản lý bán hàng tích hợp AI cho retail',
+            features: ['Sales forecasting', 'Inventory optimization', 'Customer insights', 'Omnichannel sales'],
+            useCases: ['Retail stores', 'Restaurants', 'F&B chains'],
+            pricing: 'Subscription (150k/tháng)',
+            website: 'https://kiotviet.vn',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        haravan: {
+            id: 'haravan',
+            name: 'Haravan AI',
+            provider: 'Haravan',
+            category: 'ecommerce',
+            icon: 'shopping_bag',
+            color: '#2196f3',
+            description: 'E-commerce platform với AI-powered features',
+            features: ['Product recommendations', 'Abandoned cart recovery', 'Customer segmentation'],
+            useCases: ['Online stores', 'Omnichannel retail', 'Dropshipping'],
+            pricing: 'Subscription (299k/tháng)',
+            website: 'https://haravan.com',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: true
+        },
+
+        marketplaceai: {
+            id: 'marketplaceai',
+            name: 'Shopee/Lazada/Tiki AI',
+            provider: 'Marketplaces',
+            category: 'ecommerce',
+            icon: 'local_mall',
+            color: '#ee4d2d',
+            description: 'AI tools tích hợp sẵn trong các sàn TMĐT',
+            features: ['Auto pricing', 'Product recommendations', 'Search optimization', 'Ad automation'],
+            useCases: ['Online selling', 'Marketplace optimization', 'Ad campaigns'],
+            pricing: 'Platform fees',
+            website: 'https://shopee.vn/edu',
+            vietnameseSupport: 'Xuất sắc',
+            apiAvailable: false
+        },
+
+        // ========== G. AGRICULTURE & LOGISTICS ==========
+        fptsmartfarm: {
+            id: 'fptsmartfarm',
+            name: 'FPT Smart Farm',
+            provider: 'FPT',
+            category: 'agriculture',
+            icon: 'agriculture',
+            color: '#8bc34a',
+            description: 'Giải pháp nông nghiệp thông minh với IoT và AI',
+            features: ['Crop monitoring', 'Disease detection', 'Yield prediction', 'Automated irrigation'],
+            useCases: ['Smart farming', 'Greenhouse management', 'Crop protection'],
+            pricing: 'Enterprise',
+            website: 'https://fpt.com/smart-agri',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        viettelpostai: {
+            id: 'viettelpostai',
+            name: 'ViettelPost AI',
+            provider: 'Viettel',
+            category: 'logistics',
+            icon: 'local_shipping',
+            color: '#ff9800',
+            description: 'AI cho logistics và giao hàng thông minh',
+            features: ['Route optimization', 'Delivery prediction', 'Warehouse automation', 'Demand forecasting'],
+            useCases: ['Last-mile delivery', 'Warehouse management', 'Fleet optimization'],
+            pricing: 'Enterprise',
+            website: 'https://viettelpost.com.vn',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        // ========== H. CONTENT & CREATIVE AI ==========
+        midjourney: {
+            id: 'midjourney',
+            name: 'Midjourney / DALL-E / SD',
+            provider: 'Various',
+            category: 'creative',
+            icon: 'palette',
+            color: '#1a1a2e',
+            description: 'AI image generation từ text prompts',
+            features: ['Photorealistic images', 'Art generation', 'Style transfer', 'Image editing'],
+            useCases: ['Marketing visuals', 'Product mockups', 'Social media content'],
+            pricing: 'Subscription ($10-60/tháng)',
+            website: 'https://midjourney.com',
+            vietnameseSupport: 'Không',
+            apiAvailable: true
+        },
+
+        canvaai: {
+            id: 'canvaai',
+            name: 'Canva AI',
+            provider: 'Canva',
+            category: 'creative',
+            icon: 'design_services',
+            color: '#00c4cc',
+            description: 'Design platform với AI-powered tools',
+            features: ['Magic Design', 'Text to Image', 'Magic Edit', 'Brand Kit', 'AI Writer'],
+            useCases: ['Social media graphics', 'Presentations', 'Marketing materials'],
+            pricing: 'Freemium ($13/tháng)',
+            website: 'https://canva.com',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        copyai: {
+            id: 'copyai',
+            name: 'Copy.ai / Jasper',
+            provider: 'Various',
+            category: 'creative',
+            icon: 'edit_note',
+            color: '#6366f1',
+            description: 'AI copywriting và content generation',
+            features: ['Blog writing', 'Ad copy', 'Email templates', 'Social media posts'],
+            useCases: ['Content marketing', 'Ad campaigns', 'Email marketing'],
+            pricing: 'Subscription ($36/tháng)',
+            website: 'https://copy.ai',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        // ========== I. DATA ANALYTICS & BI ==========
+        powerbi: {
+            id: 'powerbi',
+            name: 'Power BI + Copilot',
+            provider: 'Microsoft',
+            category: 'analytics',
+            icon: 'insert_chart',
+            color: '#f2c811',
+            description: 'Business intelligence với AI-powered insights',
+            features: ['Natural language queries', 'Automated insights', 'Predictive analytics', 'Copilot integration'],
+            useCases: ['Dashboard creation', 'Report automation', 'Data visualization'],
+            pricing: 'Subscription ($20/tháng)',
+            website: 'https://powerbi.microsoft.com',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        tableau: {
+            id: 'tableau',
+            name: 'Tableau AI',
+            provider: 'Salesforce',
+            category: 'analytics',
+            icon: 'analytics',
+            color: '#e97627',
+            description: 'Data visualization platform với AI features',
+            features: ['Ask Data (NLP)', 'Explain Data', 'Einstein Discovery', 'Auto forecasting'],
+            useCases: ['Data exploration', 'Visual analytics', 'Business intelligence'],
+            pricing: 'Subscription ($70/tháng)',
+            website: 'https://tableau.com',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        looker: {
+            id: 'looker',
+            name: 'Google Looker Studio',
+            provider: 'Google',
+            category: 'analytics',
+            icon: 'bar_chart',
+            color: '#4285f4',
+            description: 'Free BI tool với Google ecosystem integration',
+            features: ['Custom dashboards', 'Data blending', 'Automated reports', 'Google data connectors'],
+            useCases: ['Marketing analytics', 'Website analytics', 'Custom reporting'],
+            pricing: 'Freemium',
+            website: 'https://lookerstudio.google.com',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        }
+    };
+
+    /**
+     * TOOL_INDUSTRY_MATRIX - Độ phù hợp tool-ngành (score 1-5)
+     * Score: 1=Rất ít phù hợp, 3=Phù hợp, 5=Rất phù hợp
+     */
+    const TOOL_INDUSTRY_MATRIX = {
+        // Foundation Models - Phù hợp mọi ngành
+        chatgpt: {
+            healthcare: 4, finance: 5, education: 5, ecommerce: 5,
+            manufacturing: 4, agriculture: 3, transportation: 4,
+            cybersecurity: 5, hospitality: 4, marketing: 5,
+            programming: 5, beauty: 4, retail: 4, food: 4
+        },
+        claude: {
+            healthcare: 4, finance: 5, education: 4, ecommerce: 4,
+            manufacturing: 4, agriculture: 3, transportation: 3,
+            cybersecurity: 5, hospitality: 3, marketing: 4,
+            programming: 5, beauty: 3, retail: 3, food: 3
+        },
+        gemini: {
+            healthcare: 4, finance: 4, education: 5, ecommerce: 4,
+            manufacturing: 4, agriculture: 3, transportation: 4,
+            cybersecurity: 4, hospitality: 4, marketing: 4,
+            programming: 4, beauty: 4, retail: 4, food: 4
+        },
+
+        // AI Vietnam
+        misaaai: {
+            healthcare: 4, finance: 5, education: 4, ecommerce: 4,
+            manufacturing: 5, agriculture: 3, transportation: 4,
+            cybersecurity: 3, hospitality: 4, marketing: 3,
+            programming: 3, beauty: 4, retail: 5, food: 4
+        },
+        fptai: {
+            healthcare: 5, finance: 5, education: 4, ecommerce: 4,
+            manufacturing: 4, agriculture: 3, transportation: 4,
+            cybersecurity: 3, hospitality: 4, marketing: 4,
+            programming: 4, beauty: 3, retail: 4, food: 4
+        },
+        zaloai: {
+            healthcare: 3, finance: 3, education: 3, ecommerce: 5,
+            manufacturing: 2, agriculture: 2, transportation: 3,
+            cybersecurity: 2, hospitality: 4, marketing: 5,
+            programming: 2, beauty: 5, retail: 5, food: 5
+        },
+        vinai: {
+            healthcare: 5, finance: 2, education: 2, ecommerce: 2,
+            manufacturing: 3, agriculture: 2, transportation: 3,
+            cybersecurity: 4, hospitality: 2, marketing: 2,
+            programming: 4, beauty: 2, retail: 3, food: 2
+        },
+        vbee: {
+            healthcare: 3, finance: 3, education: 5, ecommerce: 3,
+            manufacturing: 2, agriculture: 2, transportation: 3,
+            cybersecurity: 2, hospitality: 3, marketing: 4,
+            programming: 2, beauty: 4, retail: 4, food: 5
+        },
+
+        // Chatbot & CSKH
+        botstar: {
+            healthcare: 5, finance: 4, education: 4, ecommerce: 5,
+            manufacturing: 3, agriculture: 2, transportation: 4,
+            cybersecurity: 3, hospitality: 5, marketing: 4,
+            programming: 3, beauty: 5, retail: 4, food: 5
+        },
+        stringee: {
+            healthcare: 4, finance: 5, education: 3, ecommerce: 4,
+            manufacturing: 3, agriculture: 2, transportation: 5,
+            cybersecurity: 3, hospitality: 4, marketing: 4,
+            programming: 3, beauty: 4, retail: 4, food: 5
+        },
+        freshchat: {
+            healthcare: 4, finance: 4, education: 3, ecommerce: 5,
+            manufacturing: 3, agriculture: 2, transportation: 3,
+            cybersecurity: 3, hospitality: 5, marketing: 4,
+            programming: 3, beauty: 4, retail: 4, food: 4
+        },
+
+        // Vision & OCR
+        cvs: {
+            healthcare: 4, finance: 3, education: 3, ecommerce: 4,
+            manufacturing: 5, agriculture: 3, transportation: 5,
+            cybersecurity: 5, hospitality: 4, marketing: 2,
+            programming: 3, beauty: 3, retail: 5, food: 4
+        },
+        lacvietocr: {
+            healthcare: 4, finance: 5, education: 3, ecommerce: 4,
+            manufacturing: 4, agriculture: 3, transportation: 4,
+            cybersecurity: 3, hospitality: 3, marketing: 3,
+            programming: 2, beauty: 3, retail: 4, food: 4
+        },
+        googlevision: {
+            healthcare: 4, finance: 4, education: 3, ecommerce: 5,
+            manufacturing: 5, agriculture: 3, transportation: 4,
+            cybersecurity: 4, hospitality: 4, marketing: 4,
+            programming: 4, beauty: 3, retail: 4, food: 4
+        },
+
+        // CRM & Marketing
+        hubspot: {
+            healthcare: 3, finance: 5, education: 4, ecommerce: 5,
+            manufacturing: 4, agriculture: 2, transportation: 3,
+            cybersecurity: 3, hospitality: 5, marketing: 5,
+            programming: 3, beauty: 4, retail: 4, food: 4
+        },
+        salesforce: {
+            healthcare: 4, finance: 5, education: 4, ecommerce: 5,
+            manufacturing: 5, agriculture: 2, transportation: 4,
+            cybersecurity: 4, hospitality: 4, marketing: 5,
+            programming: 4, beauty: 3, retail: 4, food: 4
+        },
+        crmviet: {
+            healthcare: 3, finance: 4, education: 3, ecommerce: 4,
+            manufacturing: 3, agriculture: 2, transportation: 3,
+            cybersecurity: 2, hospitality: 4, marketing: 3,
+            programming: 2, beauty: 4, retail: 5, food: 4
+        },
+        zohocrm: {
+            healthcare: 3, finance: 4, education: 4, ecommerce: 4,
+            manufacturing: 4, agriculture: 2, transportation: 3,
+            cybersecurity: 3, hospitality: 4, marketing: 4,
+            programming: 3, beauty: 3, retail: 4, food: 4
+        },
+        basecrm: {
+            healthcare: 3, finance: 4, education: 3, ecommerce: 4,
+            manufacturing: 4, agriculture: 2, transportation: 4,
+            cybersecurity: 2, hospitality: 3, marketing: 3,
+            programming: 2, beauty: 3, retail: 4, food: 3
+        },
+
+        // E-Commerce
+        kiotviet: {
+            healthcare: 2, finance: 2, education: 2, ecommerce: 5,
+            manufacturing: 3, agriculture: 2, transportation: 2,
+            cybersecurity: 2, hospitality: 5, marketing: 3,
+            programming: 2, beauty: 4, retail: 5, food: 5
+        },
+        haravan: {
+            healthcare: 2, finance: 2, education: 2, ecommerce: 5,
+            manufacturing: 2, agriculture: 2, transportation: 2,
+            cybersecurity: 2, hospitality: 4, marketing: 4,
+            programming: 2, beauty: 4, retail: 5, food: 4
+        },
+        marketplaceai: {
+            healthcare: 1, finance: 1, education: 1, ecommerce: 5,
+            manufacturing: 1, agriculture: 1, transportation: 1,
+            cybersecurity: 1, hospitality: 2, marketing: 4,
+            programming: 1, beauty: 3, retail: 4, food: 4
+        },
+
+        // Agriculture & Logistics
+        fptsmartfarm: {
+            healthcare: 2, finance: 2, education: 2, ecommerce: 2,
+            manufacturing: 3, agriculture: 5, transportation: 3,
+            cybersecurity: 2, hospitality: 2, marketing: 2,
+            programming: 2, beauty: 1, retail: 2, food: 3
+        },
+        viettelpostai: {
+            healthcare: 3, finance: 3, education: 2, ecommerce: 5,
+            manufacturing: 4, agriculture: 4, transportation: 5,
+            cybersecurity: 2, hospitality: 3, marketing: 3,
+            programming: 3, beauty: 4, retail: 5, food: 5
+        },
+
+        // Creative AI
+        midjourney: {
+            healthcare: 2, finance: 3, education: 4, ecommerce: 5,
+            manufacturing: 3, agriculture: 2, transportation: 2,
+            cybersecurity: 2, hospitality: 5, marketing: 5,
+            programming: 2, beauty: 5, retail: 4, food: 4
+        },
+        canvaai: {
+            healthcare: 3, finance: 4, education: 5, ecommerce: 5,
+            manufacturing: 3, agriculture: 2, transportation: 3,
+            cybersecurity: 2, hospitality: 5, marketing: 5,
+            programming: 3, beauty: 5, retail: 5, food: 5
+        },
+        copyai: {
+            healthcare: 3, finance: 4, education: 4, ecommerce: 5,
+            manufacturing: 3, agriculture: 2, transportation: 3,
+            cybersecurity: 2, hospitality: 4, marketing: 5,
+            programming: 3, beauty: 4, retail: 4, food: 5
+        },
+
+        // Analytics
+        powerbi: {
+            healthcare: 4, finance: 5, education: 4, ecommerce: 5,
+            manufacturing: 5, agriculture: 4, transportation: 5,
+            cybersecurity: 4, hospitality: 4, marketing: 5,
+            programming: 4, beauty: 3, retail: 4, food: 4
+        },
+        tableau: {
+            healthcare: 4, finance: 5, education: 4, ecommerce: 5,
+            manufacturing: 5, agriculture: 4, transportation: 4,
+            cybersecurity: 4, hospitality: 3, marketing: 4,
+            programming: 4, beauty: 3, retail: 4, food: 3
+        },
+        looker: {
+            healthcare: 3, finance: 4, education: 4, ecommerce: 5,
+            manufacturing: 4, agriculture: 3, transportation: 4,
+            cybersecurity: 3, hospitality: 4, marketing: 5,
+            programming: 3, beauty: 3, retail: 4, food: 4
+        }
+    };
+
+    /**
+     * ToolUtils - Utility functions cho tool-industry operations
+     */
+    const ToolUtils = {
+        /**
+         * Lấy tools cho một ngành, sắp xếp theo độ phù hợp
+         * @param {string} industryId - ID của ngành
+         * @param {number} minScore - Score tối thiểu (default: 3)
+         * @param {number} limit - Giới hạn số tools (default: 8)
+         */
+        getToolsForIndustry(industryId, minScore = 3, limit = 8) {
+            const tools = Object.entries(TOOL_INDUSTRY_MATRIX)
+                .filter(([toolId, scores]) => scores[industryId] >= minScore)
+                .map(([toolId, scores]) => ({
+                    id: toolId,
+                    score: scores[industryId],
+                    data: TOOLS_DATA[toolId]
+                }))
+                .sort((a, b) => b.score - a.score)
+                .slice(0, limit);
+
+            return tools;
+        },
+
+        /**
+         * Lấy essential tools cho một ngành
+         */
+        getEssentialTools(industryId) {
+            const industry = INDUSTRIES_DATA[industryId];
+            if (!industry) return [];
+
+            return industry.essentialTools.map(id => ({
+                id,
+                isEssential: true,
+                data: TOOLS_DATA[id]
+            })).filter(t => t.data);
+        },
+
+        /**
+         * Lấy tất cả tools cho ngành (essential + recommended từ matrix)
+         */
+        getAllToolsForIndustry(industryId) {
+            const industry = INDUSTRIES_DATA[industryId];
+            if (!industry) return { essential: [], recommended: [], optional: [] };
+
+            const essential = this.getEssentialTools(industryId);
+            const essentialIds = new Set(essential.map(t => t.id));
+
+            const matrixTools = this.getToolsForIndustry(industryId, 4, 10)
+                .filter(t => !essentialIds.has(t.id))
+                .map(t => ({ ...t, isEssential: false }));
+
+            return {
+                essential,
+                recommended: matrixTools,
+                optional: industry.optionalTools?.map(id => ({
+                    id,
+                    isOptional: true,
+                    data: TOOLS_DATA[id]
+                })).filter(t => t.data) || []
+            };
+        },
+
+        /**
+         * Lấy tools theo category
+         */
+        getToolsByCategory(category) {
+            return Object.entries(TOOLS_DATA)
+                .filter(([_, tool]) => tool.category === category)
+                .map(([id, data]) => ({ id, data }));
+        },
+
+        /**
+         * Search tools
+         */
+        searchTools(query) {
+            const q = query.toLowerCase();
+            return Object.entries(TOOLS_DATA)
+                .filter(([_, tool]) =>
+                    tool.name.toLowerCase().includes(q) ||
+                    tool.description.toLowerCase().includes(q) ||
+                    tool.useCases.some(uc => uc.toLowerCase().includes(q))
+                )
+                .map(([id, data]) => ({ id, data }));
+        },
+
+        /**
+         * Lấy category label
+         */
+        getCategoryLabel(category) {
+            const labels = {
+                foundation: 'Foundation Models',
+                vietnam: 'AI Việt Nam',
+                chatbot: 'Chatbot & CSKH',
+                vision: 'Computer Vision & OCR',
+                crm: 'CRM & Marketing',
+                ecommerce: 'E-Commerce',
+                agriculture: 'Nông nghiệp',
+                logistics: 'Logistics',
+                creative: 'Creative AI',
+                analytics: 'Data Analytics'
+            };
+            return labels[category] || category;
+        },
+
+        /**
+         * Format score thành text
+         */
+        getScoreLabel(score) {
+            if (score >= 5) return { text: 'Rất phù hợp', color: '#22c55e' };
+            if (score >= 4) return { text: 'Phù hợp tốt', color: '#84cc16' };
+            if (score >= 3) return { text: 'Phù hợp', color: '#eab308' };
+            if (score >= 2) return { text: 'Ít phù hợp', color: '#f97316' };
+            return { text: 'Không phù hợp', color: '#ef4444' };
+        }
+    };
+
+    // ============================================
+    // CONVERSION FEATURES - Phase 2 Additional
+    // ============================================
+
+    /**
+     * ROICalculator - Tính toán lợi ích đầu tư AI
+     */
+    const ROICalculator = {
+        // Multipliers theo ngành (từ research thực tế)
+        industryMultipliers: {
+            healthcare: { hoursPerEmployee: 0.8, automationPotential: 0.45 },
+            finance: { hoursPerEmployee: 1.2, automationPotential: 0.55 },
+            education: { hoursPerEmployee: 0.6, automationPotential: 0.35 },
+            ecommerce: { hoursPerEmployee: 1.0, automationPotential: 0.50 },
+            manufacturing: { hoursPerEmployee: 1.5, automationPotential: 0.60 },
+            agriculture: { hoursPerEmployee: 0.5, automationPotential: 0.30 },
+            transportation: { hoursPerEmployee: 1.3, automationPotential: 0.55 },
+            cybersecurity: { hoursPerEmployee: 1.0, automationPotential: 0.45 },
+            hospitality: { hoursPerEmployee: 0.9, automationPotential: 0.40 },
+            marketing: { hoursPerEmployee: 1.4, automationPotential: 0.65 }
+        },
+
+        // Cost estimates (VND/tháng cho tools)
+        toolCosts: {
+            small: 500000,      // 1-10 nhân viên
+            medium: 2000000,    // 11-50
+            large: 5000000,     // 51-200
+            enterprise: 15000000 // 200+
+        },
+
+        /**
+         * Tính toán ROI dựa trên inputs
+         */
+        calculate(inputs) {
+            const { employees, avgSalary, industry } = inputs;
+            const multiplier = this.industryMultipliers[industry];
+
+            // Xác định company size
+            let companySize = 'small';
+            if (employees > 200) companySize = 'enterprise';
+            else if (employees > 50) companySize = 'large';
+            else if (employees > 10) companySize = 'medium';
+
+            // Calculations
+            const hourlyRate = avgSalary / 22 / 8;
+            const hoursSavedDaily = employees * multiplier.hoursPerEmployee;
+            const hoursSavedMonthly = hoursSavedDaily * 22;
+            const moneySavedMonthly = hoursSavedMonthly * hourlyRate;
+            const toolCost = this.toolCosts[companySize];
+            const netSavings = moneySavedMonthly - toolCost;
+            const roi = toolCost > 0 ? ((netSavings / toolCost) * 100).toFixed(0) : 0;
+            const paybackMonths = netSavings > 0 ? (toolCost / netSavings).toFixed(1) : 0;
+
+            return {
+                hoursSavedMonthly: Math.round(hoursSavedMonthly),
+                moneySavedMonthly: Math.round(moneySavedMonthly),
+                toolCost,
+                netSavings: Math.round(netSavings),
+                roi,
+                paybackMonths,
+                productivityGain: Math.round(multiplier.automationPotential * 100),
+                companySize
+            };
+        },
+
+        /**
+         * Format số tiền VND
+         */
+        formatMoney(amount) {
+            if (amount >= 1000000) {
+                return (amount / 1000000).toFixed(1) + ' triệu';
+            }
+            return amount.toLocaleString('vi-VN');
+        },
+
+        /**
+         * Initialize ROI Calculator UI
+         */
+        init() {
+            const employeesSlider = document.getElementById('roi-employees');
+            const salarySlider = document.getElementById('roi-salary');
+            const industrySelect = document.getElementById('roi-industry');
+            const calculateBtn = document.getElementById('btn-calculate-roi');
+
+            if (!employeesSlider || !calculateBtn) return;
+
+            // Update display values
+            const updateDisplays = () => {
+                const empValue = document.getElementById('emp-value');
+                const salaryValue = document.getElementById('salary-value');
+                if (empValue) empValue.textContent = employeesSlider.value;
+                if (salaryValue) salaryValue.textContent = salarySlider.value;
+            };
+
+            employeesSlider?.addEventListener('input', updateDisplays);
+            salarySlider?.addEventListener('input', updateDisplays);
+
+            // Calculate on button click
+            calculateBtn.addEventListener('click', () => {
+                const inputs = {
+                    employees: parseInt(employeesSlider.value),
+                    avgSalary: parseInt(salarySlider.value) * 1000000,
+                    industry: industrySelect.value
+                };
+
+                const results = this.calculate(inputs);
+                this.displayResults(results, inputs);
+
+                // Track event
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'roi_calculated', {
+                        industry: inputs.industry,
+                        employees: inputs.employees
+                    });
+                }
+            });
+
+            // Initialize displays
+            updateDisplays();
+        },
+
+        /**
+         * Display results
+         */
+        displayResults(results, inputs) {
+            const resultsContainer = document.getElementById('roi-results');
+            if (!resultsContainer) return;
+
+            // Update values
+            document.getElementById('result-hours').textContent = results.hoursSavedMonthly.toLocaleString('vi-VN');
+            document.getElementById('result-savings').textContent = this.formatMoney(results.moneySavedMonthly);
+            document.getElementById('result-roi').textContent = results.roi + '%';
+
+            const paybackSpan = document.querySelector('#result-payback span');
+            if (paybackSpan) paybackSpan.textContent = results.paybackMonths;
+
+            // Update detail text
+            document.getElementById('detail-employees').textContent = inputs.employees;
+            document.getElementById('detail-cost').textContent = this.formatMoney(results.toolCost);
+            document.getElementById('detail-savings').textContent = this.formatMoney(results.moneySavedMonthly);
+
+            // Show results with animation
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // Animate numbers
+            this.animateNumbers();
+        },
+
+        /**
+         * Animate numbers
+         */
+        animateNumbers() {
+            document.querySelectorAll('.roi-number').forEach(el => {
+                el.classList.add('roi-number--animated');
+            });
+        }
+    };
+
+    /**
+     * AIReadinessQuiz - Đánh giá mức độ sẵn sàng AI
+     */
+    const AIReadinessQuiz = {
+        questions: [
+            {
+                id: 1,
+                question: "Dữ liệu của công ty bạn hiện được quản lý như thế nào?",
+                options: [
+                    { text: "Hoàn toàn thủ công (giấy tờ, Excel rồi rạc)", score: 1 },
+                    { text: "Một phần số hóa, chưa có hệ thống thống nhất", score: 2 },
+                    { text: "Đã số hóa cơ bản, có phần mềm quản lý", score: 3 },
+                    { text: "Dữ liệu được tập trung hóa trên cloud", score: 4 },
+                    { text: "Dữ liệu real-time, sẵn sàng cho AI/ML", score: 5 }
+                ],
+                category: "data"
+            },
+            {
+                id: 2,
+                question: "Nhân viên trong công ty có sẵn sàng học công nghệ mới không?",
+                options: [
+                    { text: "Rất khó khăn, phản đối thay đổi", score: 1 },
+                    { text: "Một số người không tiếp thu được", score: 2 },
+                    { text: "Trung bình, cần đào tạo nhiều", score: 3 },
+                    { text: "Khá tốt, đa số hào hứng", score: 4 },
+                    { text: "Rất tốt, tech-savvy và chủ động", score: 5 }
+                ],
+                category: "people"
+            },
+            {
+                id: 3,
+                question: "Ngân sách dự kiến cho AI trong năm tới?",
+                options: [
+                    { text: "Không có ngân sách riêng", score: 1 },
+                    { text: "Dưới 10 triệu VNĐ", score: 2 },
+                    { text: "10-50 triệu VNĐ", score: 3 },
+                    { text: "50-200 triệu VNĐ", score: 4 },
+                    { text: "Trên 200 triệu VNĐ", score: 5 }
+                ],
+                category: "budget"
+            },
+            {
+                id: 4,
+                question: "Hệ thống IT hiện tại của công ty?",
+                options: [
+                    { text: "Không có IT chuyên trách", score: 1 },
+                    { text: "1 người phụ trách đa nhiệm", score: 2 },
+                    { text: "Có team IT nhỏ (2-3 người)", score: 3 },
+                    { text: "Team IT đầy đủ (5+ người)", score: 4 },
+                    { text: "Có IT team + Dev team riêng", score: 5 }
+                ],
+                category: "infrastructure"
+            },
+            {
+                id: 5,
+                question: "Mục tiêu ưu tiên khi triển khai AI?",
+                options: [
+                    { text: "Chưa rõ muốn làm gì", score: 1 },
+                    { text: "Giảm chi phí vận hành", score: 2 },
+                    { text: "Tăng hiệu suất nhân viên", score: 3 },
+                    { text: "Cải thiện trải nghiệm khách hàng", score: 4 },
+                    { text: "Đổi mới sản phẩm/dịch vụ", score: 5 }
+                ],
+                category: "strategy"
+            }
+        ],
+
+        levels: {
+            1: {
+                name: "Level 1: Khởi động",
+                description: "Doanh nghiệp cần xây dựng nền tảng số hóa trước khi triển khai AI.",
+                recommendation: "Bắt đầu với các công cụ đơn giản như ChatGPT, Canva AI để làm quen."
+            },
+            2: {
+                name: "Level 2: Chuẩn bị",
+                description: "Đã có một số cơ sở, nhưng cần đầu tư thêm vào dữ liệu và đào tạo.",
+                recommendation: "Tập trung số hóa dữ liệu và chọn 1-2 use case AI đơn giản để pilot."
+            },
+            3: {
+                name: "Level 3: Sẵn sàng",
+                description: "Doanh nghiệp đã sẵn sàng triển khai AI với quy mô nhỏ đến trung bình.",
+                recommendation: "Triển khai AI cho một số quy trình cụ thể, dùng FPT.AI, BotStar."
+            },
+            4: {
+                name: "Level 4: Nâng cao",
+                description: "Cơ sở hạ tầng tốt, có thể triển khai AI ở quy mô lớn.",
+                recommendation: "Triển khai tích hợp đa công cụ, tự động hóa workflow hoàn chỉnh."
+            },
+            5: {
+                name: "Level 5: Dẫn đầu",
+                description: "Doanh nghiệp tiên phong, sẵn sàng cho AI transformation toàn diện.",
+                recommendation: "Xây dựng AI strategy dài hạn, custom AI models cho ngành."
+            }
+        },
+
+        currentQuestion: 0,
+        answers: [],
+
+        calculateLevel() {
+            const avgScore = this.answers.reduce((sum, a) => sum + a.score, 0) / this.answers.length;
+            return Math.round(avgScore);
+        }
+    };
+
+    /**
+     * CaseStudies - Các case study thực tế
+     */
+    const CaseStudies = [
+        {
+            id: "healthcare-01",
+            industry: "healthcare",
+            company: "Bệnh viện Đa khoa Hoàn Mỹ",
+            location: "TP. Hồ Chí Minh",
+            size: "500+ nhân viên",
+            challenge: "Tiếp nhận 1,000+ cuộc gọi/ngày, thờ i gian chờ 45 phút, nhân viên bị quá tải",
+            solution: "Triển khai FPT.AI Chatbot + VinAI Medical Imaging",
+            implementation: "3 tháng",
+            results: {
+                waitTime: "-75%",
+                callsHandled: "+300%",
+                staffSatisfaction: "+40%",
+                costSavings: "2.4 tỷ/năm"
+            },
+            tools: ["fptai", "vinai", "misaaai"],
+            testimonial: {
+                quote: "AI đã thay đổi cách chúng tôi phục vụ bệnh nhân. Thờ i gian chờ giảm mạnh trong khi chất lượng dịch vụ tăng lên.",
+                author: "BS. Nguyễn Văn An",
+                role: "Giám đốc Y khoa"
+            },
+            image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800"
+        },
+        {
+            id: "finance-01",
+            industry: "finance",
+            company: "Ngân hàng TMCP Việt Nam",
+            location: "Hà Nội",
+            size: "2,000+ nhân viên",
+            challenge: "Xử lý 50,000+ hồ sơ vay/tháng, thủ công, lỗi cao, thờ i gian duyệt 5-7 ngày",
+            solution: "FPT.AI OCR + Salesforce Einstein cho credit scoring",
+            implementation: "4 tháng",
+            results: {
+                processingTime: "-80%",
+                errorRate: "-90%",
+                customerSatisfaction: "+35%",
+                loansProcessed: "+150%"
+            },
+            tools: ["fptai", "salesforce", "lacvietocr"],
+            testimonial: {
+                quote: "Tự động hóa quy trình tín dụng giúp chúng tôi phục vụ khách hàng nhanh gấp 5 lần.",
+                author: "Trần Thị Bình",
+                role: "Phó Giám đốc Kỹ thuật"
+            },
+            image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800"
+        },
+        {
+            id: "ecommerce-01",
+            industry: "ecommerce",
+            company: "Thờ i trang LYA",
+            location: "Đà Nẵng",
+            size: "50 nhân viên",
+            challenge: "Quản lý 5 kênh bán hàng, đơn hàng bị nhầm lẫn, CSKH chậm",
+            solution: "KiotViet AI + ChatGPT cho content + Haravan cho omnichannel",
+            implementation: "2 tháng",
+            results: {
+                orderAccuracy: "+95%",
+                responseTime: "-70%",
+                revenue: "+45%",
+                customerRetention: "+30%"
+            },
+            tools: ["kiotviet", "chatgpt", "haravan", "botstar"],
+            testimonial: {
+                quote: "Từ 5 người quản lý đơn hàng, giờ chỉ cần 2 người. AI giúp chúng tôi scale mà không cần tăng headcount.",
+                author: "Lê Minh Cường",
+                role: "Founder"
+            },
+            image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800"
+        },
+        {
+            id: "manufacturing-01",
+            industry: "manufacturing",
+            company: "Công ty Sản xuất XYZ",
+            location: "Bình Dương",
+            size: "300 nhân viên",
+            challenge: "Máy móc hỏng đột ngột, downtime 20%, chi phí bảo trì cao",
+            solution: "Power BI + IoT sensors cho predictive maintenance",
+            implementation: "6 tháng",
+            results: {
+                downtime: "-60%",
+                maintenanceCost: "-40%",
+                equipmentLifespan: "+25%",
+                roi: "350% sau 1 năm"
+            },
+            tools: ["powerbi", "googlevision"],
+            testimonial: {
+                quote: "Giờ chúng tôi biết trước khi nào máy sẽ hỏng. Không còn sửa chữa khẩn cấp lúc nửa đêm.",
+                author: "Phạm Văn Dũng",
+                role: "Quản đốc Sản xuất"
+            },
+            image: "https://images.unsplash.com/photo-1565043666747-69f6646db940?w=800"
+        }
+    ];
+
+    /**
+     * Testimonials - Đánh giá khách hàng
+     */
+    const Testimonials = [
+        {
+            quote: "Aivan.vn giúp chúng tôi chọn đúng công cụ từ đầu, tiết kiệm hàng tháng trial and error.",
+            author: "Nguyễn Thị Hương",
+            role: "CEO",
+            company: "Công ty TNHH ABC",
+            avatar: "https://i.pravatar.cc/150?img=1",
+            industry: "ecommerce"
+        },
+        {
+            quote: "Chỉ sau 2 tháng triển khai, hiệu suất team tăng 40%. ROI vượt mong đợi.",
+            author: "Trần Văn Minh",
+            role: "COO",
+            company: "TechStart Vietnam",
+            avatar: "https://i.pravatar.cc/150?img=3",
+            industry: "technology"
+        },
+        {
+            quote: "Đội ngũ tư vấn rất chuyên nghiệp, hiểu rõ ngành và đưa ra giải pháp phù hợp.",
+            author: "Lê Thị Lan",
+            role: "Giám đốc Marketing",
+            company: "Retail Plus",
+            avatar: "https://i.pravatar.cc/150?img=5",
+            industry: "retail"
+        },
+        {
+            quote: "Từ người nghi ngờ AI, giờ tôi là người ủng hộ nhiệt thành. Cảm ơn aivan.vn!",
+            author: "Phạm Hoàng Nam",
+            role: "Chủ doanh nghiệp",
+            company: "Nam Phát Logistics",
+            avatar: "https://i.pravatar.cc/150?img=8",
+            industry: "logistics"
+        }
+    ];
+
+    /**
+     * Timeline - Lộ trình triển khai 3 tháng
+     */
+    const ImplementationTimeline = [
+        {
+            month: 1,
+            title: "Assessment",
+            description: "Audit hiện trạng, xác định use case priority",
+            tasks: ["Phỏng vấn stakeholders", "Đánh giá dữ liệu hiện có", "Xác định KPIs"],
+            deliverables: ["Báo cáo hiện trạng", "Roadmap 3 tháng"]
+        },
+        {
+            month: 2,
+            title: "Pilot",
+            description: "Triển khai thử nghiệm với 1-2 tools",
+            tasks: ["Setup công cụ AI", "Đào tạo nhân viên", "Thu thập feedback"],
+            deliverables: ["Báo cáo pilot", "SOPs cho team"]
+        },
+        {
+            month: 3,
+            title: "Scale",
+            description: "Mở rộng toàn bộ doanh nghiệp, đo lường ROI",
+            tasks: ["Rollout toàn bộ", "Tích hợp workflows", "Optimize performance"],
+            deliverables: ["Báo cáo ROI", "Kế hoạch mở rộng"]
+        }
+    ];
+
+    // ============================================
+    // END DATA LAYER
+    // ============================================
 
     // Router Module
     const Router = {
@@ -147,6 +2136,193 @@
 
             // Custom event for other tracking
             window.dispatchEvent(new CustomEvent('pagechange', { detail: { page } }));
+
+            // Render results page if navigating to results
+            if (page === 'results') {
+                ResultsRenderer.render();
+            }
+        }
+    };
+
+    // Results Renderer Module - Dynamic content based on selected industry
+    const ResultsRenderer = {
+        /**
+         * Render results page content based on selected industry
+         */
+        render() {
+            const industry = Storage.get(CONFIG.STORAGE_KEY);
+
+            if (!industry || !INDUSTRIES_DATA[industry]) {
+                console.warn('[ResultsRenderer] No industry selected, using default');
+                this.renderDefault();
+                return;
+            }
+
+            const data = INDUSTRIES_DATA[industry];
+            console.log(`[ResultsRenderer] Rendering for industry: ${industry}`);
+
+            this.renderIndustryName(data);
+            this.renderWorkflow(data);
+            this.renderStats(data);
+            this.renderTools(data);
+        },
+
+        /**
+         * Render industry name in heading
+         * @param {Object} data - Industry data
+         */
+        renderIndustryName(data) {
+            const nameEl = document.getElementById('results-industry-name');
+            if (nameEl) {
+                nameEl.textContent = data.name;
+            }
+        },
+
+        /**
+         * Render workflow section
+         * @param {Object} data - Industry data
+         */
+        renderWorkflow(data) {
+            const container = document.getElementById('results-workflow-container');
+            const subtitle = document.getElementById('results-workflow-subtitle');
+
+            if (!container || !data.workflows) return;
+
+            // Update subtitle
+            if (subtitle) {
+                subtitle.textContent = `Tự động hóa quy trình ${data.name.toLowerCase()}`;
+            }
+
+            // Render workflow steps
+            const stepsHtml = data.workflows.map((step, index) => {
+                const isLast = index === data.workflows.length - 1;
+                const colors = ['#ec6d13', '#60a5fa', '#ec4899', '#10b981'];
+                const color = colors[index % colors.length];
+                const textColors = ['text-primary', 'text-blue-400', 'text-pink-500', 'text-green-400'];
+                const textColor = textColors[index % textColors.length];
+
+                return `
+                    <div class="workflow-step w-full" style="--step-color: ${color};">
+                        <div class="relative flex-shrink-0">
+                            <div class="workflow-step__icon ${textColor}">
+                                <span class="material-symbols-outlined text-2xl md:text-3xl" aria-hidden="true">${step.icon}</span>
+                            </div>
+                            ${!isLast ? '<div class="workflow-step__connector"></div><div class="absolute top-16 left-1/2 -translate-x-1/2 w-0.5 h-16 bg-gradient-to-b from-primary/50 to-transparent md:hidden"></div>' : ''}
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <h4 class="text-white font-bold text-lg">${index + 1}. ${step.title}</h4>
+                            <p class="text-white/40 text-sm mt-1 leading-snug">${step.description}</p>
+                            <div class="mt-2 flex gap-2 flex-wrap">
+                                ${this.getToolName(step.primaryTool) ? `<span class="tag tag--primary">${this.getToolName(step.primaryTool)}</span>` : ''}
+                                ${(step.supportingTools || []).map(t => this.getToolName(t) ? `<span class="tag">${this.getToolName(t)}</span>` : '').join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = stepsHtml;
+        },
+
+        /**
+         * Render stats section
+         * @param {Object} data - Industry data
+         */
+        renderStats(data) {
+            const efficiencyEl = document.getElementById('results-stat-efficiency');
+            const descEl = document.getElementById('results-stat-desc');
+            const timeEl = document.getElementById('results-stat-time');
+
+            if (data.stats) {
+                if (efficiencyEl) {
+                    efficiencyEl.innerHTML = `<span class="text-primary">${data.stats.efficiency.charAt(0)}</span>${data.stats.efficiency.slice(1).replace('%', '')}<span class="text-3xl text-white/40">%</span>`;
+                }
+                if (descEl) {
+                    descEl.textContent = data.stats.description || 'Tăng hiệu quả vận hành';
+                }
+                if (timeEl) {
+                    timeEl.textContent = data.stats.timeSaved || '2.5h';
+                }
+            }
+        },
+
+        /**
+         * Render tools section
+         * @param {Object} data - Industry data
+         */
+        renderTools(data) {
+            const container = document.getElementById('results-tools-container');
+            if (!container) return;
+
+            // Get all recommended tools for this industry
+            const toolIds = [
+                ...(data.essentialTools || []),
+                ...(data.recommendedTools || []),
+                ...(data.optionalTools || [])
+            ].slice(0, 4); // Limit to 4 tools
+
+            const toolsHtml = toolIds.map(toolId => {
+                const tool = TOOLS_DATA[toolId];
+                if (!tool) return '';
+
+                return `
+                    <article class="tool-card">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center p-1 shadow-lg" style="background-color: ${tool.color || '#ffffff'};">
+                                <span class="material-symbols-outlined text-2xl ${tool.color ? 'text-white' : 'text-black'}" aria-hidden="true">${tool.icon}</span>
+                            </div>
+                            <span class="tag">${this.getCategoryName(tool.category)}</span>
+                        </div>
+                        <h4 class="text-white font-bold text-lg mb-2">${tool.name}</h4>
+                        <p class="text-white/40 text-sm leading-relaxed line-clamp-3">${tool.description}</p>
+                    </article>
+                `;
+            }).join('');
+
+            container.innerHTML = toolsHtml || '<p class="text-white/50 col-span-4 text-center">Chưa có dữ liệu công cụ cho ngành này</p>';
+        },
+
+        /**
+         * Get tool display name
+         * @param {string} toolId
+         * @returns {string|null}
+         */
+        getToolName(toolId) {
+            const tool = TOOLS_DATA[toolId];
+            return tool ? tool.name : null;
+        },
+
+        /**
+         * Get category display name in Vietnamese
+         * @param {string} category
+         * @returns {string}
+         */
+        getCategoryName(category) {
+            const map = {
+                foundation: 'AI Nền tảng',
+                vietnam: 'AI Việt Nam',
+                image: 'Thiết kế',
+                video: 'Video',
+                productivity: 'Năng suất',
+                voice: 'Giọng nói',
+                code: 'Lập trình',
+                crm: 'CRM',
+                social: 'Mạng xã hội',
+                marketing: 'Marketing',
+                automation: 'Tự động hóa',
+                finance: 'Tài chính'
+            };
+            return map[category] || category;
+        },
+
+        /**
+         * Render default content when no industry selected
+         */
+        renderDefault() {
+            const container = document.getElementById('results-workflow-container');
+            if (container) {
+                container.innerHTML = '<p class="text-white/50 col-span-3 text-center">Vui lòng chọn ngành nghề để xem chiến lược AI phù hợp</p>';
+            }
         }
     };
 
@@ -221,9 +2397,20 @@
          */
         updateBreadcrumb(industry) {
             const names = {
-                beauty: 'Làm đẹp',
+                healthcare: 'Y tế',
+                finance: 'Tài chính',
                 education: 'Giáo dục',
-                health: 'Y tế'
+                ecommerce: 'E-commerce',
+                manufacturing: 'Sản xuất',
+                agriculture: 'Nông nghiệp',
+                transportation: 'Vận tải',
+                cybersecurity: 'An ninh mạng',
+                hospitality: 'Khách sạn & Nhà hàng',
+                marketing: 'Marketing & Quảng cáo',
+                programming: 'Lập trình & Software',
+                beauty: 'Làm đẹp',
+                retail: 'Shop Offline & Bán lẻ',
+                food: 'Quán ăn & F&B'
             };
 
             const breadcrumbLink = document.querySelector('[data-breadcrumb="industry"]');
@@ -396,6 +2583,744 @@
         }
     };
 
+    // Form Handler Module
+    const FormHandler = {
+        // Formspree endpoints - Thay bằng endpoint thực tế của bạn
+        FORMSPREE_ENDPOINTS: {
+            consultation: 'https://formspree.io/f/YOUR_CONSULTATION_FORM_ID',
+            newsletter: 'https://formspree.io/f/YOUR_NEWSLETTER_FORM_ID',
+            quick: 'https://formspree.io/f/YOUR_QUICK_FORM_ID'
+        },
+
+        // Google Sheets Web App URL - Thay bằng URL thực tế
+        GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
+
+        init() {
+            // Bind consultation form
+            const consultForm = document.getElementById('consultation-form');
+            if (consultForm) {
+                consultForm.addEventListener('submit', (e) => this.handleSubmit(e, 'consultation'));
+            }
+
+            // Bind newsletter form
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', (e) => this.handleSubmit(e, 'newsletter'));
+            }
+
+            // Close modal on ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal--active').forEach(modal => {
+                        this.closeModal(modal.id);
+                    });
+                }
+            });
+        },
+
+        /**
+         * Handle form submission
+         */
+        async handleSubmit(event, formType) {
+            event.preventDefault();
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            // Validate form
+            if (!this.validateForm(form)) {
+                return;
+            }
+
+            // Show loading state
+            this.setLoadingState(submitBtn, true);
+
+            // Collect form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Add metadata
+            data.timestamp = new Date().toISOString();
+            data.userAgent = navigator.userAgent;
+            data.pageUrl = window.location.href;
+
+            try {
+                // Submit to Formspree
+                const formspreeResult = await this.submitToFormspree(data, formType);
+
+                // Submit to Google Sheets (backup)
+                this.submitToGoogleSheets(data, formType).catch(err => {
+                    console.warn('[FormHandler] Google Sheets backup failed:', err);
+                });
+
+                // Track conversion
+                this.trackConversion(formType, data);
+
+                // Show success
+                this.showToast('Gửi thành công! Chúng tôi sẽ liên hệ với bạn sớm.', 'success');
+                form.reset();
+
+                // Close modal if in modal
+                if (form.closest('.modal')) {
+                    this.closeModal(form.closest('.modal').id);
+                }
+
+            } catch (error) {
+                console.error('[FormHandler] Submit error:', error);
+                this.showToast('Có lỗi xảy ra. Vui lòng thử lại sau hoặc liên hệ trực tiếp qua email.', 'error');
+            } finally {
+                this.setLoadingState(submitBtn, false);
+            }
+        },
+
+        /**
+         * Submit to Formspree
+         */
+        async submitToFormspree(data, formType) {
+            const endpoint = this.FORMSPREE_ENDPOINTS[formType];
+
+            // Nếu chưa có endpoint thực tế, log và giả lập thành công
+            if (endpoint.includes('YOUR_')) {
+                console.log(`[FormHandler] Formspree not configured yet. Data for ${formType}:`, data);
+                await this.simulateDelay(1500);
+                return { success: true };
+            }
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Formspree error: ${response.status}`);
+            }
+
+            return await response.json();
+        },
+
+        /**
+         * Submit to Google Sheets
+         */
+        async submitToGoogleSheets(data, formType) {
+            const url = this.GOOGLE_SHEETS_URL;
+
+            // Nếu chưa có URL thực tế, bỏ qua
+            if (url.includes('YOUR_')) {
+                return { success: true };
+            }
+
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...data,
+                    formType
+                })
+            });
+
+            return { success: true };
+        },
+
+        /**
+         * Track conversion with Google Analytics
+         */
+        trackConversion(formType, data) {
+            // Google Analytics 4
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit', {
+                    event_category: 'engagement',
+                    event_label: formType,
+                    form_type: formType,
+                    industry: data.industry || 'N/A',
+                    company_size: data.size || 'N/A',
+                    value: 1
+                });
+
+                // Conversion tracking
+                if (formType === 'consultation') {
+                    gtag('event', 'consultation_request', {
+                        event_category: 'conversion',
+                        event_label: data.industry || 'unknown'
+                    });
+                }
+
+                if (formType === 'newsletter') {
+                    gtag('event', 'newsletter_signup', {
+                        event_category: 'conversion'
+                    });
+                }
+            }
+
+            // Facebook Pixel
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead', {
+                    content_name: formType,
+                    content_category: data.industry || 'unknown'
+                });
+            }
+        },
+
+        /**
+         * Track custom events
+         */
+        trackEvent(eventName, params = {}) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, params);
+            }
+            console.log(`[Analytics] ${eventName}:`, params);
+        },
+
+        /**
+         * Set loading state for button
+         */
+        setLoadingState(button, isLoading) {
+            if (!button) return;
+
+            button.disabled = isLoading;
+            const spinner = button.querySelector('.form__submit-spinner');
+            const text = button.querySelector('.form__submit-text');
+
+            if (spinner) spinner.hidden = !isLoading;
+            if (text) text.hidden = isLoading;
+        },
+
+        /**
+         * Simulate delay for demo
+         */
+        simulateDelay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        },
+
+        /**
+         * Validate form
+         */
+        validateForm(form) {
+            let isValid = true;
+            const requiredFields = form.querySelectorAll('[required]');
+
+            requiredFields.forEach(field => {
+                const errorEl = form.querySelector(`[data-error-for="${field.name}"]`);
+
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('form__input--error');
+                    if (errorEl) errorEl.textContent = 'Vui lòng điền thông tin này';
+                } else if (field.type === 'email' && !this.isValidEmail(field.value)) {
+                    isValid = false;
+                    field.classList.add('form__input--error');
+                    if (errorEl) errorEl.textContent = 'Email không hợp lệ';
+                } else if (field.type === 'tel' && !this.isValidPhone(field.value)) {
+                    isValid = false;
+                    field.classList.add('form__input--error');
+                    if (errorEl) errorEl.textContent = 'Số điện thoại không hợp lệ';
+                } else {
+                    field.classList.remove('form__input--error');
+                    if (errorEl) errorEl.textContent = '';
+                }
+            });
+
+            return isValid;
+        },
+
+        isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        },
+
+        isValidPhone(phone) {
+            return /^[0-9]{10,11}$/.test(phone.replace(/\s/g, ''));
+        },
+
+        /**
+         * Open modal
+         */
+        openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.hidden = false;
+                // Force reflow
+                modal.offsetHeight;
+                modal.classList.add('modal--active');
+                document.body.style.overflow = 'hidden';
+
+                // Track event
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_open', { form_type: modalId });
+                }
+            }
+        },
+
+        /**
+         * Close modal
+         */
+        closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('modal--active');
+                setTimeout(() => {
+                    modal.hidden = true;
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        },
+
+        /**
+         * Toggle FAB menu
+         */
+        toggleFab() {
+            const fab = document.getElementById('quick-contact-fab');
+            if (fab) {
+                fab.classList.toggle('fab-container--active');
+            }
+        },
+
+        /**
+         * Open quick form
+         */
+        openQuickForm() {
+            const quickForm = document.getElementById('quick-form');
+            if (quickForm) {
+                quickForm.hidden = false;
+            }
+        },
+
+        /**
+         * Close quick form
+         */
+        closeQuickForm() {
+            const quickForm = document.getElementById('quick-form');
+            if (quickForm) {
+                quickForm.hidden = true;
+            }
+        },
+
+        /**
+         * Show toast notification
+         */
+        showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `toast toast--${type}`;
+            toast.innerHTML = `
+                <span class="material-symbols-outlined toast__icon">${type === 'success' ? 'check_circle' : 'error'}</span>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('toast--out');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+    };
+
+    // Quiz Handler Module
+    const QuizHandler = {
+        currentQuestion: 0,
+        answers: [],
+
+        questions: [
+            {
+                id: 1,
+                question: "Dữ liệu của công ty bạn hiện được quản lý như thế nào?",
+                options: [
+                    { text: "Hoàn toàn thủ công (giấy tờ, Excel rồi rạc)", score: 1 },
+                    { text: "Một phần số hóa, chưa có hệ thống thống nhất", score: 2 },
+                    { text: "Đã số hóa cơ bản, có phần mềm quản lý", score: 3 },
+                    { text: "Dữ liệu được tập trung hóa trên cloud", score: 4 },
+                    { text: "Dữ liệu real-time, sẵn sàng cho AI/ML", score: 5 }
+                ]
+            },
+            {
+                id: 2,
+                question: "Nhân viên trong công ty có sẵn sàng học công nghệ mới không?",
+                options: [
+                    { text: "Rất khó khăn, phản đối thay đổi", score: 1 },
+                    { text: "Một số ngườ i không tiếp thu được", score: 2 },
+                    { text: "Trung bình, cần đào tạo nhiều", score: 3 },
+                    { text: "Khá tốt, đa số hào hứng", score: 4 },
+                    { text: "Rất tốt, tech-savvy và chủ động", score: 5 }
+                ]
+            },
+            {
+                id: 3,
+                question: "Ngân sách dự kiến cho AI trong năm tới?",
+                options: [
+                    { text: "Không có ngân sách riêng", score: 1 },
+                    { text: "Dưới 10 triệu VNĐ", score: 2 },
+                    { text: "10-50 triệu VNĐ", score: 3 },
+                    { text: "50-200 triệu VNĐ", score: 4 },
+                    { text: "Trên 200 triệu VNĐ", score: 5 }
+                ]
+            },
+            {
+                id: 4,
+                question: "Hệ thống IT hiện tại của công ty?",
+                options: [
+                    { text: "Không có IT chuyên trách", score: 1 },
+                    { text: "1 ngườ i phụ trách đa nhiệm", score: 2 },
+                    { text: "Có team IT nhỏ (2-3 ngườ i)", score: 3 },
+                    { text: "Team IT đầy đủ (5+ ngườ i)", score: 4 },
+                    { text: "Có IT team + Dev team riêng", score: 5 }
+                ]
+            },
+            {
+                id: 5,
+                question: "Mục tiêu ưu tiên khi triển khai AI?",
+                options: [
+                    { text: "Chưa rõ muốn làm gì", score: 1 },
+                    { text: "Giảm chi phí vận hành", score: 2 },
+                    { text: "Tăng hiệu suất nhân viên", score: 3 },
+                    { text: "Cải thiện trải nghiệm khách hàng", score: 4 },
+                    { text: "Đổi mới sản phẩm/dịch vụ", score: 5 }
+                ]
+            }
+        ],
+
+        levels: {
+            1: {
+                name: "Level 1: Khởi động",
+                description: "Doanh nghiệp cần xây dựng nền tảng số hóa trước khi triển khai AI.",
+                recommendation: "Bắt đầu với các công cụ đơn giản như ChatGPT, Canva AI để làm quen."
+            },
+            2: {
+                name: "Level 2: Chuẩn bị",
+                description: "Đã có một số cơ sở, nhưng cần đầu tư thêm vào dữ liệu và đào tạo.",
+                recommendation: "Tập trung số hóa dữ liệu và chọn 1-2 use case AI đơn giản để pilot."
+            },
+            3: {
+                name: "Level 3: Sẵn sàng",
+                description: "Doanh nghiệp đã sẵn sàng triển khai AI với quy mô nhỏ đến trung bình.",
+                recommendation: "Triển khai AI cho một số quy trình cụ thể, dùng FPT.AI, BotStar."
+            },
+            4: {
+                name: "Level 4: Nâng cao",
+                description: "Cơ sở hạ tầng tốt, có thể triển khai AI ở quy mô lớn.",
+                recommendation: "Triển khai tích hợp đa công cụ, tự động hóa workflow hoàn chỉnh."
+            },
+            5: {
+                name: "Level 5: Dẫn đầu",
+                description: "Doanh nghiệp tiên phong, sẵn sàng cho AI transformation toàn diện.",
+                recommendation: "Xây dựng AI strategy dài hạn, custom AI models cho ngành."
+            }
+        },
+
+        startQuiz() {
+            this.currentQuestion = 0;
+            this.answers = [];
+            this.showScreen('quiz-question');
+            this.renderQuestion();
+
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'quiz_started');
+            }
+        },
+
+        renderQuestion() {
+            const question = this.questions[this.currentQuestion];
+            const progress = ((this.currentQuestion + 1) / this.questions.length) * 100;
+
+            // Update progress
+            document.getElementById('quiz-current').textContent = this.currentQuestion + 1;
+            document.getElementById('quiz-progress-text').textContent = `${Math.round(progress)}%`;
+            document.getElementById('quiz-progress-bar').style.width = `${progress}%`;
+
+            // Update question text
+            document.getElementById('quiz-question-text').textContent = question.question;
+
+            // Render options
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = question.options.map((option, index) => `
+                <button onclick="QuizHandler.selectAnswer(${option.score})" class="w-full text-left p-4 rounded-xl bg-background-dark border border-white/10 hover:border-primary hover:bg-primary/5 transition-all duration-200 flex items-center gap-3 group">
+                    <span class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-sm text-text-secondary group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-colors">${String.fromCharCode(65 + index)}</span>
+                    <span class="text-white/90 group-hover:text-white">${option.text}</span>
+                </button>
+            `).join('');
+
+            // Show/hide previous button
+            const prevBtn = document.getElementById('quiz-prev-btn');
+            if (prevBtn) {
+                prevBtn.style.visibility = this.currentQuestion > 0 ? 'visible' : 'hidden';
+            }
+        },
+
+        selectAnswer(score) {
+            this.answers[this.currentQuestion] = score;
+
+            if (this.currentQuestion < this.questions.length - 1) {
+                this.currentQuestion++;
+                this.renderQuestion();
+            } else {
+                this.showEmailCapture();
+            }
+        },
+
+        previousQuestion() {
+            if (this.currentQuestion > 0) {
+                this.currentQuestion--;
+                this.renderQuestion();
+            }
+        },
+
+        showEmailCapture() {
+            this.showScreen('quiz-email');
+        },
+
+        skipEmail() {
+            this.showResults();
+        },
+
+        submitEmail(event) {
+            event.preventDefault();
+            const email = document.getElementById('quiz-email-input').value;
+
+            // Track email capture
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'quiz_email_captured', { email });
+            }
+
+            this.showResults();
+        },
+
+        showResults() {
+            const avgScore = this.answers.reduce((sum, a) => sum + a, 0) / this.answers.length;
+            const level = Math.round(avgScore);
+            const levelData = this.levels[level];
+
+            document.getElementById('quiz-level-name').textContent = levelData.name;
+            document.getElementById('quiz-level-description').textContent = levelData.description;
+            document.getElementById('quiz-recommendation').textContent = levelData.recommendation;
+
+            this.showScreen('quiz-results');
+
+            // Track completion
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'quiz_completed', { level });
+            }
+        },
+
+        restartQuiz() {
+            this.startQuiz();
+        },
+
+        showScreen(screenId) {
+            ['quiz-start', 'quiz-question', 'quiz-email', 'quiz-results'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+        }
+    };
+
+    // Case Studies Handler
+    const CaseStudiesHandler = {
+        init() {
+            const filters = document.querySelectorAll('.case-filter');
+            const cards = document.querySelectorAll('.case-card');
+
+            filters.forEach(filter => {
+                filter.addEventListener('click', () => {
+                    // Update active state
+                    filters.forEach(f => f.classList.remove('active'));
+                    filter.classList.add('active');
+
+                    const industry = filter.dataset.filter;
+
+                    // Filter cards
+                    cards.forEach(card => {
+                        if (industry === 'all' || card.dataset.industry === industry) {
+                            card.classList.remove('hidden');
+                            card.style.animation = 'none';
+                            card.offsetHeight; // Trigger reflow
+                            card.style.animation = 'fadeInUp 0.5s ease-out forwards';
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+
+                    // Track event
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'case_study_filter', { industry });
+                    }
+                });
+            });
+        }
+    };
+
+    // Tool Comparison Handler
+    const ToolComparisonHandler = {
+        init() {
+            const select1 = document.getElementById('compare-tool-1');
+            const select2 = document.getElementById('compare-tool-2');
+
+            if (select1 && select2) {
+                select1.addEventListener('change', () => this.updateComparison());
+                select2.addEventListener('change', () => this.updateComparison());
+                this.updateComparison();
+            }
+        },
+
+        updateComparison() {
+            const tool1Id = document.getElementById('compare-tool-1')?.value;
+            const tool2Id = document.getElementById('compare-tool-2')?.value;
+
+            if (!tool1Id || !tool2Id) return;
+
+            const tool1 = TOOLS_DATA[tool1Id];
+            const tool2 = TOOLS_DATA[tool2Id];
+
+            if (!tool1 || !tool2) return;
+
+            // Update headers
+            const header1 = document.getElementById('header-tool-1');
+            const header2 = document.getElementById('header-tool-2');
+            if (header1) header1.textContent = tool1.name;
+            if (header2) header2.textContent = tool2.name;
+
+            // Update provider
+            const provider1 = document.getElementById('provider-1');
+            const provider2 = document.getElementById('provider-2');
+            if (provider1) provider1.textContent = tool1.provider;
+            if (provider2) provider2.textContent = tool2.provider;
+
+            // Update price
+            const price1 = document.getElementById('price-1');
+            const price2 = document.getElementById('price-2');
+            if (price1) price1.textContent = tool1.pricing;
+            if (price2) price2.textContent = tool2.pricing;
+
+            // Update Vietnamese support
+            const vietStars = { 'Xuất sắc': '⭐⭐⭐⭐⭐', 'Tốt': '⭐⭐⭐⭐', 'Khá': '⭐⭐⭐', 'Không': '❌' };
+            const viet1 = document.getElementById('viet-1');
+            const viet2 = document.getElementById('viet-2');
+            if (viet1) viet1.textContent = vietStars[tool1.vietnameseSupport] || '⭐⭐⭐';
+            if (viet2) viet2.textContent = vietStars[tool2.vietnameseSupport] || '⭐⭐⭐';
+
+            // Update API availability
+            const api1 = document.getElementById('api-1');
+            const api2 = document.getElementById('api-2');
+            if (api1) api1.textContent = tool1.apiAvailable ? '✓ Có' : '✗ Không';
+            if (api2) api2.textContent = tool2.apiAvailable ? '✓ Có' : '✗ Không';
+            if (api1) api1.className = `text-center py-4 px-4 ${tool1.apiAvailable ? 'text-green-400' : 'text-red-400'}`;
+            if (api2) api2.className = `text-center py-4 px-4 ${tool2.apiAvailable ? 'text-green-400' : 'text-red-400'}`;
+
+            // Update category
+            const category1 = document.getElementById('category-1');
+            const category2 = document.getElementById('category-2');
+            if (category1) category1.textContent = ToolUtils.getCategoryLabel(tool1.category);
+            if (category2) category2.textContent = ToolUtils.getCategoryLabel(tool2.category);
+
+            // Determine winner and update badge
+            this.updateWinner(tool1, tool2, tool1Id, tool2Id);
+
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'tool_comparison', { tool1: tool1Id, tool2: tool2Id });
+            }
+        },
+
+        updateWinner(tool1, tool2, tool1Id, tool2Id) {
+            const winnerBadge = document.getElementById('comparison-winner');
+            if (!winnerBadge) return;
+
+            let winnerText = '';
+
+            // Logic để xác định công cụ phù hợp hơn
+            if (tool1Id === 'claude' && tool2Id === 'chatgpt') {
+                winnerText = 'Claude phù hợp hơn cho tài liệu dài và phân tích chuyên sâu nhờ 200K context window';
+            } else if (tool1Id === 'chatgpt' && tool2Id === 'claude') {
+                winnerText = 'ChatGPT phù hợp hơn cho đa dạng tác vụ và có ecosystem rộng hơn';
+            } else if (tool1.category === 'vietnam' && tool2.category !== 'vietnam') {
+                winnerText = `${tool1.name} phù hợp hơn cho doanh nghiệp Việt Nam nhờ hỗ trợ tiếng Việt xuất sắc`;
+            } else if (tool2.category === 'vietnam' && tool1.category !== 'vietnam') {
+                winnerText = `${tool2.name} phù hợp hơn cho doanh nghiệp Việt Nam nhờ hỗ trợ tiếng Việt xuất sắc`;
+            } else {
+                winnerText = `Cả hai công cụ đều mạnh. Chọn ${tool1.name} nếu cần ${tool1.features[0]}, hoặc ${tool2.name} nếu cần ${tool2.features[0]}`;
+            }
+
+            winnerBadge.innerHTML = `
+                <span class="inline-flex items-center gap-2 px-6 py-3 bg-green-500/10 border border-green-500/20 text-green-400 rounded-full text-sm font-medium">
+                    <span class="material-symbols-outlined">emoji_events</span>
+                    ${winnerText}
+                </span>
+            `;
+        }
+    };
+
+    // Scroll Tracking Module
+    const ScrollTracker = {
+        trackedSections: new Set(),
+
+        init() {
+            // Track when sections come into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !this.trackedSections.has(entry.target.id)) {
+                        this.trackedSections.add(entry.target.id);
+
+                        // Track section view
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'section_view', {
+                                section_id: entry.target.id,
+                                page: window.location.pathname
+                            });
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            // Observe key sections
+            document.querySelectorAll('section[id]').forEach(section => {
+                observer.observe(section);
+            });
+        }
+    };
+
+    // Time on Page Tracker
+    const TimeTracker = {
+        startTime: Date.now(),
+
+        init() {
+            // Track time when user leaves
+            window.addEventListener('beforeunload', () => {
+                const timeSpent = Math.round((Date.now() - this.startTime) / 1000);
+
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'time_on_page', {
+                        value: timeSpent,
+                        event_label: `${timeSpent}s`
+                    });
+                }
+            });
+        }
+    };
+
+    // Page Loader Handler
+    const PageLoader = {
+        hide() {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                loader.classList.add('page-loader--hidden');
+                setTimeout(() => {
+                    loader.remove();
+                }, 500);
+            }
+        }
+    };
+
     // Initialize Application
     function init() {
         // Initialize modules
@@ -403,16 +3328,50 @@
         IndustrySelector.init();
         ImageHandler.init();
         Accessibility.init();
+        FormHandler.init();
+        ROICalculator.init();
+        CaseStudiesHandler.init();
+        ToolComparisonHandler.init();
+
+        // Initialize tracking
+        ScrollTracker.init();
+        TimeTracker.init();
 
         // Expose global functions (for onclick handlers)
         window.navigateTo = (page) => Router.showPage(page);
         window.selectIndustry = (industry) => IndustrySelector.selectIndustry(industry);
         window.showComingSoon = (feature) => ComingSoon.show(feature);
+        window.FormHandler = FormHandler;
+        window.QuizHandler = QuizHandler;
+        window.trackEvent = (name, params) => FormHandler.trackEvent(name, params);
+        window.ResultsRenderer = ResultsRenderer;
+
+        // Toggle service card details
+        window.toggleServiceCard = (button) => {
+            const card = button.closest('.service-card');
+            const details = card.querySelector('.service-card__details');
+            const icon = button.querySelector('.material-symbols-outlined');
+            const text = button.querySelector('span:first-child');
+
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+                text.textContent = 'Thu gọn';
+            } else {
+                details.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+                text.textContent = 'Xem chi tiết';
+            }
+        };
+
+        // Hide page loader
+        PageLoader.hide();
 
         // Mark as initialized
         document.documentElement.classList.add('app-initialized');
 
         console.log('[App] Initialized successfully');
+        console.log('[Analytics] Tracking enabled');
     }
 
     // Start when DOM is ready
