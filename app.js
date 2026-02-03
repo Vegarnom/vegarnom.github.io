@@ -50,8 +50,9 @@
     };
 
     // ============================================
-    // DATA LAYER - Phase 1
+    // DATA LAYER - Phase 1 (Lazy Loaded)
     // ============================================
+
 
     /**
      * INDUSTRIES_DATA - 10 ngành với essential/recommended/optional tools
@@ -2530,8 +2531,6 @@
             this.loadUserPreferences();
             this.setupKeyboardNavigation();
             this.setupFocusManagement();
-            this.setupMotionPreferences();
-            this.createMotionToggle();
         },
 
         /**
@@ -2558,40 +2557,6 @@
         },
 
         /**
-         * Setup motion preferences
-         */
-        setupMotionPreferences() {
-            // Check for stored preference first, then system preference
-            if (this.userPrefs.reducedMotion !== undefined) {
-                document.documentElement.classList.toggle('user-reduced-motion', this.userPrefs.reducedMotion);
-            }
-
-            // Listen for system preference changes
-            const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-            motionQuery.addEventListener('change', (e) => {
-                if (this.userPrefs.reducedMotion === undefined) {
-                    document.documentElement.classList.toggle('user-reduced-motion', e.matches);
-                }
-            });
-        },
-
-        /**
-         * Toggle reduced motion preference
-         */
-        toggleReducedMotion() {
-            const isReduced = !this.userPrefs.reducedMotion;
-            this.userPrefs.reducedMotion = isReduced;
-            this.saveUserPreferences();
-            document.documentElement.classList.toggle('user-reduced-motion', isReduced);
-
-            // Announce change to screen readers
-            const message = isReduced ? 'Hiệu ứng chuyển động đã được tắt' : 'Hiệu ứng chuyển động đã được bật';
-            this.announceToScreenReader(message);
-
-            return isReduced;
-        },
-
-        /**
          * Announce message to screen readers
          */
         announceToScreenReader(message) {
@@ -2607,37 +2572,6 @@
             }
             announcer.textContent = message;
             setTimeout(() => announcer.textContent = '', 1000);
-        },
-
-        /**
-         * Create motion toggle button
-         */
-        createMotionToggle() {
-            // Add toggle to footer or settings area if exists
-            const footer = document.querySelector('footer');
-            if (!footer) return;
-
-            const toggleContainer = document.createElement('div');
-            toggleContainer.className = 'motion-toggle-container mt-6 pt-6 border-t border-white/10';
-            toggleContainer.innerHTML = `
-                <button id="motion-toggle" class="flex items-center gap-2 text-sm text-text-secondary hover:text-white transition-colors" aria-pressed="${this.userPrefs.reducedMotion || false}">
-                    <span class="material-symbols-outlined">${this.userPrefs.reducedMotion ? 'motion_photos_off' : 'motion_photos_on'}</span>
-                    <span>${this.userPrefs.reducedMotion ? 'Bật hiệu ứng chuyển động' : 'Tắt hiệu ứng chuyển động'}</span>
-                </button>
-            `;
-
-            footer.appendChild(toggleContainer);
-
-            // Add click handler
-            const toggle = document.getElementById('motion-toggle');
-            if (toggle) {
-                toggle.addEventListener('click', () => {
-                    const isReduced = this.toggleReducedMotion();
-                    toggle.setAttribute('aria-pressed', isReduced);
-                    toggle.querySelector('.material-symbols-outlined').textContent = isReduced ? 'motion_photos_off' : 'motion_photos_on';
-                    toggle.querySelector('span:last-child').textContent = isReduced ? 'Bật hiệu ứng chuyển động' : 'Tắt hiệu ứng chuyển động';
-                });
-            }
         },
 
         /**
@@ -2729,6 +2663,9 @@
                     });
                 }
             });
+
+            // Setup real-time validation
+            this.setupRealtimeValidation();
         },
 
         /**
@@ -2952,27 +2889,100 @@
             const requiredFields = form.querySelectorAll('[required]');
 
             requiredFields.forEach(field => {
-                const errorEl = form.querySelector(`[data-error-for="${field.name}"]`);
-
-                if (!field.value.trim()) {
-                    isValid = false;
-                    field.classList.add('form__input--error');
-                    if (errorEl) errorEl.textContent = 'Vui lòng điền thông tin này';
-                } else if (field.type === 'email' && !this.isValidEmail(field.value)) {
-                    isValid = false;
-                    field.classList.add('form__input--error');
-                    if (errorEl) errorEl.textContent = 'Email không hợp lệ';
-                } else if (field.type === 'tel' && !this.isValidPhone(field.value)) {
-                    isValid = false;
-                    field.classList.add('form__input--error');
-                    if (errorEl) errorEl.textContent = 'Số điện thoại không hợp lệ';
-                } else {
-                    field.classList.remove('form__input--error');
-                    if (errorEl) errorEl.textContent = '';
-                }
+                const fieldValid = this.validateField(field, form);
+                if (!fieldValid) isValid = false;
             });
 
             return isValid;
+        },
+
+        /**
+         * Validate individual field
+         */
+        validateField(field, form) {
+            const formEl = form || field.closest('form');
+            const errorEl = formEl?.querySelector(`[data-error-for="${field.name}"]`);
+            let isValid = true;
+            let message = '';
+
+            if (field.required && !field.value.trim()) {
+                isValid = false;
+                message = 'Vui lòng điền thông tin này';
+            } else if (field.type === 'email' && field.value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(field.value)) {
+                    isValid = false;
+                    message = 'Email không hợp lệ';
+                }
+            } else if (field.type === 'tel' && field.value) {
+                const phoneRegex = /^[0-9]{10,11}$/;
+                if (!phoneRegex.test(field.value.replace(/\s/g, ''))) {
+                    isValid = false;
+                    message = 'Số điện thoại không hợp lệ';
+                }
+            }
+
+            this.updateFieldVisualState(field, isValid, message, errorEl);
+            return isValid;
+        },
+
+        /**
+         * Update field visual state
+         */
+        updateFieldVisualState(field, isValid, message, errorEl) {
+            if (isValid) {
+                field.classList.remove('form__input--error');
+                if (field.value.trim()) {
+                    field.classList.add('form__input--success');
+                }
+                field.setAttribute('aria-invalid', 'false');
+            } else {
+                field.classList.add('form__input--error');
+                field.classList.remove('form__input--success');
+                field.setAttribute('aria-invalid', 'true');
+            }
+
+            if (errorEl) {
+                errorEl.textContent = message;
+                if (message) {
+                    errorEl.setAttribute('role', 'alert');
+                } else {
+                    errorEl.removeAttribute('role');
+                }
+            }
+        },
+
+        /**
+         * Clear field error state
+         */
+        clearFieldError(field) {
+            field.classList.remove('form__input--error');
+            field.setAttribute('aria-invalid', 'false');
+            const form = field.closest('form');
+            const errorEl = form?.querySelector(`[data-error-for="${field.name}"]`);
+            if (errorEl) {
+                errorEl.textContent = '';
+                errorEl.removeAttribute('role');
+            }
+        },
+
+        /**
+         * Setup real-time validation
+         */
+        setupRealtimeValidation() {
+            document.querySelectorAll('form input, form textarea, form select').forEach(field => {
+                // Validate on blur
+                field.addEventListener('blur', () => {
+                    if (field.value.trim()) {
+                        this.validateField(field);
+                    }
+                });
+
+                // Clear error on input
+                field.addEventListener('input', () => {
+                    this.clearFieldError(field);
+                });
+            });
         },
 
         isValidEmail(email) {
@@ -2988,33 +2998,47 @@
          */
         openModal(modalId) {
             const modal = document.getElementById(modalId);
-            if (modal) {
-                // Store previously focused element
-                this._previouslyFocused = document.activeElement;
+            if (!modal) return;
 
-                modal.hidden = false;
-                // Force reflow
-                modal.offsetHeight;
-                modal.classList.add('modal--active');
-                document.body.style.overflow = 'hidden';
+            // Store previously focused element
+            this._previouslyFocused = document.activeElement;
 
-                // Set up focus trap
-                this._setupFocusTrap(modal);
+            modal.hidden = false;
+            modal.offsetHeight; // Force reflow
+            modal.classList.add('modal--active');
+            document.body.style.overflow = 'hidden';
 
-                // Focus first focusable element
-                const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-                if (focusable.length) {
-                    focusable[0].focus();
-                }
+            // Setup focus trap
+            this._setupFocusTrap(modal);
 
-                // Handle escape key
-                this._handleModalKeydown = (e) => this._handleModalEscape(e, modalId);
-                document.addEventListener('keydown', this._handleModalKeydown);
+            // Focus first focusable element OR modal itself
+            const focusable = modal.querySelectorAll(
+                'button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'
+            );
 
-                // Track event
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_open', { form_type: modalId });
-                }
+            if (focusable.length > 0) {
+                // Focus first input if exists, otherwise first button
+                const firstInput = modal.querySelector('input, textarea, select');
+                (firstInput || focusable[0]).focus();
+            } else {
+                // Fallback: focus modal itself
+                modal.setAttribute('tabindex', '-1');
+                modal.focus();
+            }
+
+            // Handle escape key
+            this._handleModalKeydown = (e) => this._handleModalEscape(e, modalId);
+            document.addEventListener('keydown', this._handleModalKeydown);
+
+            // Announce to screen reader
+            const title = modal.querySelector('.modal__title');
+            if (title) {
+                ARIAAnnouncer.announce(`Đã mở ${title.textContent}`);
+            }
+
+            // Track event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_open', { form_type: modalId });
             }
         },
 
@@ -3080,6 +3104,56 @@
             };
 
             modal.addEventListener('keydown', modal._focusTrapHandler);
+
+            // Setup swipe to dismiss on mobile
+            this._setupSwipeToDismiss(modal);
+        },
+
+        /**
+         * Setup swipe to dismiss for modal on mobile
+         */
+        _setupSwipeToDismiss(modal) {
+            if (!('ontouchstart' in window)) return;
+
+            const content = modal.querySelector('.modal__content');
+            if (!content) return;
+
+            let startY = 0;
+            let currentY = 0;
+            let isDragging = false;
+
+            content.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+                isDragging = true;
+                content.style.transition = 'none';
+            }, { passive: true });
+
+            content.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+
+                // Only allow dragging down
+                if (diff > 0) {
+                    content.style.transform = `translateY(${diff}px)`;
+                }
+            }, { passive: true });
+
+            content.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+
+                const diff = currentY - startY;
+                content.style.transition = '';
+
+                if (diff > 100) {
+                    // Swiped far enough -> dismiss
+                    this.closeModal(modal.id);
+                } else {
+                    // Reset position
+                    content.style.transform = '';
+                }
+            });
         },
 
         /**
@@ -4388,32 +4462,14 @@
     // ============================================
 
     /**
-     * 1. RippleEffect - Button ripple animation
+     * 1. RippleEffect - Optimized CSS-only ripple animation
      */
     const RippleEffect = {
         init() {
+            // Use CSS-only ripple for better performance
             document.querySelectorAll('button, .btn, [class*="button"]').forEach(button => {
-                button.style.position = 'relative';
-                button.style.overflow = 'hidden';
-                button.addEventListener('click', (e) => this.createRipple(e, button));
+                button.classList.add('ripple-container');
             });
-        },
-
-        createRipple(e, button) {
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple');
-
-            const rect = button.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-
-            ripple.style.width = ripple.style.height = `${size}px`;
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-
-            button.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
         }
     };
 
@@ -4632,6 +4688,191 @@
                 text.textContent = 'Xem chi tiết';
             }
         };
+
+        // Tab switching for Interactive Tools section
+        window.switchTab = (tabName) => {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+                content.classList.add('hidden');
+            });
+            const activeContent = document.getElementById(`content-${tabName}`);
+            activeContent.classList.remove('hidden');
+            activeContent.classList.add('active');
+
+            // Save preference to localStorage
+            localStorage.setItem('aivan-active-tab', tabName);
+
+            // Track tab switch event
+            FormHandler.trackEvent('tab_switch', { tab: tabName });
+        };
+
+        // Restore last active tab on page load
+        const lastTab = localStorage.getItem('aivan-active-tab');
+        if (lastTab && (lastTab === 'quiz' || lastTab === 'roi')) {
+            window.switchTab(lastTab);
+        }
+
+        // ============================================
+        // Sticky Summary for Results Page
+        // ============================================
+        const StickySummary = {
+            init() {
+                this.element = document.getElementById('sticky-summary');
+                if (!this.element) return;
+
+                this.setupScrollListener();
+                this.updateContent();
+            },
+
+            setupScrollListener() {
+                let lastScrollY = window.scrollY;
+                const threshold = 300; // Show after scrolling 300px
+
+                window.addEventListener('scroll', () => {
+                    const currentScrollY = window.scrollY;
+                    const shouldShow = currentScrollY > threshold;
+
+                    if (shouldShow && !this.element.classList.contains('visible')) {
+                        this.element.classList.add('visible');
+                    } else if (!shouldShow && this.element.classList.contains('visible')) {
+                        this.element.classList.remove('visible');
+                    }
+
+                    lastScrollY = currentScrollY;
+                }, { passive: true });
+            },
+
+            updateContent() {
+                // Update industry name
+                const industryName = document.getElementById('results-industry-name');
+                const stickyIndustry = document.getElementById('sticky-industry');
+                if (industryName && stickyIndustry) {
+                    stickyIndustry.textContent = industryName.textContent;
+                }
+            },
+
+            hide() {
+                this.element?.classList.remove('visible');
+            }
+        };
+
+        // Initialize Sticky Summary on results page
+        if (document.getElementById('sticky-summary')) {
+            StickySummary.init();
+        }
+
+        // ============================================
+        // Industry Card Preview Data & Handler
+        // ============================================
+        const IndustryPreviewData = {
+            healthcare: {
+                title: 'Giải pháp cho Y tế',
+                benefits: ['Tự động hóa lịch hẹn', 'Phân tích triệu chứng AI', 'Quản lý hồ sơ bệnh án'],
+                tools: ['IBM Watson Health', 'Google Health AI', 'VinDr'],
+                timeline: '4-6 tuần'
+            },
+            finance: {
+                title: 'Giải pháp cho Tài chính',
+                benefits: ['Phát hiện gian lận', 'Chatbot tư vấn', 'Phân tích rủi ro'],
+                tools: ['FPT.AI', 'TensorFlow', 'AWS Fraud Detector'],
+                timeline: '6-8 tuần'
+            },
+            education: {
+                title: 'Giải pháp cho Giáo dục',
+                benefits: ['Cá nhân hóa học tập', 'Tự động chấm điểm', 'Tạo nội dung AI'],
+                tools: ['ChatGPT', 'Claude', 'Canva AI'],
+                timeline: '3-4 tuần'
+            },
+            ecommerce: {
+                title: 'Giải pháp cho E-commerce',
+                benefits: ['Gợi ý sản phẩm', 'Chatbot bán hàng', 'Phân tích hành vi'],
+                tools: ['AWS Personalize', 'Google Recommendations AI', 'Dialogflow'],
+                timeline: '4-6 tuần'
+            },
+            manufacturing: {
+                title: 'Giải pháp cho Sản xuất',
+                benefits: ['Dự đoán bảo trì', 'Kiểm tra chất lượng', 'Tối ưu chuỗi cung ứng'],
+                tools: ['Azure ML', 'TensorFlow', 'AutoML'],
+                timeline: '8-12 tuần'
+            },
+            agriculture: {
+                title: 'Giải pháp cho Nông nghiệp',
+                benefits: ['Phân tích đất đai', 'Dự báo thờ i tiết', 'Tối ưu tưới tiêu'],
+                tools: ['IBM Watson', 'Google Earth Engine', 'TensorFlow'],
+                timeline: '6-8 tuần'
+            },
+            transportation: {
+                title: 'Giải pháp cho Vận tải',
+                benefits: ['Tối ưu lộ trình', 'Dự đoán nhu cầu', 'Quản lý đội xe'],
+                tools: ['Google Maps API', 'OSRM', 'Azure Maps'],
+                timeline: '4-6 tuần'
+            },
+            cybersecurity: {
+                title: 'Giải pháp cho An ninh mạng',
+                benefits: ['Phát hiện mối đe dọa', 'Phân tích log', 'Tự động phản ứng'],
+                tools: ['Splunk', 'Elastic SIEM', 'Darktrace'],
+                timeline: '6-8 tuần'
+            },
+            hospitality: {
+                title: 'Giải pháp cho Khách sạn',
+                benefits: ['Cá nhân hóa trải nghiệm', 'Tối ưu giá phòng', 'Chatbot đặt phòng'],
+                tools: ['Revinate', 'Cloudbeds', 'Quicktext'],
+                timeline: '3-5 tuần'
+            },
+            marketing: {
+                title: 'Giải pháp cho Marketing',
+                benefits: ['Tạo content tự động', 'Phân tích sentiment', 'Tối ưu quảng cáo'],
+                tools: ['Jasper', 'Copy.ai', 'Sprout Social'],
+                timeline: '2-4 tuần'
+            }
+        };
+
+        const IndustryCardHandler = {
+            init() {
+                document.querySelectorAll('.industry-card').forEach(card => {
+                    const input = card.querySelector('input[type="radio"]');
+                    if (!input) return;
+
+                    const industry = input.value;
+                    const previewData = IndustryPreviewData[industry];
+
+                    if (previewData) {
+                        this.createPreview(card, previewData);
+                    }
+                });
+            },
+
+            createPreview(card, data) {
+                const preview = document.createElement('div');
+                preview.className = 'industry-card__preview';
+                preview.innerHTML = `
+                    <h4 class="text-white font-bold mb-2">${data.title}</h4>
+                    <ul class="space-y-1 mb-3">
+                        ${data.benefits.map(b => `
+                            <li class="text-white/70 text-xs flex items-center gap-1">
+                                <span class="material-symbols-outlined text-primary text-xs">check</span>
+                                ${b}
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                        <span class="text-text-secondary text-xs">${data.tools.length} công cụ</span>
+                        <span class="text-primary text-xs font-medium">${data.timeline}</span>
+                    </div>
+                `;
+                card.appendChild(preview);
+            }
+        };
+
+        // Initialize Industry Card hover previews
+        IndustryCardHandler.init();
 
         // Hide page loader
         PageLoader.hide();
