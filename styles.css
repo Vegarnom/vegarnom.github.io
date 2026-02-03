@@ -16,7 +16,15 @@
     --color-text-secondary: #86868b;
     --color-border: #392f28;
     --color-border-hover: #54453b;
+
+    /* Animation Tokens - Design System */
+    --transition-fast: 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
     --transition-base: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-medium: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-slow: 0.7s ease;
+    --transition-spring: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quart: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* Reset & Base */
@@ -77,31 +85,28 @@ body {
     outline-offset: 2px;
 }
 
-/* Skip Link */
-.skip-link {
-    position: absolute;
-    top: -100%;
-    left: 4px;
-    background-color: var(--color-primary);
-    color: white;
-    padding: 12px 16px;
-    border-radius: 8px;
-    z-index: 100;
-    font-weight: 500;
-    text-decoration: none;
-    transition: top 0.2s;
-}
-
-.skip-link:focus {
-    top: 4px;
-}
-
-/* Glass Effects */
+/* Glass Effects - Optimized for Performance */
 .glass-nav {
-    background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background-color: rgba(0, 0, 0, 0.85);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* backdrop-filter disabled on scroll for performance - see JS */
+}
+
+@supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
+    .glass-nav {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    /* Disable backdrop-filter on low-power devices or when reduced motion is preferred */
+    @media (prefers-reduced-motion: reduce) {
+        .glass-nav {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            background-color: rgba(0, 0, 0, 0.95);
+        }
+    }
 }
 
 .glass-card {
@@ -120,7 +125,8 @@ body {
 
 /* Card Hover */
 .card-hover {
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), background-color var(--transition-base);
+    will-change: transform;
 }
 
 .card-hover:hover {
@@ -128,22 +134,31 @@ body {
     background-color: var(--color-surface-hover);
 }
 
-/* Page Transitions */
+/* Page Transitions - Optimized for GPU */
 .page {
-    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
     opacity: 0;
+    visibility: hidden;
     transform: translateY(10px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-    padding-top: 3.5rem; /* Add space for fixed header (h-14 = 3.5rem) */
+    transition: opacity var(--transition-medium), transform var(--transition-medium), visibility var(--transition-medium);
+    padding-top: 3.5rem;
+    will-change: opacity, transform;
+    pointer-events: none;
 }
 
 .page.active {
-    display: block;
+    position: relative;
     opacity: 1;
+    visibility: visible;
     transform: translateY(0);
+    pointer-events: auto;
 }
 
-/* Animations */
+/* Animations - with fill-mode */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -156,8 +171,16 @@ body {
 }
 
 .animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out forwards;
+    animation: fadeInUp 0.6s var(--ease-out-expo) forwards;
 }
+
+/* Stagger animation delays for card grids */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
 
 /* Loading Skeleton */
 .loading-skeleton {
@@ -171,18 +194,1043 @@ body {
     100% { background-position: -200% 0; }
 }
 
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+/* Reduced Motion - Comprehensive Support */
+@media (prefers-reduced-motion: reduce),
+       .user-reduced-motion {
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 
     .page {
         transition: none;
+        transform: none;
+    }
+
+    .page.active {
+        transform: none;
+    }
+
+    .toast {
+        animation: none !important;
+    }
+
+    .modal__content {
+        transition: none;
+        transform: none;
+    }
+
+    .modal--active .modal__content {
+        transform: none;
+    }
+
+    .roi-slider::-webkit-slider-thumb {
+        transition: none;
+    }
+
+    .fab__menu {
+        transition: none;
+    }
+
+    .quick-form {
+        animation: none;
+    }
+
+    .workflow-step__connector::after {
+        transition: none;
     }
 }
+
+/* Explicit user preference override */
+.user-reduced-motion {
+    --transition-fast: 0.01ms !important;
+    --transition-base: 0.01ms !important;
+    --transition-medium: 0.01ms !important;
+    --transition-slow: 0.01ms !important;
+    --transition-spring: 0.01ms !important;
+}
+
+/* ============================================
+   PHASE 1: FOUNDATION - UX/UI IMPROVEMENTS
+   ============================================ */
+
+/* 1. Button Ripple Effect */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: ripple-animation 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* 2. Enhanced Hover States */
+.hover-lift {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 30px rgba(236, 109, 19, 0.3);
+}
+
+/* 5. Skip Links Enhancement */
+.skip-links {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    z-index: 1000;
+    transition: top 0.2s;
+}
+
+.skip-links:focus-within {
+    top: 0;
+}
+
+.skip-link {
+    display: block;
+    background: var(--color-primary);
+    color: white;
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 0 0 8px 0;
+    font-size: 0.875rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.skip-link:hover,
+.skip-link:focus {
+    background: #d55f0f;
+    color: white;
+}
+
+/* 6. ARIA Live Regions - Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* 7. Focus Indicator Improvements */
+:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 6px rgba(236, 109, 19, 0.2);
+}
+
+/* Form Validation Styles (Task 3) */
+.form__input--error {
+    border-color: #ff3b30 !important;
+    background-color: rgba(255, 59, 48, 0.05) !important;
+}
+
+.form__input--success {
+    border-color: #34c759 !important;
+    background-color: rgba(52, 199, 89, 0.05) !important;
+}
+
+.form__error {
+    color: #ff3b30;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    min-height: 1rem;
+}
+
+/* Touch Target Sizing (Task 13 - Mobile Optimization) */
+@media (pointer: coarse) {
+    button, a, input, select, textarea, [role="button"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .form__input, .form__select, .form__textarea {
+        min-height: 48px;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+}
+
+@supports (padding: max(0px)) {
+    .fab-container {
+        bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+}
+
+/* ============================================
+   PHASE 2: NAVIGATION & FLOW
+   ============================================ */
+
+/* 8. Active Section Indicator */
+.nav-link {
+    position: relative;
+    transition: color var(--transition-base);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-primary);
+    transition: width var(--transition-base);
+}
+
+.nav-link.active,
+.nav-link:hover {
+    color: white;
+}
+
+.nav-link.active::after,
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* 9. Sticky CTA Bar */
+.sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-surface-dark);
+    border-top: 1px solid var(--color-border);
+    padding: 1rem 1.5rem;
+    z-index: 80;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sticky-cta--visible {
+    transform: translateY(0);
+}
+
+.sticky-cta__content {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.sticky-cta__title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+}
+
+.sticky-cta__button {
+    background: var(--color-primary);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    white-space: nowrap;
+}
+
+.sticky-cta__button:hover {
+    background: #d55f0f;
+    transform: scale(1.05);
+}
+
+/* Hide sticky CTA when FAB is open */
+.fab-container--active ~ .sticky-cta {
+    transform: translateY(100%) !important;
+}
+
+/* 10. Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 5rem;
+    left: 1.5rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 70;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: var(--color-surface-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.back-to-top .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* Adjust back-to-top when sticky CTA is visible */
+body.has-sticky-cta .back-to-top {
+    bottom: 5.5rem;
+}
+
+@media (max-width: 640px) {
+    .back-to-top {
+        bottom: 1.5rem;
+        left: 1rem;
+        width: 44px;
+        height: 44px;
+    }
+
+    body.has-sticky-cta .back-to-top {
+        bottom: 5rem;
+    }
+
+    /* Fix form inputs on mobile */
+    .form__input,
+    .form__select,
+    .form__textarea {
+        font-size: 16px; /* Prevent iOS zoom on focus */
+        padding: 0.875rem 0.875rem 0.875rem 2.75rem;
+    }
+
+    .form__icon {
+        font-size: 1rem;
+        left: 0.75rem;
+    }
+
+    /* Hide icons only in regular text inputs (keep for select and textarea) */
+    .form__input-wrapper:has(.form__input) .form__icon {
+        display: none;
+    }
+
+    /* Remove left padding for inputs without icons */
+    .form__input-wrapper:has(.form__input) .form__input {
+        padding-left: 0.875rem;
+    }
+
+    /* Hide browser validation tooltips */
+    .form__input:invalid,
+    .form__select:invalid {
+        box-shadow: none;
+    }
+
+    .form {
+        padding: 1rem;
+    }
+}
+
+/* 11. Breadcrumb Navigation */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+}
+
+.breadcrumb__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.breadcrumb__link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-base);
+}
+
+.breadcrumb__link:hover {
+    color: white;
+}
+
+.breadcrumb__separator {
+    opacity: 0.5;
+}
+
+.breadcrumb__current {
+    color: white;
+    font-weight: 500;
+}
+
+/* Adjust main content padding when sticky CTA is visible */
+body:has(.sticky-cta--visible) #main-content {
+    padding-bottom: 4rem;
+}
+
+/* ============================================
+   PHASE 3: CONVERSION & POLISH
+   ============================================ */
+
+/* 14. Exit-Intent Modal */
+.exit-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.exit-modal--active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.exit-modal__content {
+    background: var(--color-surface-dark);
+    border: 1px solid var(--color-border);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    max-width: 480px;
+    margin: 1rem;
+    text-align: center;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exit-modal--active .exit-modal__content {
+    transform: scale(1) translateY(0);
+}
+
+.exit-modal__icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(236, 109, 19, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--color-primary);
+}
+
+.exit-modal__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.75rem;
+}
+
+.exit-modal__text {
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.exit-modal__buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* 15. Social Proof Notifications */
+.social-proof {
+    position: fixed;
+    bottom: 6rem;
+    right: 1.5rem;
+    z-index: 75;
+    max-width: 320px;
+}
+
+.social-proof__item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+               fadeOut 0.5s ease 8s forwards;
+    margin-bottom: 0.75rem;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.social-proof__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), #ff8c42);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: white;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+.social-proof__content {
+    flex: 1;
+    min-width: 0;
+}
+
+.social-proof__name {
+    font-weight: 600;
+    color: white;
+    font-size: 0.875rem;
+    margin-bottom: 0.125rem;
+}
+
+.social-proof__action {
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+}
+
+.social-proof__time {
+    color: var(--color-primary);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* 16. Trust Badges Section */
+.trust-badges {
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.trust-badges__label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.trust-badges__grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.trust-badge .material-symbols-outlined {
+    color: var(--color-primary);
+    font-size: 1.25rem;
+}
+
+/* 17. Comparison Table */
+.comparison-section {
+    padding: 4rem 0;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.comparison-table th {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.comparison-table td {
+    color: white;
+    font-size: 0.9375rem;
+    vertical-align: middle;
+}
+
+.comparison-table__without {
+    color: #ff6b6b;
+    font-weight: 500;
+}
+
+.comparison-table__with {
+    color: #4ade80;
+    font-weight: 600;
+}
+
+.comparison-table__check,
+.comparison-table__cross {
+    font-size: 1.25rem;
+    line-height: 1;
+    vertical-align: -3px;
+    margin-right: 0.5rem;
+}
+
+.comparison-table__check {
+    color: #4ade80;
+}
+
+.comparison-table__cross {
+    color: #ff6b6b;
+}
+
+/* 18. Floating Form Labels - DISABLED */
+/* Floating labels disabled to prevent overlap with form icons */
+/* Form already has placeholders for user guidance */
+
+/* 19. Skeleton Screens */
+.skeleton {
+    background: linear-gradient(90deg, var(--color-surface-dark) 25%, var(--color-surface-highlight) 50%, var(--color-surface-dark) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+    border-radius: 0.5rem;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.skeleton--text {
+    height: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton--title {
+    height: 1.5rem;
+    width: 60%;
+    margin-bottom: 1rem;
+}
+
+.skeleton--avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.skeleton--card {
+    height: 200px;
+}
+
+/* 20. Success Checkmark Animation */
+.success-checkmark {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+}
+
+.success-checkmark__circle {
+    stroke: #22c55e;
+    stroke-width: 3;
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    animation: checkmark-stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.success-checkmark__check {
+    stroke: #22c55e;
+    stroke-width: 3;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: checkmark-stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.4s forwards;
+}
+
+@keyframes checkmark-stroke {
+    100% { stroke-dashoffset: 0; }
+}
+
+.success-message {
+    text-align: center;
+    padding: 2rem;
+}
+
+.success-message__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.success-message__text {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+}
+
+/* ============================================
+   END PHASE 3
+   ============================================ */
+
+/* ============================================
+   PHASE 4: ADVANCED UX
+   ============================================ */
+
+/* 21. Bottom Sheet Modals (Mobile) */
+@media (max-width: 640px) {
+    .modal__content {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        max-height: 90vh;
+        border-radius: 1.5rem 1.5rem 0 0;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        margin: 0;
+        width: 100%;
+        overflow-y: auto;
+    }
+
+    .modal--active .modal__content {
+        transform: translateY(0);
+    }
+
+    .modal__handle {
+        display: block;
+        width: 40px;
+        height: 4px;
+        background: var(--color-border);
+        border-radius: 2px;
+        margin: 0.75rem auto 1rem;
+        flex-shrink: 0;
+    }
+}
+
+.modal__handle {
+    display: none;
+}
+
+/* 22. Image Blur-up Loading */
+.img-blur-up {
+    position: relative;
+    background: var(--color-surface-dark);
+    overflow: hidden;
+}
+
+.img-blur-up__placeholder {
+    position: absolute;
+    inset: 0;
+    filter: blur(20px);
+    transform: scale(1.1);
+    transition: opacity 0.5s ease-out;
+}
+
+.img-blur-up__img {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.img-blur-up__img.loaded {
+    opacity: 1;
+}
+
+.img-blur-up__img.loaded + .img-blur-up__placeholder {
+    opacity: 0;
+}
+
+/* 23. Smooth Page Transitions */
+.page-transition {
+    position: fixed;
+    inset: 0;
+    background: var(--color-background-dark);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.page-transition--active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Enhanced page transitions */
+.page {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.98);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* 25. Character Counter */
+.char-counter {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+}
+
+.char-counter--warning {
+    color: #f59e0b;
+}
+
+.char-counter--error {
+    color: #ef4444;
+}
+
+/* 26. Better Empty States */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.empty-state__icon {
+    width: 64px;
+    height: 64px;
+    background: var(--color-surface);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--color-text-secondary);
+}
+
+.empty-state__icon .material-symbols-outlined {
+    font-size: 32px;
+}
+
+.empty-state__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state__description {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.empty-state__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-primary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.empty-state__action:hover {
+    color: white;
+}
+
+/* 27. Error Boundaries */
+.error-boundary {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+    background: var(--color-surface-dark);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+}
+
+.error-boundary__icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: #ef4444;
+}
+
+.error-boundary__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.75rem;
+}
+
+.error-boundary__message {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    margin-bottom: 1.5rem;
+}
+
+.error-boundary__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* 28. Tooltips for Icons */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 0.75rem;
+    background: var(--color-surface-dark);
+    border: 1px solid var(--color-border);
+    color: white;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    border-radius: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-tooltip]::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 3px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--color-surface-dark);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Tooltip positions */
+[data-tooltip-position="bottom"]::before {
+    bottom: auto;
+    top: calc(100% + 8px);
+}
+
+[data-tooltip-position="bottom"]::after {
+    bottom: auto;
+    top: calc(100% + 3px);
+    border-top-color: transparent;
+    border-bottom-color: var(--color-surface-dark);
+}
+
+[data-tooltip-position="left"]::before {
+    bottom: auto;
+    left: auto;
+    right: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+[data-tooltip-position="left"]::after {
+    bottom: auto;
+    left: auto;
+    right: calc(100% + 3px);
+    top: 50%;
+    transform: translateY(-50%);
+    border-top-color: transparent;
+    border-left-color: var(--color-surface-dark);
+}
+
+[data-tooltip-position="right"]::before {
+    bottom: auto;
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+[data-tooltip-position="right"]::after {
+    bottom: auto;
+    left: calc(100% + 3px);
+    top: 50%;
+    transform: translateY(-50%);
+    border-top-color: transparent;
+    border-right-color: var(--color-surface-dark);
+}
+
+/* ============================================
+   END PHASE 4
+   ============================================ */
 
 /* Print Styles */
 @media print {
@@ -205,7 +1253,7 @@ body {
     background: radial-gradient(circle at 50% 50%, rgba(236, 109, 19, 0.15) 0%, rgba(0, 0, 0, 0) 50%);
 }
 
-/* Image Container */
+/* Image Container - Reduced Motion Support */
 .img-container {
     position: relative;
     overflow: hidden;
@@ -215,11 +1263,16 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.7s ease;
 }
 
-.img-container:hover img {
-    transform: scale(1.05);
+@media (prefers-reduced-motion: no-preference) {
+    .img-container img {
+        transition: transform var(--transition-slow);
+    }
+
+    .img-container:hover img {
+        transform: scale(1.05);
+    }
 }
 
 /* Button Base */
@@ -269,11 +1322,12 @@ body {
     padding: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.05);
     cursor: pointer;
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), background-color var(--transition-base);
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    will-change: transform;
 }
 
 .service-card:hover {
@@ -373,65 +1427,338 @@ body {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
 }
 
-/* Workflow Step */
+/* ============================================
+   WORKFLOW - Improved Card-Based Design
+   ============================================ */
+
+/* Container - CSS Grid for equal columns */
+#results-workflow-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: stretch; /* Ensure equal heights */
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+    #results-workflow-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+    #results-workflow-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+    }
+}
+
+/* Workflow Step - Card Style with Equal Height */
 .workflow-step {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    transition: all var(--transition-base);
+    height: 100%;
+    min-height: 280px;
+}
+
+.workflow-step:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Step Number Badge - Hidden */
+.workflow-step::before {
+    display: none;
+}
+
+/* Card Content Layout - Push tools to bottom */
+.workflow-step > .flex-col {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
 }
 
+/* Icon Container */
 .workflow-step__icon {
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
     border-radius: 1rem;
-    background-color: var(--color-surface-highlight);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all var(--transition-base);
     position: relative;
-    z-index: 1;
+    margin-bottom: 1rem;
 }
 
 .workflow-step:hover .workflow-step__icon {
-    border-color: currentColor;
-    background-color: rgba(236, 109, 19, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border-color: var(--step-color, rgba(255, 255, 255, 0.15));
+    transform: scale(1.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
+/* Title Styling */
+.workflow-step h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    line-height: 1.3;
+    margin: 0 0 0.5rem 0;
+}
+
+/* Description */
+.workflow-step p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+/* Tool Tags Container - Always at bottom */
+.workflow-step__tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    align-self: flex-start;
+}
+
+/* Tool Tags - Visual Hierarchy */
+.workflow-step .tag {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.375rem 0.625rem;
+    border-radius: 0.375rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+    transition: all var(--transition-fast);
+}
+
+.workflow-step .tag:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Primary Tool Tag */
+.workflow-step .tag--primary {
+    background: rgba(236, 109, 19, 0.15);
+    border-color: rgba(236, 109, 19, 0.25);
+    color: var(--color-primary);
+}
+
+.workflow-step .tag--primary:hover {
+    background: rgba(236, 109, 19, 0.2);
+    border-color: rgba(236, 109, 19, 0.35);
+}
+
+/* "Đề xuất tối ưu" Badge */
+.badge-recommendation {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    background: linear-gradient(135deg, rgba(236, 109, 19, 0.12) 0%, rgba(236, 109, 19, 0.05) 100%);
+    border: 1px solid rgba(236, 109, 19, 0.2);
+    border-radius: 9999px;
+    color: var(--color-primary);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(8px);
+    transition: all var(--transition-base);
+}
+
+.badge-recommendation:hover {
+    background: linear-gradient(135deg, rgba(236, 109, 19, 0.18) 0%, rgba(236, 109, 19, 0.08) 100%);
+    border-color: rgba(236, 109, 19, 0.3);
+}
+
+.badge-recommendation::before {
+    content: '✦';
+    font-size: 0.625rem;
+}
+
+/* Progress indicator (Step X/3) */
+.workflow-step__progress {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--step-color, var(--color-primary));
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+}
+
+/* Workflow section animation on load */
+.workflow-step {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: workflowStepIn 0.5s var(--ease-out-expo) forwards;
+    will-change: opacity, transform;
+}
+
+.workflow-step:nth-child(1) { animation-delay: 0.1s; }
+.workflow-step:nth-child(2) { animation-delay: 0.25s; }
+.workflow-step:nth-child(3) { animation-delay: 0.4s; }
+
+/* Reduced motion support for workflow */
+@media (prefers-reduced-motion: reduce) {
+    .workflow-step {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes workflowStepIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Reduced motion support for workflow */
+@media (prefers-reduced-motion: reduce) {
+    .workflow-step {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Connector Line - Horizontal (Desktop 3 columns) */
 .workflow-step__connector {
     display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
     .workflow-step__connector {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: absolute;
-        top: 32px;
-        left: 70%;
-        width: 60%;
-        height: 2px;
-        background-color: var(--color-surface-highlight);
-        overflow: hidden;
+        top: 50%;
+        right: -2.25rem;
+        width: 2rem;
+        height: 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        transition: all var(--transition-base);
     }
 
-    .workflow-step__connector::after {
+    /* Arrow icon using pseudo-element */
+    .workflow-step__connector::before {
+        content: '→';
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.4);
+        transition: all var(--transition-base);
+    }
+
+    /* Hover effect on card affects connector */
+    .workflow-step:hover .workflow-step__connector {
+        background: rgba(236, 109, 19, 0.1);
+        border-color: rgba(236, 109, 19, 0.3);
+    }
+
+    .workflow-step:hover .workflow-step__connector::before {
+        color: var(--color-primary);
+        transform: translateX(2px);
+    }
+
+    /* Hide connector for last item in row (3rd item) */
+    .workflow-step:nth-child(3n) .workflow-step__connector {
+        display: none;
+    }
+}
+
+/* Tablet (2 columns): Connector for first item */
+@media (min-width: 640px) and (max-width: 1023px) {
+    .workflow-step__connector {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        right: -1.75rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+
+    .workflow-step__connector::before {
+        content: '→';
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Only show connector for odd items (1st, 3rd, 5th...) */
+    .workflow-step:nth-child(even) .workflow-step__connector {
+        display: none;
+    }
+}
+
+/* Mobile: Vertical connector */
+@media (max-width: 639px) {
+    .workflow-step {
+        min-height: auto;
+    }
+
+    .workflow-step:not(:last-child) {
+        margin-bottom: 1.5rem;
+    }
+
+    .workflow-step:not(:last-child)::after {
         content: '';
         position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, rgba(236, 109, 19, 0.5), var(--color-primary), transparent);
-        transform: translateX(-100%);
-        transition: transform 1s ease-in-out;
+        bottom: -1.5rem;
+        left: 1.875rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
     }
 
-    .workflow-step:hover .workflow-step__connector::after {
-        transform: translateX(100%);
-    }
-
-    .workflow-step:last-child .workflow-step__connector {
-        display: none;
+    .workflow-step:not(:last-child)::before {
+        content: '↓';
+        position: absolute;
+        bottom: -1.4rem;
+        left: 1.875rem;
+        width: 1.5rem;
+        text-align: center;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+        z-index: 3;
     }
 }
 
@@ -492,6 +1819,71 @@ body {
     font-size: 14px;
     text-align: center;
     padding: 2rem;
+}
+
+/* ============================================
+   TIMELINE - Scroll-linked Animations
+   ============================================ */
+
+.timeline-container {
+    position: relative;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 2rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+        to bottom,
+        var(--color-primary) var(--timeline-progress, 0%),
+        rgba(255, 255, 255, 0.1) var(--timeline-progress, 0%)
+    );
+    transition: --timeline-progress 0.3s ease-out;
+}
+
+@media (min-width: 768px) {
+    .timeline-line {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.timeline-item {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+}
+
+.timeline-item:nth-child(even) {
+    transform: translateX(20px);
+}
+
+.timeline-item--visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.timeline-dot {
+    transform: scale(0);
+    transition: transform 0.4s var(--ease-out-expo) 0.2s;
+}
+
+.timeline-item--visible .timeline-dot {
+    transform: scale(1);
+}
+
+/* Motion preference support for timeline */
+@media (prefers-reduced-motion: reduce) {
+    .timeline-item {
+        opacity: 1;
+        transform: none;
+    }
+
+    .timeline-dot {
+        transform: scale(1);
+    }
 }
 
 /* ============================================
@@ -594,6 +1986,20 @@ body {
     max-height: calc(90vh - 100px);
 }
 
+/* Hide browser default validation tooltips */
+.form__input:invalid,
+.form__select:invalid,
+.form__textarea:invalid {
+    box-shadow: none;
+}
+
+/* Hide browser validation message */
+.form__input::-webkit-validation-bubble-message,
+.form__select::-webkit-validation-bubble-message,
+.form__textarea::-webkit-validation-bubble-message {
+    display: none;
+}
+
 .form__grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -638,6 +2044,16 @@ body {
     color: var(--color-text-secondary);
     font-size: 1.125rem;
     pointer-events: none;
+}
+
+/* Hide icons only in regular text inputs (keep for select and textarea) */
+.form__input-wrapper:has(.form__input) .form__icon {
+    display: none;
+}
+
+/* Remove left padding for inputs without icons */
+.form__input-wrapper:has(.form__input) .form__input {
+    padding-left: 0.875rem;
 }
 
 .form__input,
@@ -1019,6 +2435,36 @@ body {
     gap: 0.75rem;
 }
 
+/* Adjust FAB position when sticky CTA is visible */
+body.has-sticky-cta .fab-container {
+    bottom: 5rem;
+}
+
+/* Mobile FAB adjustments */
+@media (max-width: 640px) {
+    .fab-container {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    /* Hide FAB when sticky CTA is visible to prevent overlap */
+    body.has-sticky-cta .fab-container {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+    }
+
+    .fab {
+        width: 52px;
+        height: 52px;
+    }
+
+    .fab__icon {
+        font-size: 1.25rem;
+    }
+}
+
 .fab {
     width: 56px;
     height: 56px;
@@ -1291,7 +2737,26 @@ body {
 }
 
 .toast--out {
-    animation: toastOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: toastOut var(--transition-base) var(--ease-out-expo) forwards;
+}
+
+/* Reduced motion variant for toast */
+@media (prefers-reduced-motion: reduce) {
+    .toast {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .toast--out {
+        animation: toastOutReduced 0.01ms forwards;
+    }
+
+    @keyframes toastOutReduced {
+        to {
+            opacity: 0;
+        }
+    }
 }
 
 @keyframes toastOut {
@@ -1610,7 +3075,7 @@ html {
     outline-offset: 2px;
 }
 
-/* Reduced motion preference */
+/* Reduced motion preference - Complete Coverage */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -1623,8 +3088,19 @@ html {
 
     .skeleton,
     .shimmer,
-    .page-loader__spinner {
+    .page-loader__spinner,
+    .img-loading,
+    .loading-skeleton {
         animation: none !important;
+    }
+
+    /* Ensure visibility for reduced motion */
+    .page:not(.active) {
+        opacity: 0;
+    }
+
+    .page.active {
+        opacity: 1;
     }
 }
 
