@@ -54,6 +54,15 @@ body {
     overflow-x: hidden;
 }
 
+/* Lock scroll for iOS app-like pages */
+html.ios-app-mode {
+    overflow: hidden !important;
+}
+
+body.ios-app-mode {
+    overflow: hidden !important;
+}
+
 /* Selection */
 ::selection {
     background-color: var(--color-primary);
@@ -173,6 +182,21 @@ body {
 
 .animate-fade-in-up {
     animation: fadeInUp 0.6s var(--ease-out-expo) forwards;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-down {
+    animation: fadeInDown 0.6s var(--ease-out-expo) forwards;
 }
 
 /* Stagger animation delays for card grids */
@@ -760,85 +784,6 @@ body:has(.sticky-summary.visible) #main-content {
     .exit-modal__buttons .btn {
         width: 100%;
     }
-}
-
-/* 15. Social Proof Notifications */
-.social-proof {
-    position: fixed;
-    bottom: 6rem;
-    right: 1.5rem;
-    z-index: 75;
-    max-width: 320px;
-}
-
-.social-proof__item {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 1rem;
-    padding: 1rem 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-               fadeOut 0.5s ease 8s forwards;
-    margin-bottom: 0.75rem;
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
-
-.social-proof__avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-primary), #ff8c42);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    color: white;
-    font-size: 0.875rem;
-    flex-shrink: 0;
-}
-
-.social-proof__content {
-    flex: 1;
-    min-width: 0;
-}
-
-.social-proof__name {
-    font-weight: 600;
-    color: white;
-    font-size: 0.875rem;
-    margin-bottom: 0.125rem;
-}
-
-.social-proof__action {
-    color: var(--color-text-secondary);
-    font-size: 0.75rem;
-}
-
-.social-proof__time {
-    color: var(--color-primary);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    margin-top: 0.25rem;
 }
 
 /* 16. Trust Badges Section */
@@ -1475,12 +1420,19 @@ body:has(.sticky-summary.visible) #main-content {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.25rem;
+    gap: 0.75rem;
     border-radius: 1rem;
     border: 1px solid var(--color-border);
     background-color: #221810;
-    padding: 2rem;
+    padding: 1.25rem 1rem;
     transition: all var(--transition-base);
+}
+
+@media (min-width: 640px) {
+    .industry-card__content {
+        gap: 1.25rem;
+        padding: 2rem;
+    }
 }
 
 .industry-card:hover .industry-card__content {
@@ -1518,6 +1470,17 @@ body:has(.sticky-summary.visible) #main-content {
     border: 1px solid rgba(255, 255, 255, 0.05);
     transition: all var(--transition-base);
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    min-height: 140px;
+}
+
+.tool-card p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tool-card:hover {
@@ -1530,19 +1493,42 @@ body:has(.sticky-summary.visible) #main-content {
    WORKFLOW - Improved Card-Based Design
    ============================================ */
 
-/* Container - CSS Grid for equal columns */
+/* Container - Horizontal scroll on mobile, grid on larger screens */
 #results-workflow-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    align-items: stretch; /* Ensure equal heights */
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 0.5rem;
 }
 
-/* Tablet: 2 columns */
+#results-workflow-container::-webkit-scrollbar {
+    display: none;
+}
+
+#results-workflow-container > * {
+    flex: 0 0 85%;
+    min-width: 260px;
+    max-width: 320px;
+    scroll-snap-align: start;
+}
+
+/* Tablet: 2 columns grid */
 @media (min-width: 640px) {
     #results-workflow-container {
+        display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
+        gap: 1.5rem;
+        overflow-x: visible;
+    }
+
+    #results-workflow-container > * {
+        flex: none;
+        min-width: 0;
+        max-width: none;
     }
 }
 
@@ -1550,7 +1536,7 @@ body:has(.sticky-summary.visible) #main-content {
 @media (min-width: 1024px) {
     #results-workflow-container {
         grid-template-columns: repeat(3, 1fr);
-        gap: 2.5rem;
+        gap: 2rem;
     }
 }
 
@@ -1559,13 +1545,20 @@ body:has(.sticky-summary.visible) #main-content {
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    padding: 1rem;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 1rem;
     transition: all var(--transition-base);
     height: 100%;
-    min-height: 280px;
+    min-height: 200px;
+}
+
+@media (min-width: 640px) {
+    .workflow-step {
+        padding: 1.5rem;
+        min-height: 280px;
+    }
 }
 
 .workflow-step:hover {
@@ -1636,6 +1629,13 @@ body:has(.sticky-summary.visible) #main-content {
     align-self: flex-start;
 }
 
+@media (max-width: 640px) {
+    .workflow-step__tools {
+        gap: 0.375rem;
+        padding-top: 0.75rem;
+    }
+}
+
 /* Tool Tags - Visual Hierarchy */
 .workflow-step .tag {
     font-size: 0.6875rem;
@@ -1648,6 +1648,13 @@ body:has(.sticky-summary.visible) #main-content {
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.7);
     transition: all var(--transition-fast);
+}
+
+@media (max-width: 640px) {
+    .workflow-step .tag {
+        font-size: 0.625rem;
+        padding: 0.25rem 0.5rem;
+    }
 }
 
 .workflow-step .tag:hover {
@@ -1750,44 +1757,8 @@ body:has(.sticky-summary.visible) #main-content {
 }
 
 @media (min-width: 1024px) {
+    /* Hide connector arrows on desktop */
     .workflow-step__connector {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: 50%;
-        right: -2.25rem;
-        width: 2rem;
-        height: 2rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        transform: translateY(-50%);
-        z-index: 2;
-        transition: all var(--transition-base);
-    }
-
-    /* Arrow icon using pseudo-element */
-    .workflow-step__connector::before {
-        content: '→';
-        font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.4);
-        transition: all var(--transition-base);
-    }
-
-    /* Hover effect on card affects connector */
-    .workflow-step:hover .workflow-step__connector {
-        background: rgba(236, 109, 19, 0.1);
-        border-color: rgba(236, 109, 19, 0.3);
-    }
-
-    .workflow-step:hover .workflow-step__connector::before {
-        color: var(--color-primary);
-        transform: translateX(2px);
-    }
-
-    /* Hide connector for last item in row (3rd item) */
-    .workflow-step:nth-child(3n) .workflow-step__connector {
         display: none;
     }
 }
@@ -1822,42 +1793,20 @@ body:has(.sticky-summary.visible) #main-content {
     }
 }
 
-/* Mobile: Vertical connector */
+/* Mobile: Hide vertical connector */
 @media (max-width: 639px) {
     .workflow-step {
         min-height: auto;
     }
 
     .workflow-step:not(:last-child) {
-        margin-bottom: 1.5rem;
+        margin-bottom: 0;
     }
 
-    .workflow-step:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        bottom: -1.5rem;
-        left: 1.875rem;
-        width: 1.5rem;
-        height: 1.5rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2;
-    }
-
+    /* Hide connector circle and arrow on mobile */
+    .workflow-step:not(:last-child)::after,
     .workflow-step:not(:last-child)::before {
-        content: '↓';
-        position: absolute;
-        bottom: -1.4rem;
-        left: 1.875rem;
-        width: 1.5rem;
-        text-align: center;
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.4);
-        z-index: 3;
+        display: none !important;
     }
 }
 
@@ -3405,3 +3354,1392 @@ html {
         display: none;
     }
 }
+
+/* ============================================
+   iOS APP-LIKE VIEWPORT LAYOUT SYSTEM
+   ============================================ */
+
+/* Viewport Layout Custom Properties */
+:root {
+    --nav-height: 56px;
+    --bottom-bar-height: 80px;
+    --bottom-bar-height-mobile: 120px;
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-left: env(safe-area-inset-left, 0px);
+    --safe-area-right: env(safe-area-inset-right, 0px);
+}
+
+/* Page Viewport Layout - iOS App Style */
+.page-viewport {
+    height: 100svh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+    padding-top: var(--nav-height);
+}
+
+/* Prevent body scroll when in viewport mode */
+body:has(.page-viewport.active) {
+    overflow: hidden;
+    height: 100svh;
+}
+
+html:has(.page-viewport.active) {
+    overflow: hidden;
+    height: 100svh;
+}
+
+/* Ensure page-viewport is visible when active - Override base .page styles */
+.page.active.page-viewport,
+#page-home.active,
+#page-services.active,
+#page-results.active {
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    width: 100% !important;
+}
+
+/* CSS fallback for direct hash navigation - hide home when other page is targeted */
+:root:has(#page-services.active) #page-home:not(.active),
+:root:has(#page-results.active) #page-home:not(.active) {
+    display: none !important;
+}
+
+/* Hide inactive pages explicitly */
+#page-home:not(.active),
+#page-services:not(.active),
+#page-results:not(.active) {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Show target page directly via CSS (fallback if JS Router fails) */
+#page-services.active,
+#page-results.active {
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+    height: 100svh !important;
+}
+
+/* Force child elements to be visible when page is active */
+.page.active .page-content,
+.page.active .page-main,
+.page:target .page-content,
+.page:target .page-main {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Page Content Container */
+.page-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Main Content Area - Scrollable if needed but designed to fit */
+.page-main {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    padding-bottom: var(--bottom-bar-height);
+}
+
+@media (max-width: 640px) {
+    .page-main {
+        padding-bottom: var(--bottom-bar-height-mobile);
+    }
+}
+
+/* Allow internal scroll for specific sections */
+.page-main--scrollable {
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding-top: 1rem;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Results page scroll container */
+.results-page-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.results-scroll-container {
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Override overflow hidden for results page */
+#page-results.active .results-page-content {
+    overflow: hidden;
+}
+
+/* Responsive Typography with clamp() */
+.headline-responsive {
+    font-size: clamp(1.25rem, 4vw + 0.5rem, 3rem);
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+@media (max-width: 640px) {
+    .headline-responsive {
+        font-size: 1.5rem;
+        line-height: 1.25;
+    }
+}
+
+.subheadline-responsive {
+    font-size: clamp(0.875rem, 2vw + 0.5rem, 1.5rem);
+    line-height: 1.4;
+}
+
+/* Compact Section Spacing */
+.section-compact {
+    padding: 1rem 0;
+}
+
+.section-compact--xs {
+    padding: 0.5rem 0;
+}
+
+/* Responsive Container */
+.container-viewport {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .container-viewport {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-viewport {
+        padding: 0 2rem;
+    }
+}
+
+/* Flex utilities for viewport layouts */
+.flex-viewport {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.flex-viewport-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Grid utilities for viewport layouts */
+.grid-viewport-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .grid-viewport-3 {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* Responsive visibility based on viewport height */
+.hide-on-short-viewport {
+    display: block;
+}
+
+.show-on-short-viewport {
+    display: none;
+}
+
+@media (max-height: 700px) {
+    .hide-on-short-viewport {
+        display: none !important;
+    }
+
+    .show-on-short-viewport {
+        display: block !important;
+    }
+}
+
+/* Very short viewport (landscape phones) - Allow scroll */
+@media (max-height: 500px) {
+    .page-viewport {
+        height: auto;
+        min-height: 100svh;
+        overflow: visible;
+    }
+
+    .page-content {
+        height: auto;
+        min-height: calc(100svh - var(--nav-height) - var(--bottom-bar-height));
+    }
+
+    .page-main {
+        overflow: visible;
+    }
+}
+
+/* ============================================
+   BOTTOM ACTION BAR - iOS App Style
+   ============================================ */
+
+.bottom-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(24, 20, 17, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1rem 1.5rem;
+    padding-bottom: calc(1rem + var(--safe-area-bottom));
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Desktop: inline buttons */
+@media (min-width: 640px) {
+    .bottom-action-bar {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2rem;
+        padding-bottom: calc(1rem + var(--safe-area-bottom));
+        position: relative;
+    }
+
+    .bottom-action-bar .page-dots {
+        position: absolute;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+/* Action Bar Content Container */
+.bottom-action-bar__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+    .bottom-action-bar__content {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Action Bar Buttons */
+.bottom-action-bar__btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    min-height: 48px;
+}
+
+.bottom-action-bar__btn--primary {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+}
+
+.bottom-action-bar__btn--primary:hover {
+    background: #d55f0f;
+    transform: scale(1.02);
+}
+
+.bottom-action-bar__btn--secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bottom-action-bar__btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Buttons Container */
+.bottom-action-bar__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .bottom-action-bar__buttons {
+        gap: 0.5rem;
+    }
+}
+
+/* Page Indicator Dots */
+.page-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.page-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.page-dot--active,
+.page-dot.active {
+    background: var(--color-primary);
+    transform: scale(1.25);
+}
+
+.page-dot:hover:not(.page-dot--active):not(.active) {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================
+   CAROUSEL / SLIDER COMPONENT
+   ============================================ */
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 1rem;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel__item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    width: 100%;
+}
+
+/* Show partial next item on mobile */
+@media (max-width: 640px) {
+    .carousel__item {
+        width: 85%;
+    }
+}
+
+/* Show 2 items on tablet */
+@media (min-width: 640px) and (max-width: 1023px) {
+    .carousel__item {
+        width: 45%;
+    }
+}
+
+/* Show 3 items on desktop */
+@media (min-width: 1024px) {
+    .carousel__item {
+        width: 30%;
+    }
+}
+
+/* Carousel Navigation Dots */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+}
+
+@media (max-width: 640px) {
+    /* Only hide carousel-dots on results page */
+    #page-results .carousel-dots {
+        display: none;
+    }
+}
+
+/* Swipe hint indicator */
+.swipe-hint {
+    font-size: 0.65rem;
+    color: var(--color-primary);
+    margin-left: 0.5rem;
+    animation: swipe-hint 1.5s ease-in-out infinite;
+    font-weight: 500;
+}
+
+/* Scroll Arrow Hint for Mobile */
+.scroll-arrow-hint {
+    position: absolute;
+    right: 0.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(to right, transparent, var(--color-surface-dark) 30%);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0.25rem;
+}
+
+.scroll-arrow-hint .material-symbols-outlined {
+    font-size: 1.25rem;
+    color: var(--color-primary);
+    animation: bounce-right 1s ease-in-out infinite;
+}
+
+@keyframes bounce-right {
+    0%, 100% { transform: translateX(0); opacity: 0.7; }
+    50% { transform: translateX(4px); opacity: 1; }
+}
+
+@keyframes swipe-hint {
+    0%, 100% { opacity: 0.6; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(4px); }
+}
+
+.carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.carousel-dot--active {
+    background: var(--color-primary);
+    width: 24px;
+    border-radius: 4px;
+}
+
+.carousel-dot:hover:not(.carousel-dot--active) {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Carousel Navigation Arrows */
+.carousel-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.carousel-arrow {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.carousel-arrow:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.carousel-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Horizontal Scroll Container (for tools) */
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.horizontal-scroll__item {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+}
+
+/* Tools Horizontal Scroll - Results Page */
+.tools-horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0.25rem 0;
+    margin: 0 -0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.tools-horizontal-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.tools-scroll-track {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.tools-scroll-track > * {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 180px;
+    min-width: 180px;
+}
+
+@media (min-width: 640px) {
+    .tools-scroll-track > * {
+        width: 200px;
+        min-width: 200px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .tools-horizontal-scroll {
+        overflow-x: visible;
+    }
+
+    .tools-scroll-track {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+
+    .tools-scroll-track > * {
+        width: auto;
+        min-width: 0;
+    }
+}
+
+/* Tools Section - Ensure visibility */
+.tools-horizontal-scroll {
+    padding-bottom: 0.5rem;
+}
+
+/* Results page - desktop fit viewport */
+@media (min-width: 641px) {
+    #page-results .results-scroll-container {
+        overflow: hidden;
+    }
+
+    #page-results .grid {
+        flex: 1;
+        min-height: 0;
+    }
+
+    /* Workflow section fills available space */
+    #page-results section[aria-labelledby="workflow-heading"] {
+        flex: 1;
+        min-height: 0;
+        max-height: 100%;
+    }
+
+    /* Stats container */
+    #page-results #results-stats-container {
+        flex: 1;
+        min-height: 0;
+    }
+
+    /* Tools section compact */
+    #page-results section[aria-labelledby="tools-heading"] {
+        flex-shrink: 0;
+    }
+}
+
+/* Results page - mobile optimizations - BALANCED COMPACT */
+@media (max-width: 640px) {
+    /* Allow minimal scroll if needed */
+    #page-results .results-scroll-container {
+        overflow-y: auto;
+        height: calc(100svh - var(--nav-height) - var(--bottom-bar-height-mobile, 120px));
+    }
+
+    /* Title */
+    #page-results .headline-responsive {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Grid gaps */
+    #page-results .grid {
+        gap: 0.5rem !important;
+    }
+
+    /* Workflow section - taller */
+    #page-results section[aria-labelledby="workflow-heading"] {
+        padding: 0.5rem;
+        position: relative;
+        min-height: 360px;
+    }
+
+    /* Scroll hint - fade gradient on right */
+    #page-results section[aria-labelledby="workflow-heading"]::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 2.5rem;
+        bottom: 0.5rem;
+        width: 40px;
+        background: linear-gradient(to right, transparent, var(--color-surface-dark));
+        pointer-events: none;
+        z-index: 20;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    /* Hide fade when scrolled to end */
+    #page-results section[aria-labelledby="workflow-heading"].scroll-end::after {
+        opacity: 0;
+    }
+
+    #page-results section[aria-labelledby="workflow-heading"] h3 {
+        font-size: 0.8rem;
+    }
+
+    /* Workflow cards - show one at a time, compact */
+    #page-results #results-workflow-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 0.5rem;
+    }
+
+    #page-results #results-workflow-container > * {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    #page-results .workflow-step {
+        padding: 0.5rem;
+        min-height: auto;
+    }
+
+    #page-results .workflow-step .w-10,
+    #page-results .workflow-step .w-12 {
+        width: 2rem !important;
+        height: 2rem !important;
+    }
+
+    #page-results .workflow-step .material-symbols-outlined {
+        font-size: 1rem !important;
+    }
+
+    #page-results .workflow-step h4 {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    #page-results .workflow-step p {
+        font-size: 0.85rem;
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+    }
+
+    #page-results .workflow-step .tag {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    #page-results .workflow-step__tools {
+        padding-top: 0.5rem;
+        gap: 0.375rem;
+    }
+
+    /* Hide step badge on mobile */
+    #page-results .workflow-step .text-xs.font-semibold {
+        font-size: 0.7rem;
+        margin-bottom: 0.25rem;
+    }
+
+    /* Stats section - taller */
+    #page-results #results-stats-container {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 0.5rem;
+        min-height: 100px;
+    }
+
+    #page-results #results-stats-container > div {
+        padding: 0.625rem !important;
+    }
+
+    #page-results #results-stat-efficiency {
+        font-size: 2rem !important;
+    }
+
+    #page-results #results-stat-desc {
+        font-size: 0.65rem !important;
+        line-height: 1.3;
+    }
+
+    #page-results #results-stats-container h4 {
+        font-size: 0.6rem !important;
+        margin-bottom: 0.25rem;
+    }
+
+    /* Tools section - improved mobile UX */
+    #page-results section[aria-labelledby="tools-heading"] {
+        margin-top: 0.5rem;
+        position: relative;
+    }
+
+    #page-results section[aria-labelledby="tools-heading"] h3 {
+        font-size: 0.8rem;
+    }
+
+    /* Fade hint on right */
+    #page-results section[aria-labelledby="tools-heading"]::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 2rem;
+        bottom: 0;
+        width: 20px;
+        background: linear-gradient(to right, transparent, var(--color-background-dark));
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    #page-results .tools-scroll-track {
+        gap: 0.5rem;
+        padding-right: 1rem;
+    }
+
+    #page-results .tools-scroll-track > * {
+        width: 64px !important;
+        min-width: 64px !important;
+    }
+
+    /* Tool card - centered icon + name only */
+    #page-results .tool-card {
+        padding: 0.375rem;
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.25rem;
+        position: relative;
+    }
+
+    /* Hide tag and header row */
+    #page-results .tool-card .tag,
+    #page-results .tool-card .flex.items-start.justify-between {
+        display: none !important;
+    }
+
+    /* Icon centered and larger */
+    #page-results .tool-card .w-12 {
+        width: 2rem !important;
+        height: 2rem !important;
+        margin: 0 auto;
+        border-radius: 0.5rem !important;
+    }
+
+    #page-results .tool-card .material-symbols-outlined {
+        font-size: 1rem !important;
+    }
+
+    /* Tool name */
+    #page-results .tool-card h4 {
+        font-size: 0.6rem;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        line-height: 1.2;
+    }
+
+    /* Hide description */
+    #page-results .tool-card p {
+        display: none;
+    }
+}
+
+/* ============================================
+   MODAL / DRAWER COMPONENT - iOS Style
+   ============================================ */
+
+/* Full Modal Overlay */
+.ios-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.ios-modal--active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ios-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.ios-modal__content {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    max-height: 85vh;
+    margin: 1rem;
+    background: var(--color-surface-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-modal--active .ios-modal__content {
+    transform: scale(1) translateY(0);
+}
+
+.ios-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ios-modal__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+}
+
+.ios-modal__close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.ios-modal__close:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.ios-modal__body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(85vh - 120px);
+}
+
+/* Bottom Drawer - Mobile */
+.ios-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.ios-drawer--active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ios-drawer__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.ios-drawer__content {
+    position: relative;
+    width: 100%;
+    max-height: 90vh;
+    background: var(--color-surface-dark);
+    border-radius: 1.5rem 1.5rem 0 0;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding-bottom: var(--safe-area-bottom);
+}
+
+.ios-drawer--active .ios-drawer__content {
+    transform: translateY(0);
+}
+
+/* Drawer Handle */
+.ios-drawer__handle {
+    width: 36px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    margin: 0.75rem auto;
+}
+
+.ios-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ios-drawer__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+}
+
+.ios-drawer__close {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.ios-drawer__close:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.ios-drawer__body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(90vh - 100px);
+}
+
+/* Animation keyframes for modal */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes drawerSlideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   HEIGHT-RESPONSIVE RULES
+   ============================================ */
+
+/* Very short viewport (landscape phones) */
+@media (max-height: 500px) {
+    .hide-on-landscape {
+        display: none !important;
+    }
+
+    .bottom-action-bar {
+        padding: 0.75rem 1rem;
+    }
+
+    .bottom-action-bar__btn {
+        padding: 0.625rem 1rem;
+        min-height: 40px;
+    }
+
+    .page-dots {
+        padding: 0.25rem 0;
+    }
+}
+
+/* Short viewport (small phones) */
+@media (max-height: 700px) {
+    .hide-on-short {
+        display: none !important;
+    }
+
+    .section-compact {
+        padding: 0.5rem 0;
+    }
+
+    .headline-responsive {
+        font-size: clamp(1.5rem, 4vw + 0.5rem, 3rem);
+    }
+
+    .subheadline-responsive {
+        font-size: clamp(0.75rem, 1.5vw + 0.5rem, 1rem);
+    }
+}
+
+/* Medium viewport */
+@media (min-height: 700px) and (max-height: 900px) {
+    .show-on-medium-viewport {
+        display: block;
+    }
+}
+
+/* Tall viewport (normal phones and tablets) */
+@media (min-height: 900px) {
+    .show-on-tall-viewport {
+        display: block;
+    }
+
+    .section-compact {
+        padding: 1.5rem 0;
+    }
+}
+
+/* Print styles for new components */
+@media print {
+    .bottom-action-bar,
+    .ios-modal,
+    .ios-drawer,
+    .carousel-dots,
+    .page-dots {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   UX/UI IMPROVEMENTS - Mobile Optimizations
+   ============================================ */
+
+/* 1. Fix Page Dots size on mobile - They appear too large */
+@media (max-width: 640px) {
+    .page-dots {
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+    }
+
+    .page-dot {
+        width: 8px !important;
+        height: 8px !important;
+        min-width: 8px !important;
+        min-height: 8px !important;
+        border-radius: 50% !important;
+    }
+
+    .page-dot.active,
+    .page-dot--active {
+        width: 20px !important;
+        height: 8px !important;
+        min-width: 20px !important;
+        border-radius: 4px !important;
+        transform: none;
+    }
+}
+
+/* 2. Hide FAB on mobile to avoid blocking content */
+@media (max-width: 640px) {
+    .fab-container {
+        display: none !important;
+    }
+}
+
+/* Show FAB only on desktop */
+@media (min-width: 641px) {
+    .fab-container {
+        display: flex;
+    }
+}
+
+/* 3. Show badge on mobile */
+.hero-badge-mobile {
+    display: none;
+}
+
+@media (max-width: 640px) {
+    .hero-badge-mobile {
+        display: inline-flex;
+    }
+}
+
+/* 4. Ensure trust indicator visible on mobile */
+@media (max-width: 640px) {
+    .trust-indicator-compact {
+        font-size: 0.75rem;
+        padding: 0.25rem 0;
+    }
+
+    .trust-indicator-compact .stars {
+        font-size: 0.875rem;
+    }
+}
+
+/* 5. Optimize stats bar on mobile - prevent FAB overlap */
+@media (max-width: 640px) {
+    .stats-bar-compact {
+        padding-right: 60px; /* Space for FAB */
+    }
+}
+
+/* 6. Better spacing for mobile content */
+@media (max-width: 640px) {
+    .page-main {
+        padding: 0.5rem 1rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .headline-responsive {
+        font-size: clamp(1.5rem, 6vw, 2.25rem);
+        line-height: 1.15;
+        margin-bottom: 0.5rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+
+    .subheadline-responsive {
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    /* Center container content */
+    .container-viewport {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Scrollable page main on services page */
+    .page-main--scrollable .container-viewport {
+        justify-content: flex-start;
+    }
+
+    /* Stats bar compact on mobile */
+    .stats-bar-compact {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 0.75rem;
+    }
+
+    .stats-bar-compact .grid {
+        gap: 0.5rem;
+    }
+
+    .stats-bar-compact > div > div {
+        padding: 0.5rem;
+    }
+
+    /* Industry cards horizontal layout on mobile */
+    .industry-card__content {
+        flex-direction: row;
+        gap: 0.75rem;
+        padding: 1rem;
+        justify-content: flex-start;
+    }
+
+    .industry-card__content > div:last-child {
+        text-align: left;
+    }
+
+    .industry-card__check {
+        top: 50%;
+        right: 0.75rem;
+        transform: translateY(-50%);
+    }
+}
+
+/* 7. Bottom action bar improvements */
+@media (max-width: 640px) {
+    .bottom-action-bar__content {
+        gap: 0.5rem;
+    }
+
+    .bottom-action-bar__buttons {
+        gap: 0.5rem;
+    }
+
+    .bottom-action-bar__btn {
+        font-size: 0.875rem;
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* 9. Ensure visible content hierarchy on short screens */
+@media (max-height: 500px) {
+    .stats-bar-compact {
+        display: none;
+    }
+
+    .hero-badge,
+    .hero-badge-mobile {
+        display: none;
+    }
+
+    .page-main {
+        justify-content: center;
+    }
+
+    .hide-on-very-short {
+        display: none !important;
+    }
+}
+
+/* Very short screens - hide more elements */
+@media (max-height: 450px) {
+    .hide-on-very-short {
+        display: none !important;
+    }
+
+    .trust-indicator-compact {
+        display: none !important;
+    }
+
+    .subheadline-responsive {
+        display: none !important;
+    }
+}
+
+/* Very small width screens */
+@media (max-width: 380px) {
+    .stats-bar-compact .grid {
+        gap: 0.25rem;
+    }
+
+    .stats-bar-compact p {
+        font-size: 8px;
+    }
+}
+
+/* 10. Add subtle visual interest with gradient overlay */
+/* Disabled - was causing display issues
+.page-viewport::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: radial-gradient(ellipse at 50% 0%, rgba(236, 109, 19, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.page-viewport > * {
+    position: relative;
+    z-index: 1;
+}
+*/

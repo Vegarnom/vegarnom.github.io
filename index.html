@@ -109,12 +109,12 @@
                 <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium cursor-pointer py-3 px-2" data-section="home" onclick="navigateTo('home'); return false;" href="#home">Trang chủ</a>
                 <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium cursor-pointer py-3 px-2" data-section="services" onclick="navigateTo('services'); return false;" href="#services">Dịch vụ</a>
                 <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium cursor-pointer py-3 px-2" data-section="results" onclick="navigateTo('results'); return false;" href="#results">Giải pháp</a>
-                <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium py-3 px-2" href="mailto:contact@aivan.vn">Liên hệ</a>
+                <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium py-3 px-2" href="mailto:danhngocphh@gmail.com">Liên hệ</a>
             </div>
 
             <!-- CTA -->
             <div class="flex items-center gap-4">
-                <button class="bg-primary hover:bg-orange-600 text-white text-xs font-medium py-1.5 px-4 rounded-full transition-all duration-300 transform hover:scale-105" onclick="navigateTo('services')" aria-label="Bắt đầu tư vấn">
+                <button class="bg-primary hover:bg-orange-600 text-white text-[10px] sm:text-xs font-medium py-1 sm:py-1.5 px-2.5 sm:px-4 rounded-full transition-all duration-300 transform hover:scale-105" onclick="navigateTo('services')" aria-label="Bắt đầu tư vấn">
                     Bắt đầu tư vấn
                 </button>
             </div>
@@ -122,163 +122,102 @@
     </nav>
 
     <!-- PAGE 1: HOME -->
-    <div id="page-home" class="page active" role="main" aria-label="Trang chủ">
-        <main id="main-content" class="flex-grow pt-20">
-            <!-- Hero Section -->
-            <section class="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 py-20 overflow-hidden" aria-labelledby="hero-title">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-hero-glow pointer-events-none"></div>
-                <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center gap-6 animate-fade-in-up">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-4">
+    <div id="page-home" class="page active page-viewport" role="main" aria-label="Trang chủ">
+        <!-- Main Content Area -->
+        <div class="page-content">
+            <main id="main-content" class="page-main flex-viewport-center">
+                <div class="container-viewport text-center">
+                    <!-- Badge - Always show on mobile, hide on very short -->
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-3 sm:mb-4 hide-on-very-short">
                         <span class="w-2 h-2 rounded-full bg-accent-red animate-pulse"></span>
-                        <span class="text-xs font-medium text-white tracking-wide uppercase">Công nghệ AI Mới Nhất 2026</span>
+                        <span class="text-xs font-medium text-white tracking-wide uppercase">AI 2026</span>
                     </div>
-                    <h1 id="hero-title" class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white leading-[1.1]">
+
+                    <!-- Hero Headline - Responsive -->
+                    <h1 id="hero-title" class="headline-responsive text-white tracking-tighter mb-2 sm:mb-4">
                         Giải pháp AI<br/>
                         <span class="text-gradient">cho doanh nghiệp.</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-text-secondary max-w-2xl font-medium leading-relaxed mt-2">
-                        Chiến lược trí tuệ nhân tạo được thiết kế riêng, nâng tầm hiệu suất và tối ưu hóa vận hành.
+
+                    <!-- Subheadline - Hide on very small screens -->
+                    <p class="subheadline-responsive text-text-secondary max-w-lg mx-auto mb-3 sm:mb-4 sm:max-w-2xl px-4">
+                        Chiến lược AI được thiết kế riêng, nâng tầm hiệu suất.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                        <button onclick="navigateTo('services')" class="flex items-center justify-center gap-2 bg-primary hover:bg-orange-600 text-white text-base font-medium h-12 px-8 rounded-full transition-all hover:scale-105">
-                            <span>Khám phá ngay</span>
-                            <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
-                        </button>
-                        <button class="flex items-center justify-center gap-2 text-primary hover:text-white text-base font-medium h-12 px-8 transition-colors group" onclick="showComingSoon('Xem demo')">
-                            <span>Xem demo</span>
-                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" aria-hidden="true">play_circle</span>
-                        </button>
-                    </div>
-                </div>
 
-                <!-- Hero Image -->
-                <div class="relative w-full max-w-[1000px] mt-16 aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-primary/10 img-container">
-                    <img
-                        alt="Mạng lưới kết nối toàn cầu với các đường line sáng trên nền đen, trái đất nhìn từ không gian với hệ thống mạng neural"
-                        class="w-full h-full object-cover"
-                        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80"
-                        srcset="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80 600w,
-                                https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&q=80 900w,
-                                https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80 1200w"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
-                        width="1200"
-                        height="675"
-                        loading="eager"
-                        decoding="async"
-                        fetchpriority="high"
-                        data-fallback="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 675'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23181411'/%3E%3Cstop offset='50%25' stop-color='%23ec6d13'/%3E%3Cstop offset='100%25' stop-color='%23f97316'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='%23181411' width='1200' height='675'/%3E%3Crect x='100' y='150' width='300' height='300' rx='20' fill='url(%23g)' opacity='0.8'/%3E%3Crect x='500' y='100' width='200' height='400' rx='30' fill='%23ec6d13' opacity='0.6'/%3E%3Crect x='800' y='200' width='250' height='250' rx='40' fill='%23f97316' opacity='0.7'/%3E%3C/svg%3E"
-                        onerror="ImageHandler.handleError(event)"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
-                </div>
-            </section>
-
-            <!-- Social Proof Section -->
-            <section id="social-proof" class="py-20 bg-background-dark border-t border-white/5" aria-labelledby="social-proof-heading">
-                <div class="max-w-[980px] mx-auto px-6">
-                    <!-- Stats -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                        <div class="text-center">
-                            <div class="text-4xl font-black text-primary mb-2">500+</div>
-                            <p class="text-text-secondary text-sm">Doanh nghiệp tin dùng</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-black text-primary mb-2">40%</div>
-                            <p class="text-text-secondary text-sm">Tăng hiệu suất TB</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-black text-primary mb-2">3</div>
-                            <p class="text-text-secondary text-sm">Tháng triển khai</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-4xl font-black text-primary mb-2">24/7</div>
-                            <p class="text-text-secondary text-sm">Hỗ trợ kỹ thuật</p>
+                    <!-- Stats Bar - Compact 3 columns -->
+                    <div class="stats-bar-compact mb-3 sm:mb-4 w-full px-4">
+                        <div class="grid grid-cols-3 gap-2 sm:gap-3 max-w-xs sm:max-w-lg mx-auto">
+                            <div class="bg-white/5 rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-white/5 text-center">
+                                <div class="text-lg sm:text-2xl font-black text-primary">10+</div>
+                                <p class="text-text-secondary text-[9px] sm:text-xs leading-tight">Công cụ AI</p>
+                            </div>
+                            <div class="bg-white/5 rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-white/5 text-center">
+                                <div class="text-lg sm:text-2xl font-black text-primary">3</div>
+                                <p class="text-text-secondary text-[9px] sm:text-xs leading-tight">Tháng</p>
+                            </div>
+                            <div class="bg-white/5 rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-white/5 text-center">
+                                <div class="text-lg sm:text-2xl font-black text-primary">24/7</div>
+                                <p class="text-text-secondary text-[9px] sm:text-xs leading-tight">Hỗ trợ</p>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Testimonials -->
-                    <div class="text-center mb-12">
-                        <h2 id="social-proof-heading" class="text-3xl font-bold text-white mb-4">Khách hàng nói gì về chúng tôi</h2>
+                    <!-- Trust Indicator - Compact -->
+                    <div class="trust-indicator-compact mb-2 sm:mb-3">
+                        <div class="flex items-center justify-center gap-2 sm:gap-3 text-xs">
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-primary text-sm sm:text-base">bolt</span>
+                                <span class="text-text-secondary text-[10px] sm:text-xs">Tiết kiệm 70% thời gian</span>
+                            </div>
+                            <span class="text-white/20">•</span>
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-primary text-sm sm:text-base">trending_up</span>
+                                <span class="text-text-secondary text-[10px] sm:text-xs">Tăng năng suất x3</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="testimonials-container">
-                        <!-- Testimonial 1 -->
-                        <article class="bg-surface rounded-2xl p-6 border border-white/5">
-                            <div class="flex items-center gap-1 mb-4">
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                            </div>
-                            <p class="text-white/80 mb-6 leading-relaxed">"Aivan giúp chúng tôi tự động hóa 70% quy trình chăm sóc khách hàng. Hiệu suất tăng rõ rệt chỉ sau 2 tháng."</p>
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-primary">person</span>
-                                </div>
-                                <div>
-                                    <p class="text-white font-medium">Nguyễn Văn A</p>
-                                    <p class="text-text-secondary text-sm">CEO, Công ty XYZ</p>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- Testimonial 2 -->
-                        <article class="bg-surface rounded-2xl p-6 border border-white/5">
-                            <div class="flex items-center gap-1 mb-4">
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                            </div>
-                            <p class="text-white/80 mb-6 leading-relaxed">"Đội ngũ tư vấn rất chuyên nghiệp. Họ hiểu rõ ngành y tế và đề xuất giải pháp phù hợp với bệnh viện của chúng tôi."</p>
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-primary">person</span>
-                                </div>
-                                <div>
-                                    <p class="text-white font-medium">Trần Thị B</p>
-                                    <p class="text-text-secondary text-sm">Giám đốc, BV ABC</p>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- Testimonial 3 -->
-                        <article class="bg-surface rounded-2xl p-6 border border-white/5">
-                            <div class="flex items-center gap-1 mb-4">
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                                <span class="material-symbols-outlined text-primary">star</span>
-                            </div>
-                            <p class="text-white/80 mb-6 leading-relaxed">"ROI vượt mong đợi. Chi phí đầu tư được hoàn vốn sau 3 tháng. Rất đáng để hợp tác lâu dài."</p>
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-primary">person</span>
-                                </div>
-                                <div>
-                                    <p class="text-white font-medium">Lê Văn C</p>
-                                    <p class="text-text-secondary text-sm">CTO, Fintech DEF</p>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-
-                    <!-- Partner Logos -->
-                    <div class="mt-16 pt-12 border-t border-white/5">
-                        <p class="text-center text-text-secondary text-sm mb-8">Được tin tưởng bởi các doanh nghiệp hàng đầu</p>
-                        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-50">
-                            <div class="h-8 w-24 bg-white/10 rounded flex items-center justify-center text-white/40 text-xs">LOGO 1</div>
-                            <div class="h-8 w-24 bg-white/10 rounded flex items-center justify-center text-white/40 text-xs">LOGO 2</div>
-                            <div class="h-8 w-24 bg-white/10 rounded flex items-center justify-center text-white/40 text-xs">LOGO 3</div>
-                            <div class="h-8 w-24 bg-white/10 rounded flex items-center justify-center text-white/40 text-xs">LOGO 4</div>
-                            <div class="h-8 w-24 bg-white/10 rounded flex items-center justify-center text-white/40 text-xs">LOGO 5</div>
+                    <!-- Quick Links to Modals - Hidden on mobile -->
+                    <div class="hidden sm:block section-compact--xs hide-on-short">
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <button onclick="IOSModalController.open('testimonials-modal')" class="text-xs text-text-secondary hover:text-white transition-colors underline underline-offset-2">
+                                Xem đánh giá
+                            </button>
+                            <span class="text-white/20">•</span>
+                            <button onclick="IOSModalController.open('comparison-modal')" class="text-xs text-text-secondary hover:text-white transition-colors underline underline-offset-2">
+                                So sánh AI
+                            </button>
+                            <span class="text-white/20">•</span>
+                            <button onclick="IOSModalController.open('timeline-modal')" class="text-xs text-text-secondary hover:text-white transition-colors underline underline-offset-2">
+                                Xem lộ trình
+                            </button>
                         </div>
                     </div>
                 </div>
-            </section>
+            </main>
+        </div>
+
+        <!-- Bottom Action Bar - Outside page-content for proper fixed positioning -->
+        <div class="bottom-action-bar">
+            <div class="bottom-action-bar__content">
+                <button onclick="navigateTo('services')" class="bottom-action-bar__btn bottom-action-bar__btn--primary">
+                    <span>Khám phá ngay</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </button>
+                <button onclick="showComingSoon('Xem demo')" class="bottom-action-bar__btn bottom-action-bar__btn--secondary">
+                    <span>Xem demo</span>
+                    <span class="material-symbols-outlined text-sm">play_circle</span>
+                </button>
+            </div>
+            <div class="page-dots">
+                <button class="page-dot page-dot--active" aria-label="Trang 1" data-page="home"></button>
+                <button class="page-dot" aria-label="Trang 2" data-page="services" onclick="navigateTo('services')"></button>
+                <button class="page-dot" aria-label="Trang 3" data-page="results" onclick="navigateTo('results')"></button>
+            </div>
+        </div>
+
+        <!-- Hidden Content - Original sections moved here for SEO -->
+        <div class="hidden" aria-hidden="true" id="home-hidden-content">
 
             <!-- Consulting Grid -->
             <section class="py-24 bg-background-dark relative" aria-labelledby="services-heading">
@@ -924,7 +863,7 @@
             <!-- Trust Badges Section -->
             <section class="trust-badges bg-surface border-t border-white/5" aria-labelledby="trust-heading">
                 <div class="max-w-[980px] mx-auto px-6 py-16">
-                    <p id="trust-heading" class="trust-badges__label text-center text-text-secondary text-sm mb-8">Được tin tưởng bởi 500+ doanh nghiệp</p>
+                    <p id="trust-heading" class="trust-badges__label text-center text-text-secondary text-sm mb-8">Cam kết chất lượng dịch vụ</p>
                     <div class="trust-badges__grid grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div class="trust-badge flex items-center justify-center gap-2 bg-surface-dark rounded-xl px-4 py-3 border border-white/5">
                             <span class="material-symbols-outlined text-primary">verified</span>
@@ -960,289 +899,420 @@
                     </div>
                 </div>
             </section>
-        </main>
+        </div><!-- End home-hidden-content -->
+
+        <!-- Testimonials Modal -->
+        <div id="testimonials-modal" class="ios-modal" role="dialog" aria-modal="true" aria-labelledby="testimonials-modal-title">
+            <div class="ios-modal__overlay" onclick="IOSModalController.close()"></div>
+            <div class="ios-modal__content">
+                <div class="ios-modal__header">
+                    <h2 id="testimonials-modal-title" class="ios-modal__title">Khách hàng nói gì</h2>
+                    <button class="ios-modal__close" onclick="IOSModalController.close()" aria-label="Đóng">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="ios-modal__body">
+                    <div class="space-y-4">
+                        <!-- Testimonial 1 -->
+                        <article class="bg-surface rounded-xl p-4 border border-white/5">
+                            <div class="flex items-center gap-1 mb-3">
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                            </div>
+                            <p class="text-white/80 text-sm mb-4">"Aivan giúp chúng tôi tự động hóa 70% quy trình. Hiệu suất tăng rõ rệt."</p>
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-primary text-sm">person</span>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">Nguyễn Văn A</p>
+                                    <p class="text-text-secondary text-xs">CEO, Công ty XYZ</p>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Testimonial 2 -->
+                        <article class="bg-surface rounded-xl p-4 border border-white/5">
+                            <div class="flex items-center gap-1 mb-3">
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                            </div>
+                            <p class="text-white/80 text-sm mb-4">"Đội ngũ rất chuyên nghiệp, đề xuất giải pháp phù hợp."</p>
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-primary text-sm">person</span>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">Trần Thị B</p>
+                                    <p class="text-text-secondary text-xs">Giám đốc, BV ABC</p>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Testimonial 3 -->
+                        <article class="bg-surface rounded-xl p-4 border border-white/5">
+                            <div class="flex items-center gap-1 mb-3">
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                                <span class="material-symbols-outlined text-primary text-sm">star</span>
+                            </div>
+                            <p class="text-white/80 text-sm mb-4">"ROI vượt mong đợi, hoàn vốn sau 3 tháng."</p>
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-primary text-sm">person</span>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">Lê Văn C</p>
+                                    <p class="text-text-secondary text-xs">CTO, Fintech DEF</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Modal -->
+        <div id="comparison-modal" class="ios-modal" role="dialog" aria-modal="true" aria-labelledby="comparison-modal-title">
+            <div class="ios-modal__overlay" onclick="IOSModalController.close()"></div>
+            <div class="ios-modal__content">
+                <div class="ios-modal__header">
+                    <h2 id="comparison-modal-title" class="ios-modal__title">So sánh: Có AI vs Không AI</h2>
+                    <button class="ios-modal__close" onclick="IOSModalController.close()" aria-label="Đóng">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="ios-modal__body">
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-3 gap-2 text-xs text-text-secondary border-b border-white/10 pb-2">
+                            <div>Tiêu chí</div>
+                            <div class="text-center">Không AI</div>
+                            <div class="text-center">Có AI</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-white/5">
+                            <div class="text-white">Tốc độ xử lý</div>
+                            <div class="text-center text-red-400">Chậm</div>
+                            <div class="text-center text-green-400">Nhanh 10x</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-white/5">
+                            <div class="text-white">Chi phí nhân sự</div>
+                            <div class="text-center text-red-400">Cao</div>
+                            <div class="text-center text-green-400">Giảm 40%</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-white/5">
+                            <div class="text-white">Độ chính xác</div>
+                            <div class="text-center text-red-400">85%</div>
+                            <div class="text-center text-green-400">98%</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-white/5">
+                            <div class="text-white">Hoạt động 24/7</div>
+                            <div class="text-center text-red-400">✗</div>
+                            <div class="text-center text-green-400">✓</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2">
+                            <div class="text-white">Khả năng mở rộng</div>
+                            <div class="text-center text-red-400">Hạn chế</div>
+                            <div class="text-center text-green-400">Không giới hạn</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Modal -->
+        <div id="timeline-modal" class="ios-modal" role="dialog" aria-modal="true" aria-labelledby="timeline-modal-title">
+            <div class="ios-modal__overlay" onclick="IOSModalController.close()"></div>
+            <div class="ios-modal__content">
+                <div class="ios-modal__header">
+                    <h2 id="timeline-modal-title" class="ios-modal__title">Lộ trình triển khai</h2>
+                    <button class="ios-modal__close" onclick="IOSModalController.close()" aria-label="Đóng">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="ios-modal__body">
+                    <div class="space-y-6">
+                        <!-- Step 1 -->
+                        <div class="flex gap-4">
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">1</div>
+                                <div class="w-0.5 h-full bg-primary/30 mt-2"></div>
+                            </div>
+                            <div class="flex-1 pb-6">
+                                <h3 class="text-white font-semibold mb-1">Tháng 1: Đánh giá & Lập kế hoạch</h3>
+                                <p class="text-text-secondary text-sm">Phân tích hiện trạng, xác định mục tiêu và xây dựng roadmap chi tiết.</p>
+                            </div>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="flex gap-4">
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary/60 flex items-center justify-center text-white font-bold">2</div>
+                                <div class="w-0.5 h-full bg-primary/30 mt-2"></div>
+                            </div>
+                            <div class="flex-1 pb-6">
+                                <h3 class="text-white font-semibold mb-1">Tháng 2: Triển khai Pilot</h3>
+                                <p class="text-text-secondary text-sm">Triển khai thử nghiệm với phạm vi nhỏ, đo lường và tối ưu.</p>
+                            </div>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="flex gap-4">
+                            <div class="flex flex-col items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary/40 flex items-center justify-center text-white font-bold">3</div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-white font-semibold mb-1">Tháng 3: Mở rộng & Tối ưu</h3>
+                                <p class="text-text-secondary text-sm">Mở rộng quy mô, training nhân sự và chuyển giao công nghệ.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- PAGE 2: SERVICE SELECTION -->
-    <div id="page-services" class="page" role="main" aria-label="Chọn dịch vụ" aria-hidden="true">
-        <main class="flex-1 flex flex-col items-center py-10 px-4 md:px-10 pt-24">
-            <div class="w-full max-w-[960px] flex flex-col gap-8">
-                <!-- Progress Section -->
-                <div class="flex flex-col gap-3" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="Tiến trình thiết lập">
-                    <div class="flex gap-6 justify-between items-end">
-                        <div class="flex flex-col gap-1">
-                            <span class="text-[#b9a89d] text-xs font-semibold uppercase tracking-wider">Bước 1/3</span>
-                            <p class="text-white text-base font-medium leading-normal">Tiến trình thiết lập</p>
+    <div id="page-services" class="page page-viewport" role="main" aria-label="Chọn dịch vụ" aria-hidden="true">
+        <div class="page-content">
+            <main class="page-main page-main--scrollable flex items-center justify-center">
+                <div class="container-viewport max-w-3xl">
+                    <!-- Progress Bar - Compact -->
+                    <div class="mb-4 sm:mb-6" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                        <div class="flex justify-between items-center mb-2 gap-4">
+                            <span class="text-text-secondary text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Bước 1/3</span>
+                            <span class="text-primary text-sm font-bold">30%</span>
                         </div>
-                        <p class="text-primary text-sm font-bold leading-normal">30%</p>
+                        <div class="rounded-full bg-[#392f28] overflow-hidden h-1.5">
+                            <div class="h-full rounded-full bg-gradient-to-r from-red-600 to-primary transition-all duration-500" style="width: 30%;"></div>
+                        </div>
                     </div>
-                    <div class="rounded-full bg-[#392f28] overflow-hidden h-2">
-                        <div class="h-full rounded-full bg-gradient-to-r from-red-600 to-primary transition-all duration-500 ease-out" style="width: 30%;"></div>
+
+                    <!-- Heading - Compact -->
+                    <div class="text-center mb-4 sm:mb-6">
+                        <h1 class="text-white text-xl sm:text-2xl md:text-4xl font-black tracking-tight mb-1 sm:mb-2">
+                            Lĩnh vực cần <span class="text-gradient">giải pháp AI?</span>
+                        </h1>
+                        <p class="text-text-secondary text-xs sm:text-sm">Chọn lĩnh vực để nhận đề xuất phù hợp</p>
+                    </div>
+
+                    <!-- Industry Cards - Responsive grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4" role="radiogroup" aria-label="Chọn lĩnh vực">
+                        <!-- Programming -->
+                        <label class="industry-card">
+                            <input class="industry-card__input" name="industry" type="radio" value="programming" aria-label="Lập trình"/>
+                            <div class="industry-card__content">
+                                <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#667eea] to-[#764ba2] text-white shadow-lg">
+                                    <span class="material-symbols-outlined text-xl sm:text-2xl" style="font-variation-settings: 'FILL' 1;">code</span>
+                                </div>
+                                <div class="text-center">
+                                    <h3 class="text-white text-sm sm:text-base font-bold">Lập trình</h3>
+                                    <p class="text-text-secondary text-xs">Developer, Tech Team</p>
+                                </div>
+                            </div>
+                            <div class="industry-card__check" aria-hidden="true">
+                                <span class="material-symbols-outlined">check_circle</span>
+                            </div>
+                        </label>
+
+                        <!-- Trading -->
+                        <label class="industry-card">
+                            <input class="industry-card__input" name="industry" type="radio" value="trading" aria-label="Trading"/>
+                            <div class="industry-card__content">
+                                <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#f093fb] to-[#f5576c] text-white shadow-lg">
+                                    <span class="material-symbols-outlined text-xl sm:text-2xl" style="font-variation-settings: 'FILL' 1;">candlestick_chart</span>
+                                </div>
+                                <div class="text-center">
+                                    <h3 class="text-white text-sm sm:text-base font-bold">Trading</h3>
+                                    <p class="text-text-secondary text-xs">Crypto, Forex</p>
+                                </div>
+                            </div>
+                            <div class="industry-card__check" aria-hidden="true">
+                                <span class="material-symbols-outlined">check_circle</span>
+                            </div>
+                        </label>
+
+                        <!-- Personal Assistant -->
+                        <label class="industry-card">
+                            <input class="industry-card__input" name="industry" type="radio" value="personal-assistant" aria-label="Trợ lý cá nhân"/>
+                            <div class="industry-card__content">
+                                <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#a8edea] to-[#fed6e3] text-[#181411] shadow-lg">
+                                    <span class="material-symbols-outlined text-xl sm:text-2xl" style="font-variation-settings: 'FILL' 1;">assistant</span>
+                                </div>
+                                <div class="text-center">
+                                    <h3 class="text-white text-sm sm:text-base font-bold">Trợ lý</h3>
+                                    <p class="text-text-secondary text-xs">Productivity</p>
+                                </div>
+                            </div>
+                            <div class="industry-card__check" aria-hidden="true">
+                                <span class="material-symbols-outlined">check_circle</span>
+                            </div>
+                        </label>
                     </div>
                 </div>
+            </main>
 
-                <!-- Breadcrumbs -->
-                <nav aria-label="Breadcrumb" class="flex flex-wrap gap-2 items-center text-sm md:text-base">
-                    <a class="text-[#b9a89d] hover:text-primary transition-colors font-medium flex items-center gap-1 cursor-pointer" onclick="navigateTo('home')">
-                        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">home_app_logo</span>
-                        Trang chủ
-                    </a>
-                    <span class="text-[#54453b] material-symbols-outlined text-sm" aria-hidden="true">chevron_right</span>
-                    <span class="text-white font-medium px-2 py-0.5 rounded bg-[#392f28]/50 border border-[#392f28]">Chọn lĩnh vực</span>
-                </nav>
-
-                <!-- Page Heading -->
-                <div class="flex flex-col gap-4 py-4 animate-fade-in-up">
-                    <h1 class="text-white text-3xl md:text-5xl font-black leading-tight tracking-tight">
-                        Lĩnh vực dịch vụ bạn cần <br class="hidden md:block"/>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#9ca3af]">giải pháp AI?</span>
-                    </h1>
-                    <p class="text-[#b9a89d] text-lg font-normal leading-relaxed max-w-2xl">
-                        Chúng tôi sẽ tối ưu hóa các đề xuất AI dựa trên đặc thù ngành nghề của bạn. Hãy chọn một lĩnh vực để bắt đầu.
-                    </p>
-                </div>
-
-                <!-- Selection Grid - 3 Industries -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 py-4" role="radiogroup" aria-label="Chọn lĩnh vực">
-                    <!-- Programming -->
-                    <label class="industry-card">
-                        <input class="industry-card__input" name="industry" type="radio" value="programming" aria-label="Lập trình: Developer, Freelancer, Tech Team"/>
-                        <div class="industry-card__content">
-                            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#667eea] to-[#764ba2] text-white shadow-lg transition-transform duration-300 hover:scale-110">
-                                <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;" aria-hidden="true">code</span>
-                            </div>
-                            <div class="text-center space-y-1">
-                                <h3 class="text-white text-base font-bold">Lập trình</h3>
-                                <p class="text-[#b9a89d] text-xs">Developer, Freelancer, Tech Team</p>
-                            </div>
-                        </div>
-                        <div class="industry-card__check" aria-hidden="true">
-                            <span class="material-symbols-outlined">check_circle</span>
-                        </div>
-                    </label>
-
-                    <!-- Trading -->
-                    <label class="industry-card">
-                        <input class="industry-card__input" name="industry" type="radio" value="trading" aria-label="Trading: Crypto, Forex, Chứng khoán"/>
-                        <div class="industry-card__content">
-                            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#f093fb] to-[#f5576c] text-white shadow-lg transition-transform duration-300 hover:scale-110">
-                                <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;" aria-hidden="true">candlestick_chart</span>
-                            </div>
-                            <div class="text-center space-y-1">
-                                <h3 class="text-white text-base font-bold">Trading</h3>
-                                <p class="text-[#b9a89d] text-xs">Crypto, Forex, Chứng khoán</p>
-                            </div>
-                        </div>
-                        <div class="industry-card__check" aria-hidden="true">
-                            <span class="material-symbols-outlined">check_circle</span>
-                        </div>
-                    </label>
-
-                    <!-- Personal Assistant -->
-                    <label class="industry-card">
-                        <input class="industry-card__input" name="industry" type="radio" value="personal-assistant" aria-label="Trợ lý cá nhân: Productivity, Life Management"/>
-                        <div class="industry-card__content">
-                            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#a8edea] to-[#fed6e3] text-[#181411] shadow-lg transition-transform duration-300 hover:scale-110">
-                                <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;" aria-hidden="true">assistant</span>
-                            </div>
-                            <div class="text-center space-y-1">
-                                <h3 class="text-white text-base font-bold">Trợ lý cá nhân</h3>
-                                <p class="text-[#b9a89d] text-xs">Productivity, Life Management</p>
-                            </div>
-                        </div>
-                        <div class="industry-card__check" aria-hidden="true">
-                            <span class="material-symbols-outlined">check_circle</span>
-                        </div>
-                    </label>
-                </div>
-
-                <!-- Navigation Footer -->
-                <div class="flex items-center justify-between pt-8 border-t border-[#392f28] mt-4">
-                    <button onclick="navigateTo('home')" class="group flex items-center gap-2 px-6 py-3 rounded-xl border border-[#392f28] text-[#b9a89d] hover:text-white hover:border-[#54453b] hover:bg-[#27201c] transition-all">
-                        <span class="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1" aria-hidden="true">arrow_back</span>
-                        <span class="font-medium">Quay lại</span>
-                    </button>
-                    <button onclick="navigateTo('results')" class="group flex items-center gap-2 px-8 py-3 rounded-xl bg-primary hover:bg-opacity-90 text-white font-bold shadow-[0_0_20px_-5px_rgba(236,109,19,0.4)] hover:shadow-[0_0_25px_-5px_rgba(236,109,19,0.6)] transition-all">
-                        <span>Tiếp tục</span>
-                        <span class="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1" aria-hidden="true">arrow_forward</span>
-                    </button>
+            <!-- Bottom Action Bar -->
+            <div class="bottom-action-bar">
+                <div class="bottom-action-bar__content">
+                    <div class="bottom-action-bar__buttons">
+                        <button onclick="navigateTo('home')" class="bottom-action-bar__btn bottom-action-bar__btn--secondary">
+                            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_back</span>
+                            <span>Quay lại</span>
+                        </button>
+                        <button onclick="navigateTo('results')" class="bottom-action-bar__btn bottom-action-bar__btn--primary">
+                            <span>Tiếp tục</span>
+                            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
+                        </button>
+                    </div>
+                    <div class="page-dots" aria-label="Page 2 of 3">
+                        <span class="page-dot"></span>
+                        <span class="page-dot page-dot--active"></span>
+                        <span class="page-dot"></span>
+                    </div>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 
-    <!-- PAGE 3: RESULTS -->
-    <div id="page-results" class="page" role="main" aria-label="Kết quả" aria-hidden="true">
-        <main class="flex-1 w-full max-w-[1400px] mx-auto p-4 sm:p-6 md:p-10 pt-24 flex flex-col gap-6 md:gap-8">
-            <!-- Breadcrumbs & Heading -->
-            <div class="flex flex-col gap-4 animate-fade-in-up">
-                <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-sm text-white/50 font-medium">
-                    <a class="hover:text-primary transition-colors cursor-pointer" onclick="navigateTo('home')">Dịch vụ</a>
-                    <span class="material-symbols-outlined text-[14px]" aria-hidden="true">chevron_right</span>
-                    <a class="hover:text-primary transition-colors cursor-pointer" onclick="navigateTo('services')" data-breadcrumb="industry">Lĩnh vực</a>
-                    <span class="material-symbols-outlined text-[14px]" aria-hidden="true">chevron_right</span>
-                    <span class="text-white">Chiến lược</span>
-                </nav>
-                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2">
-                    <div class="max-w-2xl">
-                        <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
+    <!-- PAGE 3: RESULTS - iOS App-Like Layout -->
+    <div id="page-results" class="page page-viewport" role="main" aria-label="Kết quả" aria-hidden="true">
+        <div class="page-content results-page-content">
+            <!-- Main Content Area -->
+            <div class="results-scroll-container">
+                <div class="w-full h-full max-w-[1400px] mx-auto px-3 sm:px-6 pt-2 sm:pt-4 pb-32 sm:pb-24 flex flex-col">
+
+                    <!-- Compact Heading -->
+                    <div class="flex flex-col gap-1 sm:gap-2 mb-3 sm:mb-4 animate-fade-in-up">
+                        <!-- Breadcrumb (compact) -->
+                        <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-xs text-white/40 font-medium hidden sm:flex">
+                            <a class="hover:text-primary transition-colors cursor-pointer" onclick="navigateTo('home')">Dịch vụ</a>
+                            <span class="material-symbols-outlined text-[12px]" aria-hidden="true">chevron_right</span>
+                            <a class="hover:text-primary transition-colors cursor-pointer" onclick="navigateTo('services')" data-breadcrumb="industry">Lĩnh vực</a>
+                            <span class="material-symbols-outlined text-[12px]" aria-hidden="true">chevron_right</span>
+                            <span class="text-white/60">Chiến lược</span>
+                        </nav>
+
+                        <!-- Title -->
+                        <h1 class="headline-responsive font-black text-white tracking-tight leading-tight">
                             Chiến lược AI cho <span id="results-industry-name" class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Doanh nghiệp</span>
                         </h1>
-                        <p class="text-base md:text-lg text-white/60 font-light leading-relaxed">
-                            Chúng tôi đã phân tích mô hình kinh doanh của bạn và xây dựng lộ trình tối ưu hóa. Dưới đây là bộ công cụ và quy trình làm việc (workflow) được đề xuất.
-                        </p>
                     </div>
-                    <div class="flex flex-wrap items-center gap-3">
-                        <button class="h-12 px-6 rounded-full border border-white/10 hover:bg-white/5 hover:border-white/20 text-white font-medium flex items-center gap-2 transition-all" onclick="showComingSoon('Tải PDF')">
-                            <span class="material-symbols-outlined" aria-hidden="true">download</span>
-                            <span>Tải PDF</span>
-                        </button>
-                        <button class="h-12 px-8 rounded-full bg-primary hover:bg-orange-600 shadow-lg shadow-orange-900/20 text-white font-bold flex items-center gap-2 transition-all transform hover:scale-105 hover:shadow-orange-900/40">
-                            <span>Tư vấn chuyên sâu</span>
-                            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-                        </button>
+
+                    <!-- Bento Grid - Compact -->
+                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-3 md:gap-4 min-h-0">
+
+                        <!-- Workflow Carousel Section -->
+                        <section class="lg:col-span-8 bg-surface-dark rounded-2xl p-3 sm:p-4 md:p-5 border border-white/5 relative overflow-hidden flex flex-col" aria-labelledby="workflow-heading">
+                            <div class="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none mix-blend-overlay" style="background-image: radial-gradient(circle at 100% 0%, #ec6d1320 0%, transparent 40%);"></div>
+
+                            <!-- Scroll Arrow Indicator (Mobile) -->
+                            <div class="scroll-arrow-hint sm:hidden">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </div>
+
+                            <!-- Header -->
+                            <div class="flex items-center justify-between mb-2 sm:mb-3 relative z-10">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary text-[18px] sm:text-[20px]" aria-hidden="true">hub</span>
+                                    <h3 id="workflow-heading" class="text-sm sm:text-lg font-bold text-white">Quy trình</h3>
+                                    <span class="text-[10px] text-white/50 sm:hidden">1/3 • Vuốt →</span>
+                                </div>
+                                <div class="text-[10px] sm:text-xs font-medium text-primary/80 bg-primary/10 px-2 py-0.5 sm:py-1 rounded-full">Đề xuất</div>
+                            </div>
+
+                            <!-- Workflow Carousel -->
+                            <div class="flex-1 relative z-10 min-h-0">
+                                <div id="results-workflow-carousel" class="carousel h-full">
+                                    <div id="results-workflow-container" class="carousel-track h-full">
+                                        <!-- Content will be rendered by JavaScript as carousel items -->
+                                    </div>
+                                </div>
+                                <!-- Carousel Dots with Swipe Hint -->
+                                <div class="carousel-dots mt-2" id="workflow-carousel-dots">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="swipe-hint sm:hidden">Vuốt →</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Stats Column -->
+                        <div id="results-stats-container" class="lg:col-span-4 flex flex-col gap-3">
+                            <!-- Main Stat -->
+                            <div class="flex-1 bg-surface-dark rounded-2xl p-4 border border-white/5 flex flex-col justify-center items-center text-center relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
+                                <div class="absolute -top-8 -right-8 w-24 h-24 bg-primary/20 blur-2xl rounded-full"></div>
+                                <h4 class="text-white/50 text-xs font-medium uppercase tracking-wider mb-2 relative z-10 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]" aria-hidden="true">bar_chart</span>
+                                    Hiệu suất
+                                </h4>
+                                <div id="results-stat-efficiency" class="text-5xl md:text-6xl font-black text-white mb-1 relative z-10 tracking-tighter">
+                                    <span class="text-primary">+</span>40<span class="text-2xl text-white/40">%</span>
+                                </div>
+                                <p id="results-stat-desc" class="text-white/70 text-sm font-medium relative z-10">Tăng hiệu quả vận hành</p>
+                            </div>
+
+                            <!-- Time Saved -->
+                            <div class="h-auto bg-[#231f1a] rounded-2xl border border-white/5 flex items-center justify-between px-4 py-3 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-r from-green-500/5 to-transparent"></div>
+                                <div class="flex items-center gap-3 relative z-10">
+                                    <div class="w-10 h-10 rounded-full bg-green-500/10 text-green-500 border border-green-500/20 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">schedule</span>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span id="results-stat-time" class="text-white font-bold text-lg">2.5h</span>
+                                        <span class="text-white/40 text-[10px] font-medium uppercase tracking-wide">Tiết kiệm / ngày</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tools Horizontal Scroll -->
+                        <section class="lg:col-span-12" aria-labelledby="tools-heading">
+                            <div class="flex items-center justify-between mb-2 px-1">
+                                <h3 id="tools-heading" class="text-base font-bold text-white flex items-center gap-2">
+                                    <span class="w-1 h-5 bg-primary rounded-full"></span>
+                                    Công cụ AI
+                                </h3>
+                                <button class="text-white/50 hover:text-white transition-colors text-xs font-medium flex items-center gap-1" onclick="showComingSoon('Xem tất cả công cụ')">
+                                    Xem tất cả <span class="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_forward</span>
+                                </button>
+                            </div>
+
+                            <!-- Horizontal Scroll Container -->
+                            <div class="tools-horizontal-scroll">
+                                <div id="results-tools-container" class="tools-scroll-track">
+                                    <!-- Content will be rendered by JavaScript as horizontal scroll items -->
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </div>
 
-            <!-- Bento Grid Layout -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 auto-rows-min">
-                <!-- Workflow Section -->
-                <section class="col-span-1 md:col-span-8 bg-surface-dark rounded-3xl p-6 md:p-8 border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors" aria-labelledby="workflow-heading">
-                    <div class="absolute top-0 right-0 w-full h-full opacity-30 pointer-events-none mix-blend-overlay" style="background-image: radial-gradient(circle at 100% 0%, #ec6d1320 0%, transparent 40%);"></div>
-                    <div class="flex flex-wrap items-center justify-between mb-8 relative z-10 gap-4">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="material-symbols-outlined text-primary" aria-hidden="true">hub</span>
-                                <h3 id="workflow-heading" class="text-2xl font-bold text-white">Quy trình (Workflow)</h3>
-                            </div>
-                            <p id="results-workflow-subtitle" class="text-white/50 text-sm">Tự động hóa quy trình kinh doanh</p>
-                        </div>
-                        <div class="badge-recommendation">Đề xuất tối ưu</div>
-                    </div>
-
-                    <!-- Workflow Steps - Dynamic Content -->
-                    <div id="results-workflow-container" class="relative z-10 mt-4">
-                        <!-- Content will be rendered by JavaScript -->
-                    </div>
-                </section>
-
-                <!-- ROI / Stats Card - Dynamic Content -->
-                <div id="results-stats-container" class="col-span-1 md:col-span-4 flex flex-col gap-4 md:gap-6">
-                    <div class="flex-1 bg-surface-dark rounded-3xl p-6 border border-white/5 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:border-white/10 transition-colors">
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
-                        <div class="absolute -top-12 -right-12 w-32 h-32 bg-primary/20 blur-3xl rounded-full"></div>
-                        <h4 class="text-white/60 text-sm font-medium uppercase tracking-widest mb-3 relative z-10 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-[16px]" aria-hidden="true">bar_chart</span>
-                            Hiệu suất
-                        </h4>
-                        <div id="results-stat-efficiency" class="text-7xl font-black text-white mb-2 relative z-10 tracking-tighter group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-primary">+</span>40<span class="text-3xl text-white/40">%</span>
-                        </div>
-                        <p id="results-stat-desc" class="text-white/80 font-medium relative z-10 px-4">Tăng hiệu quả vận hành</p>
-                        <p class="text-white/40 text-xs mt-1 relative z-10">nhờ tự động hóa quy trình</p>
-                    </div>
-
-                    <div class="h-auto min-h-[100px] bg-[#231f1a] rounded-3xl border border-white/5 flex items-center justify-between px-6 py-4 relative overflow-hidden group hover:border-white/10 transition-colors">
-                        <div class="absolute inset-0 bg-gradient-to-r from-green-500/5 to-transparent"></div>
-                        <div class="flex items-center gap-4 relative z-10">
-                            <div class="w-12 h-12 rounded-full bg-green-500/10 text-green-500 border border-green-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(34,197,94,0.1)]">
-                                <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <span id="results-stat-time" class="text-white font-bold text-xl">2.5h</span>
-                                <span class="text-white/40 text-xs font-medium uppercase tracking-wide">Tiết kiệm / ngày</span>
-                            </div>
-                        </div>
-                        <span class="material-symbols-outlined text-white/20 group-hover:text-white/50 transition-colors" aria-hidden="true">arrow_outward</span>
-                    </div>
-                </div>
-
-                <!-- Tool Suggestions -->
-                <section class="col-span-1 md:col-span-12 mt-2" aria-labelledby="tools-heading">
-                    <div class="flex items-center justify-between mb-6 px-1">
-                        <h3 id="tools-heading" class="text-xl font-bold text-white flex items-center gap-2">
-                            <span class="w-1 h-6 bg-primary rounded-full"></span>
-                            Công cụ đề xuất (AI Stack)
-                        </h3>
-                        <button class="text-white/60 hover:text-white transition-colors text-sm font-medium flex items-center gap-1 group" onclick="showComingSoon('Xem tất cả công cụ')">
-                            Xem tất cả <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform" aria-hidden="true">arrow_forward</span>
+            <!-- Bottom Action Bar -->
+            <div class="bottom-action-bar">
+                <div class="bottom-action-bar__content">
+                    <div class="bottom-action-bar__buttons">
+                        <button onclick="navigateTo('services')" class="bottom-action-bar__btn bottom-action-bar__btn--secondary">
+                            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_back</span>
+                            <span>Quay lại</span>
+                        </button>
+                        <button onclick="FormHandler.openModal('consultation-modal')" class="bottom-action-bar__btn bottom-action-bar__btn--primary">
+                            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">calendar_month</span>
+                            <span>Đặt lịch tư vấn</span>
                         </button>
                     </div>
-
-                    <div id="results-tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- Content will be rendered by JavaScript -->
+                    <div class="page-dots" aria-label="Page 3 of 3">
+                        <span class="page-dot"></span>
+                        <span class="page-dot"></span>
+                        <span class="page-dot page-dot--active"></span>
                     </div>
-                </section>
-
-                <!-- Implementation Card -->
-                <section class="col-span-1 md:col-span-12 mt-4 bg-gradient-to-r from-surface-dark to-[#2a241e] rounded-3xl p-8 border border-white/5 relative overflow-hidden group" aria-labelledby="implement-heading">
-                    <div class="absolute -right-10 -bottom-20 w-80 h-80 bg-primary/10 rounded-full blur-[80px] group-hover:bg-primary/15 transition-colors duration-500"></div>
-                    <div class="absolute top-0 right-0 p-10 opacity-[0.03]">
-                        <span class="material-symbols-outlined text-[150px]" aria-hidden="true">rocket_launch</span>
-                    </div>
-                    <div class="flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
-                        <div class="flex-1 text-center lg:text-left">
-                            <h3 id="implement-heading" class="text-2xl md:text-3xl font-bold text-white mb-3">Sẵn sàng triển khai?</h3>
-                            <p class="text-white/60 mb-8 max-w-xl mx-auto lg:mx-0 text-lg">
-                                Quy trình này có thể giúp bạn tiết kiệm 15 giờ mỗi tuần. Đội ngũ chuyên gia của chúng tôi sẵn sàng hỗ trợ bạn thiết lập và đào tạo nhân viên.
-                            </p>
-                            <div class="flex flex-wrap justify-center lg:justify-start gap-4 md:gap-8">
-                                <div class="flex items-center gap-2 text-white/90 text-sm font-medium">
-                                    <div class="bg-green-500/20 rounded-full p-1">
-                                        <span class="material-symbols-outlined text-green-500 text-[18px] block" aria-hidden="true">check</span>
-                                    </div>
-                                    <span>Cài đặt tận nơi</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-white/90 text-sm font-medium">
-                                    <div class="bg-green-500/20 rounded-full p-1">
-                                        <span class="material-symbols-outlined text-green-500 text-[18px] block" aria-hidden="true">check</span>
-                                    </div>
-                                    <span>Đào tạo 1-1</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-white/90 text-sm font-medium">
-                                    <div class="bg-green-500/20 rounded-full p-1">
-                                        <span class="material-symbols-outlined text-green-500 text-[18px] block" aria-hidden="true">check</span>
-                                    </div>
-                                    <span>Hỗ trợ 24/7</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                            <button onclick="navigateTo('services')" class="flex-1 lg:flex-none h-14 px-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold transition-colors flex items-center justify-center gap-2">
-                                <span>Quay lại</span>
-                            </button>
-                            <button class="flex-1 lg:flex-none h-14 px-8 rounded-xl bg-primary hover:bg-orange-600 text-white font-bold shadow-xl shadow-orange-900/30 transition-all flex items-center justify-center gap-2 transform hover:scale-105">
-                                <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
-                                <span>Đặt lịch tư vấn chuyên sâu</span>
-                            </button>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
-
-        <!-- Sticky Summary -->
-        <div id="sticky-summary" class="sticky-summary">
-            <div class="sticky-summary__content">
-                <div class="flex items-center gap-4">
-                    <div class="hidden md:block">
-                        <p class="text-text-secondary text-xs">Ngành đã chọn</p>
-                        <p id="sticky-industry" class="text-white font-bold">Doanh nghiệp</p>
-                    </div>
-                    <div class="h-8 w-px bg-white/10 hidden md:block"></div>
-                    <div class="flex items-center gap-2 text-sm text-white/80">
-                        <span class="material-symbols-outlined text-primary">schedule</span>
-                        <span>Sẵn sàng triển khai?</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="navigateTo('services')" class="hidden sm:block px-4 py-2 rounded-lg border border-white/10 text-white/80 text-sm hover:bg-white/5 transition-colors">
-                        Chọn lại
-                    </button>
-                    <button onclick="FormHandler.openModal('consultation-modal')" class="px-6 py-2 rounded-lg bg-primary text-white text-sm font-bold hover:bg-orange-600 transition-colors">
-                        Đặt lịch tư vấn
-                    </button>
                 </div>
             </div>
         </div>
@@ -1352,7 +1422,7 @@
                         <label for="consult-phone" class="form__label">Số điện thoại <span class="form__required">*</span></label>
                         <div class="form__input-wrapper">
                             <span class="material-symbols-outlined form__icon">phone</span>
-                            <input type="tel" id="consult-phone" name="phone" class="form__input" placeholder="0901234567" required pattern="[0-9]{10,11}" autocomplete="tel">
+                            <input type="tel" id="consult-phone" name="phone" class="form__input" placeholder="0901234567" required pattern="[0-9\s]{10,14}" autocomplete="tel">
                         </div>
                         <span class="form__error" data-error-for="phone"></span>
                     </div>
@@ -1397,8 +1467,8 @@
         </div>
     </div>
 
-    <!-- Newsletter Section (thêm vào footer) -->
-    <div id="newsletter-section" class="newsletter-section">
+    <!-- Newsletter Section (hidden for iOS app-like experience) -->
+    <div id="newsletter-section" class="newsletter-section" hidden>
         <div class="newsletter-section__container">
             <div class="newsletter-section__content">
                 <span class="material-symbols-outlined newsletter-section__icon">mail</span>
@@ -1454,15 +1524,11 @@
                 <span class="fab__tooltip">Đặt lịch tư vấn</span>
             </button>
 
-            <a href="mailto:contact@aivan.vn" class="fab fab--action" aria-label="Gửi email">
+            <a href="mailto:danhngocphh@gmail.com" class="fab fab--action" aria-label="Gửi email">
                 <span class="material-symbols-outlined">email</span>
                 <span class="fab__tooltip">Gửi email</span>
             </a>
 
-            <a href="tel:+84901234567" class="fab fab--action" aria-label="Gọi điện">
-                <span class="material-symbols-outlined">phone</span>
-                <span class="fab__tooltip">Gọi ngay</span>
-            </a>
 
             <button class="fab fab--action" onclick="FormHandler.openQuickForm()" aria-label="Gửi tin nhắn nhanh">
                 <span class="material-symbols-outlined">message</span>
@@ -1511,7 +1577,7 @@
         "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
-            "email": "contact@aivan.vn"
+            "email": "danhngocphh@gmail.com"
         },
         "sameAs": []
     }
@@ -1559,16 +1625,13 @@
         </div>
     </div>
 
-    <!-- Social Proof Container -->
-    <div id="social-proof-container" class="social-proof" aria-live="polite" aria-atomic="true"></div>
-
     <!-- Back to Top Button -->
     <button id="back-to-top" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Về đầu trang" hidden>
         <span class="material-symbols-outlined">arrow_upward</span>
     </button>
 
-    <!-- Footer -->
-    <footer id="footer" class="bg-background-dark border-t border-white/10 pt-16 pb-8 text-xs mt-auto" role="contentinfo">
+    <!-- Footer (hidden for iOS app-like experience) -->
+    <footer id="footer" class="bg-background-dark border-t border-white/10 pt-16 pb-8 text-xs mt-auto" role="contentinfo" hidden>
         <div class="max-w-[980px] mx-auto px-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                 <!-- Column 1 -->
@@ -1590,7 +1653,7 @@
                 <!-- Column 3 -->
                 <nav aria-label="Hỗ trợ" class="flex flex-col gap-3">
                     <h4 class="text-white font-semibold mb-1">Hỗ trợ</h4>
-                    <a class="text-text-secondary hover:text-white transition-colors" href="mailto:contact@aivan.vn">Liên hệ</a>
+                    <a class="text-text-secondary hover:text-white transition-colors" href="mailto:danhngocphh@gmail.com">Liên hệ</a>
                     <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#faq" onclick="showComingSoon('FAQ'); return false;">FAQ</a>
                     <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#policy" onclick="showComingSoon('Chính sách'); return false;">Chính sách</a>
                 </nav>
@@ -1602,7 +1665,7 @@
                         <a class="text-text-secondary hover:text-white transition-colors" href="https://aivan.vn" target="_blank" rel="noopener noreferrer" aria-label="Website">
                             <span class="material-symbols-outlined text-lg" aria-hidden="true">public</span>
                         </a>
-                        <a class="text-text-secondary hover:text-white transition-colors" href="mailto:contact@aivan.vn" aria-label="Email">
+                        <a class="text-text-secondary hover:text-white transition-colors" href="mailto:danhngocphh@gmail.com" aria-label="Email">
                             <span class="material-symbols-outlined text-lg" aria-hidden="true">mail</span>
                         </a>
                     </div>

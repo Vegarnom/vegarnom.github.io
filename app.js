@@ -1557,8 +1557,10 @@
          * Initialize router
          */
         init() {
+            console.log('[Router] Initializing...');
             this.bindEvents();
             this.handleInitialRoute();
+            console.log('[Router] Initialized, current page:', this.currentPage);
         },
 
         /**
@@ -1585,9 +1587,12 @@
          */
         handleInitialRoute() {
             const hash = window.location.hash.replace('#', '');
+            console.log('[Router] handleInitialRoute - hash:', hash);
             if (CONFIG.AVAILABLE_PAGES.includes(hash)) {
+                console.log('[Router] Showing page from hash:', hash);
                 this.showPage(hash, false);
             } else {
+                console.log('[Router] No valid hash, showing default:', CONFIG.DEFAULT_PAGE);
                 this.showPage(CONFIG.DEFAULT_PAGE, false);
             }
         },
@@ -1598,6 +1603,8 @@
          * @param {boolean} pushState - Whether to update browser history
          */
         showPage(page, pushState = true) {
+            console.log(`[Router] showPage called with: ${page}`);
+
             // Validate page
             if (!CONFIG.AVAILABLE_PAGES.includes(page)) {
                 console.warn(`[Router] Page not found: ${page}`);
@@ -1605,6 +1612,8 @@
             }
 
             const targetPage = document.getElementById(`page-${page}`);
+            console.log(`[Router] Target page element:`, targetPage);
+
             if (!targetPage) {
                 console.warn(`[Router] Page element not found: page-${page}`);
                 return;
@@ -1620,6 +1629,8 @@
             targetPage.classList.add('active');
             targetPage.setAttribute('aria-hidden', 'false');
             this.currentPage = page;
+
+            console.log(`[Router] Added 'active' class to page-${page}. Current classes:`, targetPage.className);
 
             // Update URL
             if (pushState) {
@@ -1820,7 +1831,7 @@
                             <span class="tag">${this.getCategoryName(tool.category)}</span>
                         </div>
                         <h4 class="text-white font-bold text-lg mb-2">${tool.name}</h4>
-                        <p class="text-white/40 text-sm leading-relaxed line-clamp-3">${tool.description}</p>
+                        <p class="text-white/40 text-sm leading-relaxed">${tool.description}</p>
                     </article>
                 `;
             }).join('');
@@ -2165,7 +2176,7 @@
         show(feature = 'Tính năng') {
             // Use a non-blocking notification instead of alert
             const notification = document.createElement('div');
-            notification.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 bg-surface-dark border border-white/10 text-white px-6 py-3 rounded-full shadow-lg z-50 animate-fade-in-up';
+            notification.className = 'fixed top-20 right-4 bg-surface-dark border border-white/10 text-white px-6 py-3 rounded-full shadow-lg z-50 animate-fade-in-down';
             notification.setAttribute('role', 'status');
             notification.setAttribute('aria-live', 'polite');
             notification.innerHTML = `
@@ -2244,64 +2255,66 @@
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 
-            // Add metadata
-            data.timestamp = new Date().toISOString();
-            data.userAgent = navigator.userAgent;
-            data.pageUrl = window.location.href;
+            // Build mailto link with form data
+            const mailtoLink = this.buildMailtoLink(data, formType);
 
-            try {
-                // Submit to Formspree
-                const formspreeResult = await this.submitToFormspree(data, formType);
+            // Open email client
+            window.location.href = mailtoLink;
 
-                // Submit to Google Sheets (backup)
-                this.submitToGoogleSheets(data, formType).catch(err => {
-                    console.warn('[FormHandler] Google Sheets backup failed:', err);
-                });
+            // Show success message
+            this.showToast('Đang mở ứng dụng email của bạn...', 'success');
 
-                // Track conversion
-                this.trackConversion(formType, data);
+            // Reset loading state
+            this.setLoadingState(submitBtn, false, form);
 
-                // Show success animation
-                const formContainer = form.closest('.modal__content') || form.parentElement;
-                if (formContainer) {
-                    SuccessAnimation.render(formContainer, {
-                        title: 'Gửi thành công!',
-                        message: 'Chúng tôi sẽ liên hệ với bạn trong vòng 24 giờ.'
-                    });
-
-                    // Auto close modal after 3 seconds
-                    const modal = form.closest('.modal');
-                    if (modal) {
-                        setTimeout(() => {
-                            this.closeModal(modal.id);
-                            // Reset form after modal closes
-                            setTimeout(() => form.reset(), 300);
-                        }, 3000);
-                    }
-                } else {
-                    this.showToast('Gửi thành công! Chúng tôi sẽ liên hệ với bạn sớm.', 'success');
-                    form.reset();
-                }
-
-                ARIAAnnouncer.announceFormSuccess(formType);
-
+            // Reset form after a short delay
+            setTimeout(() => {
+                form.reset();
                 // Close modal if in modal
-                if (form.closest('.modal')) {
-                    this.closeModal(form.closest('.modal').id);
+                const modal = form.closest('.modal');
+                if (modal) {
+                    this.closeModal(modal.id);
                 }
-
-            } catch (error) {
-                console.error('[FormHandler] Submit error:', error);
-                this.showToast('Có lỗi xảy ra. Vui lòng thử lại sau hoặc liên hệ trực tiếp qua email.', 'error');
-                ARIAAnnouncer.announceFormError('Có lỗi xảy ra khi gửi form. Vui lòng thử lại.');
-            } finally {
-                this.setLoadingState(submitBtn, false, form);
-            }
+            }, 1000);
         },
 
         /**
-         * Submit to Formspree
+         * Build mailto link with form data
          */
+        buildMailtoLink(data, formType) {
+            const email = 'danhngocphh@gmail.com';
+
+            // Build subject based on form type
+            let subject = '';
+            switch(formType) {
+                case 'consultation':
+                    subject = `[AIVAN] Yêu cầu tư vấn từ ${data.name || 'Khách hàng'}`;
+                    break;
+                case 'newsletter':
+                    subject = '[AIVAN] Đăng ký nhận tin';
+                    break;
+                case 'quick':
+                    subject = `[AIVAN] Liên hệ nhanh từ ${data.name || 'Khách hàng'}`;
+                    break;
+                default:
+                    subject = '[AIVAN] Liên hệ mới';
+            }
+
+            // Build body with all form fields
+            let body = '=== THÔNG TIN LIÊN HỆ ===\n\n';
+
+            if (data.name) body += `Họ tên: ${data.name}\n`;
+            if (data.email) body += `Email: ${data.email}\n`;
+            if (data.phone) body += `Số điện thoại: ${data.phone}\n`;
+            if (data.company) body += `Công ty: ${data.company}\n`;
+            if (data.industry) body += `Ngành nghề: ${data.industry}\n`;
+            if (data.size) body += `Quy mô: ${data.size}\n`;
+            if (data.message) body += `\nNội dung:\n${data.message}\n`;
+
+            body += '\n=== END ===';
+
+            return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        },
         async submitToFormspree(data, formType) {
             const endpoint = this.FORMSPREE_ENDPOINTS[formType];
 
@@ -3538,7 +3551,7 @@
                             <span class="material-symbols-outlined">refresh</span>
                             Tải lại trang
                         </button>
-                        <a href="mailto:contact@aivan.vn" class="btn btn-secondary">
+                        <a href="mailto:danhngocphh@gmail.com" class="btn btn-secondary">
                             Liên hệ hỗ trợ
                         </a>
                     </div>
@@ -3685,70 +3698,6 @@
             // Track conversion
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'exit_intent_claimed');
-            }
-        }
-    };
-
-    /**
-     * 15. SocialProof - Social proof notifications
-     */
-    const SocialProof = {
-        notifications: [
-            { name: 'Nguyễn Văn A', action: 'vừa đăng ký tư vấn', time: '2 phút trước', avatar: 'NA' },
-            { name: 'Trần Thị B', action: 'vừa hoàn thành bài đánh giá', time: '5 phút trước', avatar: 'TB' },
-            { name: 'Lê Minh C', action: 'vừa tải tài liệu AI', time: '8 phút trước', avatar: 'LC' },
-            { name: 'Phạm Thị D', action: 'vừa đăng ký newsletter', time: '12 phút trước', avatar: 'PD' },
-            { name: 'Hoàng Văn E', action: 'vừa nhận báo giá', time: '15 phút trước', avatar: 'HE' }
-        ],
-        container: null,
-        timer: null,
-
-        init() {
-            this.container = document.getElementById('social-proof-container');
-            if (!this.container) return;
-
-            // Show first notification after 10 seconds
-            setTimeout(() => this.show(), 10000);
-
-            // Continue showing notifications
-            this.timer = setInterval(() => {
-                if (Math.random() > 0.3) { // 70% chance to show
-                    this.show();
-                }
-            }, 25000);
-        },
-
-        show() {
-            if (!this.container) return;
-
-            const notification = this.notifications[Math.floor(Math.random() * this.notifications.length)];
-            const element = this.createNotificationElement(notification);
-
-            this.container.appendChild(element);
-
-            // Remove after animation completes (8s + fade out)
-            setTimeout(() => {
-                element.remove();
-            }, 8500);
-        },
-
-        createNotificationElement(data) {
-            const div = document.createElement('div');
-            div.className = 'social-proof__item';
-            div.innerHTML = `
-                <div class="social-proof__avatar">${data.avatar}</div>
-                <div class="social-proof__content">
-                    <div class="social-proof__name">${data.name}</div>
-                    <div class="social-proof__action">${data.action}</div>
-                    <div class="social-proof__time">${data.time}</div>
-                </div>
-            `;
-            return div;
-        },
-
-        destroy() {
-            if (this.timer) {
-                clearInterval(this.timer);
             }
         }
     };
@@ -3955,6 +3904,330 @@
                     </span>
                 `;
             }).join('');
+        }
+    };
+
+    /**
+     * 11.5 CarouselController - Horizontal carousel with touch support
+     */
+    const CarouselController = {
+        instances: new Map(),
+
+        init(container, options = {}) {
+            if (!container) return null;
+
+            const config = {
+                slidesPerView: options.slidesPerView || 1,
+                gap: options.gap || 16,
+                loop: options.loop || false,
+                autoplay: options.autoplay || false,
+                autoplayDelay: options.autoplayDelay || 5000,
+                ...options
+            };
+
+            const track = container.querySelector('.carousel-track') || container;
+            const slides = Array.from(track.children);
+            const dots = container.closest('section')?.querySelectorAll('.carousel-dot') || [];
+
+            if (slides.length === 0) return null;
+
+            const state = {
+                currentIndex: 0,
+                totalSlides: slides.length,
+                isAnimating: false,
+                autoplayTimer: null,
+                container,
+                track,
+                slides,
+                dots,
+                config
+            };
+
+            // Set up scroll snap on track
+            track.style.display = 'flex';
+            track.style.gap = `${config.gap}px`;
+            track.style.scrollSnapType = 'x mandatory';
+            track.style.overflowX = 'auto';
+            track.style.scrollBehavior = 'smooth';
+            track.style.msOverflowStyle = 'none';
+            track.style.scrollbarWidth = 'none';
+
+            slides.forEach(slide => {
+                slide.style.flex = '0 0 auto';
+                slide.style.scrollSnapAlign = 'start';
+                slide.style.width = config.slidesPerView === 1 ? '100%' : `calc((100% - ${config.gap * (config.slidesPerView - 1)}px) / ${config.slidesPerView})`;
+            });
+
+            // Listen to scroll events to update dots
+            track.addEventListener('scroll', () => {
+                const scrollLeft = track.scrollLeft;
+                const slideWidth = slides[0]?.offsetWidth || 0;
+                const newIndex = Math.round(scrollLeft / (slideWidth + config.gap));
+
+                if (newIndex !== state.currentIndex && newIndex >= 0 && newIndex < state.totalSlides) {
+                    state.currentIndex = newIndex;
+                    this.updateDots(state);
+                }
+            }, { passive: true });
+
+            // Add touch support
+            this.addTouchSupport(state);
+
+            // Dot click handlers
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => this.goTo(state, index));
+                dot.style.cursor = 'pointer';
+            });
+
+            // Start autoplay if enabled
+            if (config.autoplay) {
+                this.startAutoplay(state);
+            }
+
+            this.updateDots(state);
+            this.instances.set(container, state);
+
+            return state;
+        },
+
+        addTouchSupport(state) {
+            let startX = 0;
+            let isDragging = false;
+
+            state.track.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+                if (state.config.autoplay) this.stopAutoplay(state);
+            }, { passive: true });
+
+            state.track.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        this.next(state);
+                    } else {
+                        this.prev(state);
+                    }
+                }
+
+                if (state.config.autoplay) this.startAutoplay(state);
+            }, { passive: true });
+        },
+
+        goTo(state, index) {
+            if (state.isAnimating || index === state.currentIndex) return;
+            if (index < 0 || index >= state.totalSlides) return;
+
+            state.isAnimating = true;
+            state.currentIndex = index;
+
+            const slideWidth = state.slides[0]?.offsetWidth || 0;
+            const scrollTo = index * (slideWidth + state.config.gap);
+
+            state.track.scrollTo({ left: scrollTo, behavior: 'smooth' });
+
+            this.updateDots(state);
+
+            setTimeout(() => {
+                state.isAnimating = false;
+            }, 350);
+        },
+
+        next(state) {
+            const nextIndex = state.config.loop
+                ? (state.currentIndex + 1) % state.totalSlides
+                : Math.min(state.currentIndex + 1, state.totalSlides - 1);
+            this.goTo(state, nextIndex);
+        },
+
+        prev(state) {
+            const prevIndex = state.config.loop
+                ? (state.currentIndex - 1 + state.totalSlides) % state.totalSlides
+                : Math.max(state.currentIndex - 1, 0);
+            this.goTo(state, prevIndex);
+        },
+
+        updateDots(state) {
+            state.dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === state.currentIndex);
+                dot.classList.toggle('carousel-dot--active', index === state.currentIndex);
+            });
+        },
+
+        startAutoplay(state) {
+            this.stopAutoplay(state);
+            state.autoplayTimer = setInterval(() => this.next(state), state.config.autoplayDelay);
+        },
+
+        stopAutoplay(state) {
+            if (state.autoplayTimer) {
+                clearInterval(state.autoplayTimer);
+                state.autoplayTimer = null;
+            }
+        },
+
+        destroy(container) {
+            const state = this.instances.get(container);
+            if (state) {
+                this.stopAutoplay(state);
+                this.instances.delete(container);
+            }
+        }
+    };
+
+    /**
+     * 11.6 IOSModalController - iOS-style modal management
+     */
+    const IOSModalController = {
+        activeModal: null,
+
+        init() {
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.activeModal) {
+                    this.close();
+                }
+            });
+
+            // Initialize all iOS modals
+            document.querySelectorAll('.ios-modal').forEach(modal => {
+                const overlay = modal.querySelector('.ios-modal__overlay');
+                const closeBtn = modal.querySelector('.ios-modal__close');
+
+                if (overlay) {
+                    overlay.addEventListener('click', () => this.close());
+                }
+
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => this.close());
+                }
+            });
+        },
+
+        open(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) {
+                console.warn(`[IOSModalController] Modal not found: ${modalId}`);
+                return;
+            }
+
+            // Close any existing modal
+            if (this.activeModal) {
+                this.close(false);
+            }
+
+            this.activeModal = modal;
+            modal.classList.add('ios-modal--active');
+            document.body.style.overflow = 'hidden';
+
+            // Focus trap
+            const focusableElements = modal.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            if (focusableElements.length > 0) {
+                focusableElements[0].focus();
+            }
+
+            // Announce to screen readers
+            if (typeof ARIAAnnouncer !== 'undefined') {
+                const title = modal.querySelector('.ios-modal__title');
+                if (title) {
+                    ARIAAnnouncer.announce(`Đã mở: ${title.textContent}`);
+                }
+            }
+        },
+
+        close(announce = true) {
+            if (!this.activeModal) return;
+
+            this.activeModal.classList.remove('ios-modal--active');
+            document.body.style.overflow = '';
+
+            if (announce && typeof ARIAAnnouncer !== 'undefined') {
+                ARIAAnnouncer.announce('Đã đóng modal');
+            }
+
+            this.activeModal = null;
+        },
+
+        toggle(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal && modal.classList.contains('ios-modal--active')) {
+                this.close();
+            } else {
+                this.open(modalId);
+            }
+        }
+    };
+
+    /**
+     * 11.7 KeyboardNavigationHandler - Keyboard support for carousels and navigation
+     */
+    const KeyboardNavigationHandler = {
+        init() {
+            document.addEventListener('keydown', (e) => {
+                // Don't handle if user is in an input
+                if (e.target.matches('input, textarea, select')) return;
+
+                // Arrow keys for carousel navigation (when carousel is focused)
+                const focusedCarousel = document.activeElement?.closest('.carousel');
+                if (focusedCarousel) {
+                    const carouselState = CarouselController.instances.get(focusedCarousel);
+                    if (carouselState) {
+                        if (e.key === 'ArrowLeft') {
+                            e.preventDefault();
+                            CarouselController.prev(carouselState);
+                        } else if (e.key === 'ArrowRight') {
+                            e.preventDefault();
+                            CarouselController.next(carouselState);
+                        }
+                    }
+                }
+
+                // Number keys (1-3) for page navigation on home
+                const currentPage = Router?.currentPage;
+                if (currentPage === 'home' && !IOSModalController.activeModal) {
+                    if (e.key === '1') {
+                        Router.showPage('home');
+                    } else if (e.key === '2') {
+                        Router.showPage('services');
+                    } else if (e.key === '3') {
+                        Router.showPage('results');
+                    }
+                }
+
+                // Page down/up for page navigation
+                if (!IOSModalController.activeModal) {
+                    if (e.key === 'PageDown' || (e.key === 'ArrowDown' && e.altKey)) {
+                        e.preventDefault();
+                        this.navigateNext();
+                    } else if (e.key === 'PageUp' || (e.key === 'ArrowUp' && e.altKey)) {
+                        e.preventDefault();
+                        this.navigatePrev();
+                    }
+                }
+            });
+        },
+
+        navigateNext() {
+            const pages = CONFIG.AVAILABLE_PAGES;
+            const currentIndex = pages.indexOf(Router?.currentPage || 'home');
+            if (currentIndex < pages.length - 1) {
+                Router.showPage(pages[currentIndex + 1]);
+            }
+        },
+
+        navigatePrev() {
+            const pages = CONFIG.AVAILABLE_PAGES;
+            const currentIndex = pages.indexOf(Router?.currentPage || 'home');
+            if (currentIndex > 0) {
+                Router.showPage(pages[currentIndex - 1]);
+            }
         }
     };
 
@@ -4171,6 +4444,25 @@
 
     // Initialize Application
     function init() {
+        // Enable iOS app mode to lock scroll
+        document.documentElement.classList.add('ios-app-mode');
+        document.body.classList.add('ios-app-mode');
+
+        // DEBUG: Watch for class changes on page-results
+        const pageResults = document.getElementById('page-results');
+        if (pageResults) {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'class') {
+                        console.log('[DEBUG] page-results class changed to:', pageResults.className);
+                        console.trace('[DEBUG] Stack trace:');
+                    }
+                });
+            });
+            observer.observe(pageResults, { attributes: true });
+            console.log('[DEBUG] MutationObserver attached to page-results');
+        }
+
         // Initialize modules
         Router.init();
         IndustrySelector.init();
@@ -4192,10 +4484,20 @@
         BackToTop.init();
         BreadcrumbManager.init();
         SwipeHandler.init();
+        IOSModalController.init();
+        KeyboardNavigationHandler.init();
+
+        // Initialize carousels on Results page
+        const workflowCarousel = document.getElementById('results-workflow-carousel');
+        if (workflowCarousel) {
+            CarouselController.init(workflowCarousel, {
+                slidesPerView: 1,
+                gap: 16
+            });
+        }
 
         // Initialize Phase 3 Conversion modules
         ExitIntent.init();
-        SocialProof.init();
         FloatingLabels.init();
         SkeletonLoader.init();
 
@@ -4218,6 +4520,8 @@
         window.selectIndustry = (industry) => IndustrySelector.selectIndustry(industry);
         window.showComingSoon = (feature) => ComingSoon.show(feature);
         window.FormHandler = FormHandler;
+        window.CarouselController = CarouselController;
+        window.IOSModalController = IOSModalController;
         window.QuizHandler = QuizHandler;
         window.trackEvent = (name, params) => FormHandler.trackEvent(name, params);
         window.ResultsRenderer = ResultsRenderer;
