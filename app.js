@@ -34,7 +34,7 @@
         ANALYTICS_ID: 'G-XXXXXXXXXX', // Replace with your actual GA4 Measurement ID
         DEFAULT_PAGE: 'home',
         AVAILABLE_PAGES: ['home', 'services', 'results'],
-        AVAILABLE_INDUSTRIES: ['healthcare', 'finance', 'education', 'ecommerce', 'manufacturing', 'agriculture', 'transportation', 'cybersecurity', 'hospitality', 'marketing', 'programming', 'beauty', 'retail', 'food'],
+        AVAILABLE_INDUSTRIES: ['programming', 'trading', 'personal-assistant'],
 
         // Formspree Configuration
         // Tạo account tại https://formspree.io và thay thế các ID bên dưới
@@ -55,707 +55,157 @@
 
 
     /**
-     * INDUSTRIES_DATA - 10 ngành với essential/recommended/optional tools
+     * INDUSTRIES_DATA - 3 ngành với essential/recommended/optional tools
      * Mỗi ngành có workflows với primaryTool và supportingTools
      */
     const INDUSTRIES_DATA = {
-        healthcare: {
-            id: 'healthcare',
-            name: 'Y tế',
-            subtitle: 'Bệnh viện, Phòng khám, Y tế tư nhân',
-            icon: 'medical_services',
-            gradient: 'from-[#84fab0] to-[#8fd3f4]',
-            description: 'Giải pháp AI cho chẩn đoán, quản lý bệnh án và chăm sóc sức khỏe',
-
-            essentialTools: ['vinai', 'fptai', 'misaaai'],
-            recommendedTools: ['chatgpt', 'botstar', 'stringee'],
-            optionalTools: ['googlevision', 'cvs'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Tiếp nhận & Sàng lọc',
-                    description: 'AI chatbot tư vấn triệu chứng ban đầu, phân loại mức độ khẩn cấp',
-                    primaryTool: 'fptai',
-                    supportingTools: ['botstar'],
-                    icon: 'support_agent',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Chẩn đoán Hỗ trợ',
-                    description: 'Phân tích hình ảnh y tế, xử lý dữ liệu bệnh án',
-                    primaryTool: 'vinai',
-                    supportingTools: ['googlevision'],
-                    icon: 'biotech',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'Quản lý & Theo dõi',
-                    description: 'Tự động hóa lịch hẹn, nhắc thuốc, theo dõi sau điều trị',
-                    primaryTool: 'misaaai',
-                    supportingTools: ['stringee'],
-                    icon: 'calendar_month',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+45%',
-                timeSaved: '3.5h',
-                roi: 'x3.2',
-                description: 'Giảm thờ i gian chờ đợi, tăng chất lượng chăm sóc'
-            }
-        },
-
-        finance: {
-            id: 'finance',
-            name: 'Tài chính - Ngân hàng',
-            subtitle: 'Ngân hàng, Bảo hiểm, Fintech',
-            icon: 'account_balance',
-            gradient: 'from-[#f093fb] to-[#f5576c]',
-            description: 'AI cho phân tích rủi ro, gian lận và tự động hóa dịch vụ khách hàng',
-
-            essentialTools: ['fptai', 'claude', 'salesforce'],
-            recommendedTools: ['powerbi', 'lacvietocr', 'stringee'],
-            optionalTools: ['zohocrm', 'botstar'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Onboarding Khách hàng',
-                    description: 'OCR giấy tờ, KYC tự động, xác minh danh tính',
-                    primaryTool: 'lacvietocr',
-                    supportingTools: ['fptai'],
-                    icon: 'badge',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Phân tích Rủi ro',
-                    description: 'Đánh giá tín dụng, phát hiện gian lận, dự báo rủi ro',
-                    primaryTool: 'claude',
-                    supportingTools: ['powerbi'],
-                    icon: 'analytics',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'CSKH Thông minh',
-                    description: 'Tư vấn tài chính tự động, hỗ trợ 24/7',
-                    primaryTool: 'salesforce',
-                    supportingTools: ['stringee', 'botstar'],
-                    icon: 'support_agent',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+55%',
-                timeSaved: '4.2h',
-                roi: 'x4.5',
-                description: 'Giảm thiểu rủi ro, tăng tốc độ xử lý giao dịch'
-            }
-        },
-
-        education: {
-            id: 'education',
-            name: 'Giáo dục',
-            subtitle: 'Trường học, E-learning, Đào tạo',
-            icon: 'school',
-            gradient: 'from-[#a18cd1] to-[#fbc2eb]',
-            description: 'AI cá nhân hóa học tập, tự động chấm điểm và hỗ trợ giảng dạy',
-
-            essentialTools: ['chatgpt', 'vbee', 'canvaai'],
-            recommendedTools: ['claude', 'gemini', 'copyai'],
-            optionalTools: ['midjourney', 'powerbi'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Tạo Nội dung',
-                    description: 'Soạn giáo án, tạo bài giảng, thiết kế tài liệu học tập',
-                    primaryTool: 'canvaai',
-                    supportingTools: ['chatgpt', 'copyai'],
-                    icon: 'edit_note',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Hỗ trợ Học tập',
-                    description: 'Gia sư AI, giải đáp thắc mắc, cá nhân hóa lộ trình',
-                    primaryTool: 'claude',
-                    supportingTools: ['chatgpt'],
-                    icon: 'psychology',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'Đánh giá & Voice',
-                    description: 'Chấm điểm tự động, tạo audio bài giảng tiếng Việt',
-                    primaryTool: 'vbee',
-                    supportingTools: ['gemini'],
-                    icon: 'record_voice_over',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+40%',
-                timeSaved: '3h',
-                roi: 'x2.8',
-                description: 'Tăng tương tác học sinh, giảm thờ i gian chuẩn bị bài giảng'
-            }
-        },
-
-        ecommerce: {
-            id: 'ecommerce',
-            name: 'Thương mại điện tử',
-            subtitle: 'Bán hàng online, Dropshipping',
-            icon: 'shopping_bag',
-            gradient: 'from-[#ffecd2] to-[#fcb69f]',
-            description: 'AI tối ưu sản phẩm, cá nhân hóa trải nghiệm mua sắm',
-
-            essentialTools: ['marketplaceai', 'chatgpt', 'zaloai'],
-            recommendedTools: ['kiotviet', 'haravan', 'canvaai'],
-            optionalTools: ['midjourney', 'copyai'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Tạo Nội dung',
-                    description: 'Viết mô tả sản phẩm, thiết kế hình ảnh, quảng cáo',
-                    primaryTool: 'canvaai',
-                    supportingTools: ['chatgpt', 'midjourney'],
-                    icon: 'brush',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Chạy Quảng cáo',
-                    description: 'Tối ưu giá thầu, targeting, tự động hóa campaign',
-                    primaryTool: 'marketplaceai',
-                    supportingTools: ['zaloai'],
-                    icon: 'campaign',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'CSKH & Vận hành',
-                    description: 'Trả lời khách hàng, quản lý đơn hàng, kho hàng',
-                    primaryTool: 'kiotviet',
-                    supportingTools: ['haravan', 'zaloai'],
-                    icon: 'store',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+60%',
-                timeSaved: '5h',
-                roi: 'x5.2',
-                description: 'Tăng tỷ lệ chuyển đổi, giảm chi phí vận hành'
-            }
-        },
-
-        manufacturing: {
-            id: 'manufacturing',
-            name: 'Sản xuất',
-            subtitle: 'Nhà máy, Công nghiệp',
-            icon: 'precision_manufacturing',
-            gradient: 'from-[#667eea] to-[#764ba2]',
-            description: 'AI kiểm soát chất lượng, bảo trì dự đoán và tối ưu sản xuất',
-
-            essentialTools: ['cvs', 'googlevision', 'powerbi'],
-            recommendedTools: ['fptai', 'misaaai', 'salesforce'],
-            optionalTools: ['claude', 'tableau'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Kiểm tra Chất lượng',
-                    description: 'Phát hiện lỗi sản phẩm, kiểm tra bằng computer vision',
-                    primaryTool: 'cvs',
-                    supportingTools: ['googlevision'],
-                    icon: 'visibility',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Bảo trì Dự đoán',
-                    description: 'Phân tích dữ liệu sensor, dự báo hỏng hóc thiết bị',
-                    primaryTool: 'powerbi',
-                    supportingTools: ['tableau'],
-                    icon: 'engineering',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'Quản lý ERP',
-                    description: 'Tối ưu tồn kho, lập kế hoạch sản xuất',
-                    primaryTool: 'misaaai',
-                    supportingTools: ['salesforce'],
-                    icon: 'inventory',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+50%',
-                timeSaved: '4h',
-                roi: 'x4.0',
-                description: 'Giảm lỗi sản xuất, tăng tuổ i thọ thiết bị'
-            }
-        },
-
-        agriculture: {
-            id: 'agriculture',
-            name: 'Nông nghiệp',
-            subtitle: 'Nông trại, Chăn nuôi, Nông nghiệp công nghệ cao',
-            icon: 'agriculture',
-            gradient: 'from-[#96e6a1] to-[#d4fc79]',
-            description: 'AI theo dõi cây trồng, dự báo thờ i tiết và tối ưu năng suất',
-
-            essentialTools: ['fptsmartfarm', 'powerbi', 'googlevision'],
-            recommendedTools: ['cvs', 'looker'],
-            optionalTools: ['gemini'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Giám sát Canh tác',
-                    description: 'Phân tích hình ảnh drone, theo dõi sức khỏe cây trồng',
-                    primaryTool: 'fptsmartfarm',
-                    supportingTools: ['cvs'],
-                    icon: 'satellite_alt',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Phát hiện Sâu bệnh',
-                    description: 'Nhận diện bệnh cây, đề xuất giải pháp điều trị',
-                    primaryTool: 'googlevision',
-                    supportingTools: ['gemini'],
-                    icon: 'pest_control',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'Dự báo Năng suất',
-                    description: 'Phân tích dữ liệu thờ i tiết, dự báo thu hoạch',
-                    primaryTool: 'powerbi',
-                    supportingTools: ['looker'],
-                    icon: 'ssid_chart',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+35%',
-                timeSaved: '2.5h',
-                roi: 'x2.5',
-                description: 'Tăng năng suất, giảm thiệt hại do sâu bệnh'
-            }
-        },
-
-        transportation: {
-            id: 'transportation',
-            name: 'Vận tải - Logistics',
-            subtitle: 'Logistics, Vận tải, Giao hàng',
-            icon: 'local_shipping',
-            gradient: 'from-[#4facfe] to-[#00f2fe]',
-            description: 'AI tối ưu lộ trình, dự báo nhu cầu và quản lý đội xe',
-
-            essentialTools: ['viettelpostai', 'powerbi', 'stringee'],
-            recommendedTools: ['chatgpt', 'cvs', 'freshchat'],
-            optionalTools: ['claude'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Tối ưu Lộ trình',
-                    description: 'Tính toán đường đi tối ưu, giảm thờ i gian giao hàng',
-                    primaryTool: 'viettelpostai',
-                    supportingTools: ['cvs'],
-                    icon: 'route',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Quản lý Kho',
-                    description: 'Dự báo nhu cầu, tối ưu vị trí lưu trữ',
-                    primaryTool: 'powerbi',
-                    supportingTools: ['claude'],
-                    icon: 'warehouse',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'Theo dõi Đơn hàng',
-                    description: 'Cập nhật real-time, CSKH tự động',
-                    primaryTool: 'stringee',
-                    supportingTools: ['freshchat'],
-                    icon: 'package',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+45%',
-                timeSaved: '3.5h',
-                roi: 'x3.8',
-                description: 'Giảm chi phí vận chuyển, tăng tốc độ giao hàng'
-            }
-        },
-
-        cybersecurity: {
-            id: 'cybersecurity',
-            name: 'An ninh mạng',
-            subtitle: 'SOC, Pentesting, Bảo mật',
-            icon: 'security',
-            gradient: 'from-[#ff6b6b] to-[#ee5a6f]',
-            description: 'AI phát hiện mối đe dọa, phân tích bảo mật và ứng phó sự cố',
-
-            essentialTools: ['cvs', 'chatgpt', 'claude'],
-            recommendedTools: ['salesforce', 'powerbi'],
-            optionalTools: ['gemini', 'googlevision'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Giám sát An ninh',
-                    description: 'Phân tích log, phát hiện hành vi bất thường',
-                    primaryTool: 'cvs',
-                    supportingTools: ['powerbi'],
-                    icon: 'visibility',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Phân tích Mối đe dọa',
-                    description: 'Nhận diện malware, dự báo vector tấn công',
-                    primaryTool: 'claude',
-                    supportingTools: ['chatgpt'],
-                    icon: 'bug_report',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'Ứng phó Sự cố',
-                    description: 'Tự động hóa response, ghi nhận và báo cáo',
-                    primaryTool: 'salesforce',
-                    supportingTools: ['gemini'],
-                    icon: 'crisis_alert',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+70%',
-                timeSaved: '6h',
-                roi: 'x6.5',
-                description: 'Giảm thờ i gian phát hiện và ứng phó sự cố'
-            }
-        },
-
-        hospitality: {
-            id: 'hospitality',
-            name: 'Khách sạn - Nhà hàng',
-            subtitle: 'Khách sạn, Resort, F&B',
-            icon: 'hotel',
-            gradient: 'from-[#fa709a] to-[#fee140]',
-            description: 'AI quản lý đặt phòng, cá nhân hóa trải nghiệm khách hàng',
-
-            essentialTools: ['botstar', 'kiotviet', 'canvaai'],
-            recommendedTools: ['chatgpt', 'zaloai', 'midjourney'],
-            optionalTools: ['copyai', 'hubspot'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Đặt phòng & Tư vấn',
-                    description: 'Chatbot tư vấn, xử lý đặt phòng 24/7',
-                    primaryTool: 'botstar',
-                    supportingTools: ['zaloai'],
-                    icon: 'booking',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Marketing & Content',
-                    description: 'Tạo nội dung quảng cáo, thiết kế ảnh đẹp',
-                    primaryTool: 'canvaai',
-                    supportingTools: ['midjourney', 'copyai'],
-                    icon: 'campaign',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'Vận hành & CSKH',
-                    description: 'Quản lý bán hàng, chăm sóc khách hàng thân thiết',
-                    primaryTool: 'kiotviet',
-                    supportingTools: ['hubspot'],
-                    icon: 'room_service',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+40%',
-                timeSaved: '3h',
-                roi: 'x3.0',
-                description: 'Tăng tỷ lệ lấp đầy, cải thiện trải nghiệm khách hàng'
-            }
-        },
-
-        marketing: {
-            id: 'marketing',
-            name: 'Marketing & Agency',
-            subtitle: 'Digital Marketing, Content, Agency',
-            icon: 'campaign',
-            gradient: 'from-[#a8edea] to-[#fed6e3]',
-            description: 'AI tạo content, phân tích data và tối ưu chiến dịch',
-
-            essentialTools: ['chatgpt', 'canvaai', 'copyai'],
-            recommendedTools: ['midjourney', 'hubspot', 'looker'],
-            optionalTools: ['claude', 'gemini', 'powerbi'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Nghiên cứu & Insight',
-                    description: 'Phân tích trend, đối thủ, insight khách hàng',
-                    primaryTool: 'chatgpt',
-                    supportingTools: ['looker'],
-                    icon: 'trending_up',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Sản xuất Content',
-                    description: 'Viết bài, thiết kế hình ảnh, video quảng cáo',
-                    primaryTool: 'canvaai',
-                    supportingTools: ['midjourney', 'copyai'],
-                    icon: 'design_services',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'Phân phối & Tối ưu',
-                    description: 'Lên lịch đăng bài, phân tích hiệu quả, tối ưu ROI',
-                    primaryTool: 'hubspot',
-                    supportingTools: ['powerbi'],
-                    icon: 'analytics',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+65%',
-                timeSaved: '5.5h',
-                roi: 'x5.8',
-                description: 'Tăng hiệu quả chiến dịch, giảm thờ i gian sản xuất content'
-            }
-        },
-
         programming: {
             id: 'programming',
-            name: 'Lập trình & Software',
-            subtitle: 'Development, DevOps, Tech Startup',
+            name: 'Lập trình',
+            subtitle: 'Developer, Freelancer, Tech Team',
             icon: 'code',
-            gradient: 'from-[#00c9ff] to-[#92fe9d]',
-            description: 'AI cho phát triển phần mềm, code review, testing và DevOps automation',
+            gradient: 'from-[#667eea] to-[#764ba2]',
+            description: 'AI hỗ trợ code generation, review, debug và documentation tự động',
 
-            essentialTools: ['chatgpt', 'claude', 'githubcopilot'],
-            recommendedTools: ['gemini', 'tabnine', 'replit'],
-            optionalTools: ['codeium', 'amazonq'],
+            essentialTools: ['cursor', 'githubcopilot', 'claude'],
+            recommendedTools: ['codeium', 'chatgpt', 'tabnine'],
+            optionalTools: ['gemini', 'canvaai'],
 
             workflows: [
                 {
                     step: 1,
-                    title: 'Code Assistant',
-                    description: 'AI gợi ý code, hoàn thành function, giải thích code phức tạp',
-                    primaryTool: 'githubcopilot',
-                    supportingTools: ['chatgpt'],
+                    title: 'Code Generation',
+                    description: 'Từ requirements → code với AI pair programming, autocomplete thông minh',
+                    primaryTool: 'cursor',
+                    supportingTools: ['githubcopilot', 'claude'],
                     icon: 'code',
                     color: '#ec6d13'
                 },
                 {
                     step: 2,
-                    title: 'Code Review',
-                    description: 'Phân tích code quality, phát hiện bug, đề xuất refactor',
+                    title: 'Code Review & Debug',
+                    description: 'AI review code, phát hiện bugs, security scan, đề xuất fixes',
                     primaryTool: 'claude',
-                    supportingTools: ['gemini'],
-                    icon: 'fact_check',
+                    supportingTools: ['codeium', 'chatgpt'],
+                    icon: 'rate_review',
                     color: '#60a5fa'
                 },
                 {
                     step: 3,
                     title: 'Documentation',
-                    description: 'Tự động viết docs, comments, API documentation',
+                    description: 'Auto-generate docs, API reference, README, inline comments',
                     primaryTool: 'chatgpt',
-                    supportingTools: ['claude'],
+                    supportingTools: ['cursor', 'claude'],
                     icon: 'description',
                     color: '#ec4899'
                 }
             ],
 
             stats: {
-                efficiency: '+55%',
-                timeSaved: '4h',
-                roi: 'x4.2',
-                description: 'Giảm thờ i gian viết boilerplate code, tăng chất lượng code'
+                efficiency: '+300%',
+                timeSaved: '4-6h',
+                roi: 'x5.0',
+                description: 'Code nhanh hơn 3-5x, giảm 50% bugs, tăng chất lượng documentation'
             }
         },
 
-        beauty: {
-            id: 'beauty',
-            name: 'Làm đẹp',
-            subtitle: 'Spa, Thẩm mỹ viện, Salon',
-            icon: 'spa',
-            gradient: 'from-[#ff9a9e] to-[#fecfef]',
-            description: 'AI cho booking, tư vấn sản phẩm, content marketing và CSKH',
+        trading: {
+            id: 'trading',
+            name: 'Trading',
+            subtitle: 'Crypto, Forex, Chứng khoán',
+            icon: 'candlestick_chart',
+            gradient: 'from-[#f093fb] to-[#f5576c]',
+            description: 'AI phân tích thị trường, tạo signals, quản lý rủi ro và automated trading',
 
-            essentialTools: ['botstar', 'zaloai', 'canvaai'],
-            recommendedTools: ['chatgpt', 'midjourney', 'copyai'],
-            optionalTools: ['stringee', 'hubspot'],
+            essentialTools: ['tradingview', '3commas', 'claude'],
+            recommendedTools: ['tickeron', 'chatgpt', 'quantconnect'],
+            optionalTools: ['gemini', 'powerbi'],
 
             workflows: [
                 {
                     step: 1,
-                    title: 'Booking & Tư vấn',
-                    description: 'Chatbot đặt lịch, tư vấn dịch vụ, reminder tự động',
-                    primaryTool: 'botstar',
-                    supportingTools: ['zaloai'],
-                    icon: 'calendar_today',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Content Creation',
-                    description: 'Tạo hình ảnh before/after, video ngắn, captions',
-                    primaryTool: 'canvaai',
-                    supportingTools: ['midjourney', 'copyai'],
-                    icon: 'brush',
-                    color: '#60a5fa'
-                },
-                {
-                    step: 3,
-                    title: 'CSKH & Upsell',
-                    description: 'Chăm sóc khách hàng sau dịch vụ, đề xuất gói nâng cấp',
-                    primaryTool: 'zaloai',
-                    supportingTools: ['hubspot'],
-                    icon: 'favorite',
-                    color: '#ec4899'
-                }
-            ],
-
-            stats: {
-                efficiency: '+40%',
-                timeSaved: '3h',
-                roi: 'x3.0',
-                description: 'Tăng booking rate, giảm no-show, cải thiện retention'
-            }
-        },
-
-        retail: {
-            id: 'retail',
-            name: 'Shop Offline',
-            subtitle: 'Bán lẻ, Cửa hàng, Showroom',
-            icon: 'storefront',
-            gradient: 'from-[#a8edea] to-[#fed6e3]',
-            description: 'AI cho quản lý kho, loyalty program, foot traffic analysis',
-
-            essentialTools: ['kiotviet', 'chatgpt', 'canvaai'],
-            recommendedTools: ['cvs', 'powerbi', 'zaloai'],
-            optionalTools: ['stringee', 'crmviet'],
-
-            workflows: [
-                {
-                    step: 1,
-                    title: 'Inventory Management',
-                    description: 'Dự báo nhu cầu, cảnh báo hết hàng, tối ưu reorder',
-                    primaryTool: 'kiotviet',
-                    supportingTools: ['powerbi'],
-                    icon: 'inventory',
-                    color: '#ec6d13'
-                },
-                {
-                    step: 2,
-                    title: 'Customer Analytics',
-                    description: 'Phân tích hành vi mua sắm, loyalty scoring, segmentation',
-                    primaryTool: 'cvs',
-                    supportingTools: ['powerbi'],
+                    title: 'Phân tích thị trường',
+                    description: 'Technical analysis, sentiment analysis, pattern recognition với AI',
+                    primaryTool: 'tradingview',
+                    supportingTools: ['claude', 'tickeron'],
                     icon: 'analytics',
+                    color: '#ec6d13'
+                },
+                {
+                    step: 2,
+                    title: 'Tín hiệu giao dịch',
+                    description: 'AI tạo entry/exit signals, multi-timeframe analysis, probability scoring',
+                    primaryTool: '3commas',
+                    supportingTools: ['tickeron', 'tradingview'],
+                    icon: 'trending_up',
                     color: '#60a5fa'
                 },
                 {
                     step: 3,
-                    title: 'Marketing Local',
-                    description: 'Content cho social, chạy ads, SMS marketing',
-                    primaryTool: 'canvaai',
-                    supportingTools: ['chatgpt', 'zaloai'],
-                    icon: 'campaign',
+                    title: 'Quản lý rủi ro',
+                    description: 'Position sizing, stop-loss optimization, portfolio balancing với AI',
+                    primaryTool: 'quantconnect',
+                    supportingTools: ['tradingview', 'claude'],
+                    icon: 'shield',
                     color: '#ec4899'
                 }
             ],
 
             stats: {
-                efficiency: '+35%',
-                timeSaved: '2.5h',
-                roi: 'x2.8',
-                description: 'Giảm thất thoát kho, tăng khách quay lại'
+                efficiency: '+65%',
+                timeSaved: '3h',
+                roi: 'x3.5',
+                description: 'Win rate 65-75%, giảm drawdown 40%, phân tích nhanh hơn 5x'
             }
         },
 
-        food: {
-            id: 'food',
-            name: 'Quán ăn & F&B',
-            subtitle: 'Nhà hàng, Cafe, Fast Food',
-            icon: 'restaurant',
-            gradient: 'from-[#ffecd2] to-[#fcb69f]',
-            description: 'AI cho order management, menu optimization, review response',
+        'personal-assistant': {
+            id: 'personal-assistant',
+            name: 'Trợ lý cá nhân',
+            subtitle: 'Productivity, Life Management',
+            icon: 'assistant',
+            gradient: 'from-[#a8edea] to-[#fed6e3]',
+            description: 'AI quản lý lịch, ghi chú cuộc họp, tổ chức kiến thức và tự động hóa công việc',
 
-            essentialTools: ['kiotviet', 'botstar', 'canvaai'],
-            recommendedTools: ['zaloai', 'chatgpt', 'vbee'],
-            optionalTools: ['hubspot', 'stringee'],
+            essentialTools: ['notionai', 'otterai', 'claude'],
+            recommendedTools: ['reclaimai', 'chatgpt', 'perplexity'],
+            optionalTools: ['gemini', 'canvaai', 'vbee'],
 
             workflows: [
                 {
                     step: 1,
-                    title: 'Order Management',
-                    description: 'Chatbot nhận order, gợi ý món, xử lý delivery',
-                    primaryTool: 'botstar',
-                    supportingTools: ['zaloai'],
-                    icon: 'fastfood',
+                    title: 'Lên lịch thông minh',
+                    description: 'AI tối ưu calendar, protect focus time, auto-schedule tasks và habits',
+                    primaryTool: 'reclaimai',
+                    supportingTools: ['gemini', 'notionai'],
+                    icon: 'calendar_month',
                     color: '#ec6d13'
                 },
                 {
                     step: 2,
-                    title: 'Menu Optimization',
-                    description: 'Phân tích best-seller, đề xuất combo, pricing',
-                    primaryTool: 'kiotviet',
-                    supportingTools: ['powerbi'],
-                    icon: 'menu_book',
+                    title: 'Ghi chú cuộc họp',
+                    description: 'Transcription real-time, AI summary, extract action items tự động',
+                    primaryTool: 'otterai',
+                    supportingTools: ['notionai', 'claude'],
+                    icon: 'mic',
                     color: '#60a5fa'
                 },
                 {
                     step: 3,
-                    title: 'Review & Marketing',
-                    description: 'Auto-reply review, tạo content, voice cho drive-thru',
-                    primaryTool: 'chatgpt',
-                    supportingTools: ['vbee', 'canvaai'],
-                    icon: 'reviews',
+                    title: 'Quản lý kiến thức',
+                    description: 'AI organize notes, semantic search, synthesize information từ nhiều nguồn',
+                    primaryTool: 'notionai',
+                    supportingTools: ['perplexity', 'claude'],
+                    icon: 'psychology',
                     color: '#ec4899'
                 }
             ],
 
             stats: {
                 efficiency: '+50%',
-                timeSaved: '4h',
-                roi: 'x3.5',
-                description: 'Tăng tốc độ phục vụ, cải thiện rating'
+                timeSaved: '2.5h',
+                roi: 'x4.0',
+                description: 'Tiết kiệm 2-3h/ngày, không miss action items, knowledge at fingertips'
             }
         }
     };
@@ -1251,6 +701,201 @@
             website: 'https://lookerstudio.google.com',
             vietnameseSupport: 'Khá',
             apiAvailable: true
+        },
+
+        // ========== J. DEVELOPMENT TOOLS ==========
+        githubcopilot: {
+            id: 'githubcopilot',
+            name: 'GitHub Copilot',
+            provider: 'GitHub (Microsoft)',
+            category: 'development',
+            icon: 'code',
+            color: '#000000',
+            description: 'AI pair programmer gợi ý code và functions trong thời gian thực',
+            features: ['Real-time code completions', 'Multi-line generation', 'Chat interface', 'CLI integration', '10+ ngôn ngữ'],
+            useCases: ['Auto-complete code', 'Generate boilerplate', 'Explain code', 'Refactoring'],
+            pricing: '$10/tháng (Individual), $19/user/tháng (Business)',
+            website: 'https://github.com/features/copilot',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        cursor: {
+            id: 'cursor',
+            name: 'Cursor IDE',
+            provider: 'Anysphere Inc.',
+            category: 'development',
+            icon: 'terminal',
+            color: '#7c3aed',
+            description: 'AI-first code editor với multi-file editing và autonomous agents',
+            features: ['Composer multi-file edits', 'Codebase-aware chat', 'Tab autocomplete', 'Agent mode', 'VSCode extensions'],
+            useCases: ['Large-scale refactoring', 'Feature from description', 'Debug với AI', 'Learn new codebase'],
+            pricing: 'Free (Hobby), $20/tháng (Pro), $40/user/tháng (Business)',
+            website: 'https://cursor.sh',
+            vietnameseSupport: 'Khá',
+            apiAvailable: false
+        },
+
+        codeium: {
+            id: 'codeium',
+            name: 'Codeium',
+            provider: 'Exafunction Inc.',
+            category: 'development',
+            icon: 'bolt',
+            color: '#09b6a2',
+            description: 'Free AI coding toolkit với autocomplete, chat và search',
+            features: ['Unlimited free autocomplete', 'Codebase-aware search', '70+ languages', '40+ IDEs', 'Windsurf IDE'],
+            useCases: ['Free AI coding', 'Multi-language projects', 'Team onboarding', 'Agentic workflows'],
+            pricing: 'Free (Individual), $12/user/tháng (Teams)',
+            website: 'https://codeium.com',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        tabnine: {
+            id: 'tabnine',
+            name: 'Tabnine',
+            provider: 'Tabnine Ltd.',
+            category: 'development',
+            icon: 'memory',
+            color: '#ca2b7e',
+            description: 'AI code assistant với privacy-focused on-premise deployment',
+            features: ['Whole-line completions', 'Team-trained AI models', 'On-premise deployment', '80+ languages', 'IDE-agnostic'],
+            useCases: ['Enterprise privacy', 'Custom AI models', 'Compliance requirements', 'Legacy codebase'],
+            pricing: '$12/user/tháng (Pro), Enterprise custom',
+            website: 'https://www.tabnine.com',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        // ========== K. TRADING TOOLS ==========
+        tradingview: {
+            id: 'tradingview',
+            name: 'TradingView',
+            provider: 'TradingView Inc.',
+            category: 'trading',
+            icon: 'candlestick_chart',
+            color: '#2962ff',
+            description: 'Advanced charting platform với AI pattern recognition và social trading',
+            features: ['100+ technical indicators', 'Pine Script automation', 'AI pattern recognition', 'Social trading', 'Real-time data'],
+            useCases: ['Technical analysis', 'Chart patterns', 'Alert automation', 'Strategy backtesting'],
+            pricing: 'Free, $14.95/tháng (Pro), $29.95/tháng (Pro+), $59.95/tháng (Premium)',
+            website: 'https://www.tradingview.com',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        '3commas': {
+            id: '3commas',
+            name: '3Commas',
+            provider: '3Commas Corp.',
+            category: 'trading',
+            icon: 'smart_toy',
+            color: '#00c853',
+            description: 'Automated crypto trading bots với DCA, Grid và smart terminals',
+            features: ['DCA bots', 'Grid trading', 'Smart terminal', 'Portfolio tracking', 'Copy trading'],
+            useCases: ['Crypto automation', 'DCA strategies', 'Portfolio management', '20+ exchanges'],
+            pricing: '$29/tháng (Starter), $59/tháng (Advanced), $99/tháng (Pro)',
+            website: 'https://3commas.io',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        tickeron: {
+            id: 'tickeron',
+            name: 'Tickeron',
+            provider: 'Tickeron Inc.',
+            category: 'trading',
+            icon: 'insights',
+            color: '#ff6d00',
+            description: 'AI pattern recognition và trend prediction cho stocks, crypto, forex',
+            features: ['AI Pattern Recognition', 'Trend Prediction Engine', 'Portfolio optimization', 'Real-time signals', 'Confidence levels'],
+            useCases: ['Pattern detection', 'AI signals', 'Multi-asset analysis', 'Risk assessment'],
+            pricing: '$29/tháng (Basic), $59/tháng (Premium), $99/tháng (Pro)',
+            website: 'https://tickeron.com',
+            vietnameseSupport: 'Không',
+            apiAvailable: true
+        },
+
+        quantconnect: {
+            id: 'quantconnect',
+            name: 'QuantConnect',
+            provider: 'QuantConnect Corporation',
+            category: 'trading',
+            icon: 'code',
+            color: '#f5a623',
+            description: 'Open-source algorithmic trading với Python/C# và ML integration',
+            features: ['Python/C# algorithms', 'ML integration (TensorFlow)', 'Tick-level backtesting', 'Live trading', 'Cloud execution'],
+            useCases: ['Algorithmic trading', 'Quantitative research', 'Strategy development', 'Multi-broker'],
+            pricing: 'Free (limited), $8/tháng (Researcher), $20/tháng (Team)',
+            website: 'https://www.quantconnect.com',
+            vietnameseSupport: 'Không',
+            apiAvailable: true
+        },
+
+        // ========== L. PRODUCTIVITY TOOLS ==========
+        notionai: {
+            id: 'notionai',
+            name: 'Notion AI',
+            provider: 'Notion Labs Inc.',
+            category: 'productivity',
+            icon: 'edit_note',
+            color: '#000000',
+            description: 'AI workspace assistant cho writing, editing, summarizing và automation',
+            features: ['AI content generation', 'Database autofill', 'Enterprise search', 'Meeting notes', 'Multi-model (GPT-4, Claude)'],
+            useCases: ['Document creation', 'Meeting automation', 'Knowledge base', 'Project management'],
+            pricing: '$8-10/member/tháng (add-on)',
+            website: 'https://www.notion.so/product/ai',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
+        },
+
+        otterai: {
+            id: 'otterai',
+            name: 'Otter.ai',
+            provider: 'Otter.ai Inc.',
+            category: 'productivity',
+            icon: 'mic',
+            color: '#3b82f6',
+            description: 'AI meeting transcription với real-time collaboration và action items',
+            features: ['Real-time transcription', 'Speaker identification', 'AI summaries', 'Action items extraction', 'Zoom/Meet/Teams integration'],
+            useCases: ['Meeting transcription', 'Interview recording', 'Lecture notes', 'Team collaboration'],
+            pricing: 'Free (600 phút/tháng), $16.99/tháng (Pro), $30/user/tháng (Business)',
+            website: 'https://otter.ai',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        reclaimai: {
+            id: 'reclaimai',
+            name: 'Reclaim.ai',
+            provider: 'Reclaim.ai Inc.',
+            category: 'productivity',
+            icon: 'calendar_month',
+            color: '#4f46e5',
+            description: 'Smart calendar assistant tự động schedule habits và protect focus time',
+            features: ['Smart habit scheduling', 'Calendar sync', 'Focus time protection', 'Meeting buffering', 'Task manager integration'],
+            useCases: ['Calendar automation', 'Focus management', 'Team scheduling', 'Work-life balance'],
+            pricing: 'Free (Lite), $8/user/tháng (Starter), $12/user/tháng (Business)',
+            website: 'https://reclaim.ai',
+            vietnameseSupport: 'Khá',
+            apiAvailable: true
+        },
+
+        perplexity: {
+            id: 'perplexity',
+            name: 'Perplexity AI',
+            provider: 'Perplexity AI',
+            category: 'productivity',
+            icon: 'search',
+            color: '#20b2aa',
+            description: 'AI research assistant với real-time web search và cited answers',
+            features: ['Real-time web search', 'Multi-model (GPT-4, Claude)', 'File upload analysis', 'Unlimited Copilot', 'Citations'],
+            useCases: ['Research', 'Fact-checking', 'News analysis', 'Technical documentation'],
+            pricing: 'Free (limited), $20/tháng (Pro)',
+            website: 'https://www.perplexity.ai',
+            vietnameseSupport: 'Tốt',
+            apiAvailable: true
         }
     };
 
@@ -1261,200 +906,111 @@
     const TOOL_INDUSTRY_MATRIX = {
         // Foundation Models - Phù hợp mọi ngành
         chatgpt: {
-            healthcare: 4, finance: 5, education: 5, ecommerce: 5,
-            manufacturing: 4, agriculture: 3, transportation: 4,
-            cybersecurity: 5, hospitality: 4, marketing: 5,
-            programming: 5, beauty: 4, retail: 4, food: 4
+            programming: 5,
+            trading: 4,
+            'personal-assistant': 5
         },
         claude: {
-            healthcare: 4, finance: 5, education: 4, ecommerce: 4,
-            manufacturing: 4, agriculture: 3, transportation: 3,
-            cybersecurity: 5, hospitality: 3, marketing: 4,
-            programming: 5, beauty: 3, retail: 3, food: 3
+            programming: 5,
+            trading: 5,
+            'personal-assistant': 5
         },
         gemini: {
-            healthcare: 4, finance: 4, education: 5, ecommerce: 4,
-            manufacturing: 4, agriculture: 3, transportation: 4,
-            cybersecurity: 4, hospitality: 4, marketing: 4,
-            programming: 4, beauty: 4, retail: 4, food: 4
+            programming: 4,
+            trading: 3,
+            'personal-assistant': 5
         },
 
-        // AI Vietnam
-        misaaai: {
-            healthcare: 4, finance: 5, education: 4, ecommerce: 4,
-            manufacturing: 5, agriculture: 3, transportation: 4,
-            cybersecurity: 3, hospitality: 4, marketing: 3,
-            programming: 3, beauty: 4, retail: 5, food: 4
+        // Development Tools
+        githubcopilot: {
+            programming: 5,
+            trading: 2,
+            'personal-assistant': 2
         },
-        fptai: {
-            healthcare: 5, finance: 5, education: 4, ecommerce: 4,
-            manufacturing: 4, agriculture: 3, transportation: 4,
-            cybersecurity: 3, hospitality: 4, marketing: 4,
-            programming: 4, beauty: 3, retail: 4, food: 4
+        cursor: {
+            programming: 5,
+            trading: 2,
+            'personal-assistant': 2
         },
-        zaloai: {
-            healthcare: 3, finance: 3, education: 3, ecommerce: 5,
-            manufacturing: 2, agriculture: 2, transportation: 3,
-            cybersecurity: 2, hospitality: 4, marketing: 5,
-            programming: 2, beauty: 5, retail: 5, food: 5
+        codeium: {
+            programming: 5,
+            trading: 2,
+            'personal-assistant': 2
         },
-        vinai: {
-            healthcare: 5, finance: 2, education: 2, ecommerce: 2,
-            manufacturing: 3, agriculture: 2, transportation: 3,
-            cybersecurity: 4, hospitality: 2, marketing: 2,
-            programming: 4, beauty: 2, retail: 3, food: 2
-        },
-        vbee: {
-            healthcare: 3, finance: 3, education: 5, ecommerce: 3,
-            manufacturing: 2, agriculture: 2, transportation: 3,
-            cybersecurity: 2, hospitality: 3, marketing: 4,
-            programming: 2, beauty: 4, retail: 4, food: 5
+        tabnine: {
+            programming: 4,
+            trading: 1,
+            'personal-assistant': 1
         },
 
-        // Chatbot & CSKH
-        botstar: {
-            healthcare: 5, finance: 4, education: 4, ecommerce: 5,
-            manufacturing: 3, agriculture: 2, transportation: 4,
-            cybersecurity: 3, hospitality: 5, marketing: 4,
-            programming: 3, beauty: 5, retail: 4, food: 5
+        // Trading Tools
+        tradingview: {
+            programming: 2,
+            trading: 5,
+            'personal-assistant': 2
         },
-        stringee: {
-            healthcare: 4, finance: 5, education: 3, ecommerce: 4,
-            manufacturing: 3, agriculture: 2, transportation: 5,
-            cybersecurity: 3, hospitality: 4, marketing: 4,
-            programming: 3, beauty: 4, retail: 4, food: 5
+        '3commas': {
+            programming: 1,
+            trading: 5,
+            'personal-assistant': 1
         },
-        freshchat: {
-            healthcare: 4, finance: 4, education: 3, ecommerce: 5,
-            manufacturing: 3, agriculture: 2, transportation: 3,
-            cybersecurity: 3, hospitality: 5, marketing: 4,
-            programming: 3, beauty: 4, retail: 4, food: 4
+        tickeron: {
+            programming: 1,
+            trading: 5,
+            'personal-assistant': 1
         },
-
-        // Vision & OCR
-        cvs: {
-            healthcare: 4, finance: 3, education: 3, ecommerce: 4,
-            manufacturing: 5, agriculture: 3, transportation: 5,
-            cybersecurity: 5, hospitality: 4, marketing: 2,
-            programming: 3, beauty: 3, retail: 5, food: 4
-        },
-        lacvietocr: {
-            healthcare: 4, finance: 5, education: 3, ecommerce: 4,
-            manufacturing: 4, agriculture: 3, transportation: 4,
-            cybersecurity: 3, hospitality: 3, marketing: 3,
-            programming: 2, beauty: 3, retail: 4, food: 4
-        },
-        googlevision: {
-            healthcare: 4, finance: 4, education: 3, ecommerce: 5,
-            manufacturing: 5, agriculture: 3, transportation: 4,
-            cybersecurity: 4, hospitality: 4, marketing: 4,
-            programming: 4, beauty: 3, retail: 4, food: 4
+        quantconnect: {
+            programming: 3,
+            trading: 5,
+            'personal-assistant': 1
         },
 
-        // CRM & Marketing
-        hubspot: {
-            healthcare: 3, finance: 5, education: 4, ecommerce: 5,
-            manufacturing: 4, agriculture: 2, transportation: 3,
-            cybersecurity: 3, hospitality: 5, marketing: 5,
-            programming: 3, beauty: 4, retail: 4, food: 4
+        // Productivity Tools
+        notionai: {
+            programming: 4,
+            trading: 3,
+            'personal-assistant': 5
         },
-        salesforce: {
-            healthcare: 4, finance: 5, education: 4, ecommerce: 5,
-            manufacturing: 5, agriculture: 2, transportation: 4,
-            cybersecurity: 4, hospitality: 4, marketing: 5,
-            programming: 4, beauty: 3, retail: 4, food: 4
+        otterai: {
+            programming: 3,
+            trading: 2,
+            'personal-assistant': 5
         },
-        crmviet: {
-            healthcare: 3, finance: 4, education: 3, ecommerce: 4,
-            manufacturing: 3, agriculture: 2, transportation: 3,
-            cybersecurity: 2, hospitality: 4, marketing: 3,
-            programming: 2, beauty: 4, retail: 5, food: 4
+        reclaimai: {
+            programming: 3,
+            trading: 2,
+            'personal-assistant': 5
         },
-        zohocrm: {
-            healthcare: 3, finance: 4, education: 4, ecommerce: 4,
-            manufacturing: 4, agriculture: 2, transportation: 3,
-            cybersecurity: 3, hospitality: 4, marketing: 4,
-            programming: 3, beauty: 3, retail: 4, food: 4
-        },
-        basecrm: {
-            healthcare: 3, finance: 4, education: 3, ecommerce: 4,
-            manufacturing: 4, agriculture: 2, transportation: 4,
-            cybersecurity: 2, hospitality: 3, marketing: 3,
-            programming: 2, beauty: 3, retail: 4, food: 3
+        perplexity: {
+            programming: 4,
+            trading: 4,
+            'personal-assistant': 5
         },
 
-        // E-Commerce
-        kiotviet: {
-            healthcare: 2, finance: 2, education: 2, ecommerce: 5,
-            manufacturing: 3, agriculture: 2, transportation: 2,
-            cybersecurity: 2, hospitality: 5, marketing: 3,
-            programming: 2, beauty: 4, retail: 5, food: 5
-        },
-        haravan: {
-            healthcare: 2, finance: 2, education: 2, ecommerce: 5,
-            manufacturing: 2, agriculture: 2, transportation: 2,
-            cybersecurity: 2, hospitality: 4, marketing: 4,
-            programming: 2, beauty: 4, retail: 5, food: 4
-        },
-        marketplaceai: {
-            healthcare: 1, finance: 1, education: 1, ecommerce: 5,
-            manufacturing: 1, agriculture: 1, transportation: 1,
-            cybersecurity: 1, hospitality: 2, marketing: 4,
-            programming: 1, beauty: 3, retail: 4, food: 4
-        },
-
-        // Agriculture & Logistics
-        fptsmartfarm: {
-            healthcare: 2, finance: 2, education: 2, ecommerce: 2,
-            manufacturing: 3, agriculture: 5, transportation: 3,
-            cybersecurity: 2, hospitality: 2, marketing: 2,
-            programming: 2, beauty: 1, retail: 2, food: 3
-        },
-        viettelpostai: {
-            healthcare: 3, finance: 3, education: 2, ecommerce: 5,
-            manufacturing: 4, agriculture: 4, transportation: 5,
-            cybersecurity: 2, hospitality: 3, marketing: 3,
-            programming: 3, beauty: 4, retail: 5, food: 5
-        },
-
-        // Creative AI
-        midjourney: {
-            healthcare: 2, finance: 3, education: 4, ecommerce: 5,
-            manufacturing: 3, agriculture: 2, transportation: 2,
-            cybersecurity: 2, hospitality: 5, marketing: 5,
-            programming: 2, beauty: 5, retail: 4, food: 4
-        },
+        // Creative Tools (existing)
         canvaai: {
-            healthcare: 3, finance: 4, education: 5, ecommerce: 5,
-            manufacturing: 3, agriculture: 2, transportation: 3,
-            cybersecurity: 2, hospitality: 5, marketing: 5,
-            programming: 3, beauty: 5, retail: 5, food: 5
+            programming: 2,
+            trading: 2,
+            'personal-assistant': 4
         },
         copyai: {
-            healthcare: 3, finance: 4, education: 4, ecommerce: 5,
-            manufacturing: 3, agriculture: 2, transportation: 3,
-            cybersecurity: 2, hospitality: 4, marketing: 5,
-            programming: 3, beauty: 4, retail: 4, food: 5
+            programming: 2,
+            trading: 2,
+            'personal-assistant': 4
         },
 
-        // Analytics
+        // Analytics (existing)
         powerbi: {
-            healthcare: 4, finance: 5, education: 4, ecommerce: 5,
-            manufacturing: 5, agriculture: 4, transportation: 5,
-            cybersecurity: 4, hospitality: 4, marketing: 5,
-            programming: 4, beauty: 3, retail: 4, food: 4
+            programming: 3,
+            trading: 4,
+            'personal-assistant': 3
         },
-        tableau: {
-            healthcare: 4, finance: 5, education: 4, ecommerce: 5,
-            manufacturing: 5, agriculture: 4, transportation: 4,
-            cybersecurity: 4, hospitality: 3, marketing: 4,
-            programming: 4, beauty: 3, retail: 4, food: 3
-        },
-        looker: {
-            healthcare: 3, finance: 4, education: 4, ecommerce: 5,
-            manufacturing: 4, agriculture: 3, transportation: 4,
-            cybersecurity: 3, hospitality: 4, marketing: 5,
-            programming: 3, beauty: 3, retail: 4, food: 4
+
+        // Vietnamese Tools (existing)
+        vbee: {
+            programming: 2,
+            trading: 1,
+            'personal-assistant': 4
         }
     };
 
@@ -1585,16 +1141,27 @@
     const ROICalculator = {
         // Multipliers theo ngành (từ research thực tế)
         industryMultipliers: {
-            healthcare: { hoursPerEmployee: 0.8, automationPotential: 0.45 },
-            finance: { hoursPerEmployee: 1.2, automationPotential: 0.55 },
-            education: { hoursPerEmployee: 0.6, automationPotential: 0.35 },
-            ecommerce: { hoursPerEmployee: 1.0, automationPotential: 0.50 },
-            manufacturing: { hoursPerEmployee: 1.5, automationPotential: 0.60 },
-            agriculture: { hoursPerEmployee: 0.5, automationPotential: 0.30 },
-            transportation: { hoursPerEmployee: 1.3, automationPotential: 0.55 },
-            cybersecurity: { hoursPerEmployee: 1.0, automationPotential: 0.45 },
-            hospitality: { hoursPerEmployee: 0.9, automationPotential: 0.40 },
-            marketing: { hoursPerEmployee: 1.4, automationPotential: 0.65 }
+            programming: {
+                hoursPerEmployee: 4.5,
+                automationPotential: 0.45,
+                productivityBoost: 3.0,
+                errorReduction: 0.50,
+                description: 'Lập trình viên tiết kiệm 4-6h/ngày với AI coding assistants'
+            },
+            trading: {
+                hoursPerEmployee: 3.0,
+                automationPotential: 0.60,
+                productivityBoost: 1.65,
+                riskReduction: 0.40,
+                description: 'Trader cải thiện win rate 15-20% với AI analysis'
+            },
+            'personal-assistant': {
+                hoursPerEmployee: 2.5,
+                automationPotential: 0.35,
+                productivityBoost: 1.50,
+                organizationBoost: 0.80,
+                description: 'Tiết kiệm 2-3h/ngày cho planning, meetings, knowledge management'
+            }
         },
 
         // Cost estimates (VND/tháng cho tools)
@@ -1843,96 +1410,73 @@
      */
     const CaseStudies = [
         {
-            id: "healthcare-01",
-            industry: "healthcare",
-            company: "Bệnh viện Đa khoa Hoàn Mỹ",
+            id: "programming-01",
+            industry: "programming",
+            company: "Startup SaaS VN",
             location: "TP. Hồ Chí Minh",
-            size: "500+ nhân viên",
-            challenge: "Tiếp nhận 1,000+ cuộc gọi/ngày, thờ i gian chờ 45 phút, nhân viên bị quá tải",
-            solution: "Triển khai FPT.AI Chatbot + VinAI Medical Imaging",
-            implementation: "3 tháng",
+            size: "20 developers",
+            challenge: "Team nhỏ phải ship nhanh, code review mất nhiều thời gian, technical debt cao",
+            solution: "GitHub Copilot + Cursor + Codeium cho toàn team",
+            implementation: "2 tuần",
             results: {
-                waitTime: "-75%",
-                callsHandled: "+300%",
-                staffSatisfaction: "+40%",
-                costSavings: "2.4 tỷ/năm"
+                codingSpeed: "+5x",
+                codeReviewTime: "-60%",
+                bugsReduction: "-40%",
+                devProductivity: "+300%"
             },
-            tools: ["fptai", "vinai", "misaaai"],
+            tools: ["githubcopilot", "cursor", "codeium"],
             testimonial: {
-                quote: "AI đã thay đổi cách chúng tôi phục vụ bệnh nhân. Thờ i gian chờ giảm mạnh trong khi chất lượng dịch vụ tăng lên.",
-                author: "BS. Nguyễn Văn An",
-                role: "Giám đốc Y khoa"
+                quote: "Từ khi có AI coding assistant, productivity của team tăng gấp 5. Code chất lượng hơn, ship nhanh hơn.",
+                author: "Nguyễn Minh Tuấn",
+                role: "CTO"
             },
-            image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800"
+            image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800"
         },
         {
-            id: "finance-01",
-            industry: "finance",
-            company: "Ngân hàng TMCP Việt Nam",
+            id: "trading-01",
+            industry: "trading",
+            company: "Crypto Trader VN",
             location: "Hà Nội",
-            size: "2,000+ nhân viên",
-            challenge: "Xử lý 50,000+ hồ sơ vay/tháng, thủ công, lỗi cao, thờ i gian duyệt 5-7 ngày",
-            solution: "FPT.AI OCR + Salesforce Einstein cho credit scoring",
-            implementation: "4 tháng",
+            size: "Freelancer",
+            challenge: "Theo dõi 50+ đồng coin, phân tích kỹ thuật mất nhiều thời gian, miss cơ hội",
+            solution: "TradingView Premium + 3Commas cho auto trading",
+            implementation: "1 tuần",
             results: {
-                processingTime: "-80%",
-                errorRate: "-90%",
-                customerSatisfaction: "+35%",
-                loansProcessed: "+150%"
+                tradingAccuracy: "+45%",
+                timeSpent: "-80%",
+                profitability: "+120%",
+                stressLevel: "-70%"
             },
-            tools: ["fptai", "salesforce", "lacvietocr"],
+            tools: ["tradingview", "3commas", "tickeron"],
             testimonial: {
-                quote: "Tự động hóa quy trình tín dụng giúp chúng tôi phục vụ khách hàng nhanh gấp 5 lần.",
-                author: "Trần Thị Bình",
-                role: "Phó Giám đốc Kỹ thuật"
+                quote: "AI giúp tôi scan thị trường 24/7. Không còn phải thức đêm canh chart, bot làm hết.",
+                author: "Trần Đức Anh",
+                role: "Full-time Trader"
             },
-            image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800"
+            image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800"
         },
         {
-            id: "ecommerce-01",
-            industry: "ecommerce",
-            company: "Thờ i trang LYA",
+            id: "personal-assistant-01",
+            industry: "personal-assistant",
+            company: "Solo Entrepreneur",
             location: "Đà Nẵng",
-            size: "50 nhân viên",
-            challenge: "Quản lý 5 kênh bán hàng, đơn hàng bị nhầm lẫn, CSKH chậm",
-            solution: "KiotViet AI + ChatGPT cho content + Haravan cho omnichannel",
-            implementation: "2 tháng",
+            size: "1 người",
+            challenge: "Quản lý nhiều dự án, meeting nhiều, ghi chú lộn xộn, quên task quan trọng",
+            solution: "Notion AI + Otter.ai + Reclaim AI cho productivity",
+            implementation: "3 ngày",
             results: {
-                orderAccuracy: "+95%",
-                responseTime: "-70%",
-                revenue: "+45%",
-                customerRetention: "+30%"
+                taskCompletion: "+80%",
+                meetingNotes: "100% auto",
+                freeTime: "+3h/ngày",
+                stress: "-50%"
             },
-            tools: ["kiotviet", "chatgpt", "haravan", "botstar"],
+            tools: ["notionai", "otterai", "reclaimai"],
             testimonial: {
-                quote: "Từ 5 người quản lý đơn hàng, giờ chỉ cần 2 người. AI giúp chúng tôi scale mà không cần tăng headcount.",
-                author: "Lê Minh Cường",
-                role: "Founder"
+                quote: "AI như có thêm 1 assistant cá nhân. Ghi chú meeting tự động, schedule được optimize, không bao giờ quên task.",
+                author: "Lê Thị Mai",
+                role: "Consultant"
             },
-            image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800"
-        },
-        {
-            id: "manufacturing-01",
-            industry: "manufacturing",
-            company: "Công ty Sản xuất XYZ",
-            location: "Bình Dương",
-            size: "300 nhân viên",
-            challenge: "Máy móc hỏng đột ngột, downtime 20%, chi phí bảo trì cao",
-            solution: "Power BI + IoT sensors cho predictive maintenance",
-            implementation: "6 tháng",
-            results: {
-                downtime: "-60%",
-                maintenanceCost: "-40%",
-                equipmentLifespan: "+25%",
-                roi: "350% sau 1 năm"
-            },
-            tools: ["powerbi", "googlevision"],
-            testimonial: {
-                quote: "Giờ chúng tôi biết trước khi nào máy sẽ hỏng. Không còn sửa chữa khẩn cấp lúc nửa đêm.",
-                author: "Phạm Văn Dũng",
-                role: "Quản đốc Sản xuất"
-            },
-            image: "https://images.unsplash.com/photo-1565043666747-69f6646db940?w=800"
+            image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800"
         }
     ];
 
@@ -2321,9 +1865,32 @@
          * Render default content when no industry selected
          */
         renderDefault() {
-            const container = document.getElementById('results-workflow-container');
-            if (container) {
-                container.innerHTML = '<p class="text-white/50 col-span-3 text-center">Vui lòng chọn ngành nghề để xem chiến lược AI phù hợp</p>';
+            // Render empty state for workflow container
+            const workflowContainer = document.getElementById('results-workflow-container');
+            if (workflowContainer) {
+                workflowContainer.innerHTML = `
+                    <div class="col-span-3 flex flex-col items-center justify-center py-12 text-center">
+                        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-3xl text-primary">category</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-2">Chưa chọn ngành nghề</h4>
+                        <p class="text-white/50 max-w-md mb-6">Vui lòng quay lại và chọn ngành nghề của bạn để xem chiến lược AI được đề xuất.</p>
+                        <button onclick="navigateTo('services')" class="px-6 py-3 rounded-xl bg-primary hover:bg-orange-600 text-white font-bold transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            Chọn ngành nghề
+                        </button>
+                    </div>
+                `;
+            }
+
+            // Render empty state for tools container
+            const toolsContainer = document.getElementById('results-tools-container');
+            if (toolsContainer) {
+                toolsContainer.innerHTML = `
+                    <div class="col-span-4 text-center py-8">
+                        <p class="text-white/40">Công cụ sẽ được hiển thị sau khi chọn ngành nghề</p>
+                    </div>
+                `;
             }
         }
     };
@@ -2399,20 +1966,9 @@
          */
         updateBreadcrumb(industry) {
             const names = {
-                healthcare: 'Y tế',
-                finance: 'Tài chính',
-                education: 'Giáo dục',
-                ecommerce: 'E-commerce',
-                manufacturing: 'Sản xuất',
-                agriculture: 'Nông nghiệp',
-                transportation: 'Vận tải',
-                cybersecurity: 'An ninh mạng',
-                hospitality: 'Khách sạn & Nhà hàng',
-                marketing: 'Marketing & Quảng cáo',
-                programming: 'Lập trình & Software',
-                beauty: 'Làm đẹp',
-                retail: 'Shop Offline & Bán lẻ',
-                food: 'Quán ăn & F&B'
+                programming: 'Lập trình',
+                trading: 'Trading',
+                'personal-assistant': 'Trợ lý cá nhân'
             };
 
             const breadcrumbLink = document.querySelector('[data-breadcrumb="industry"]');
@@ -4734,10 +4290,21 @@
             setupScrollListener() {
                 let lastScrollY = window.scrollY;
                 const threshold = 300; // Show after scrolling 300px
+                const implementCard = document.getElementById('implement-heading')?.closest('section');
 
                 window.addEventListener('scroll', () => {
                     const currentScrollY = window.scrollY;
-                    const shouldShow = currentScrollY > threshold;
+
+                    // Hide sticky-summary when Implementation Card is visible in viewport
+                    let hideNearImplementCard = false;
+                    if (implementCard) {
+                        const rect = implementCard.getBoundingClientRect();
+                        const windowHeight = window.innerHeight;
+                        // Hide when Implementation Card is at least 50% visible
+                        hideNearImplementCard = rect.top < windowHeight * 0.7 && rect.bottom > 0;
+                    }
+
+                    const shouldShow = currentScrollY > threshold && !hideNearImplementCard;
 
                     if (shouldShow && !this.element.classList.contains('visible')) {
                         this.element.classList.add('visible');
@@ -4772,65 +4339,23 @@
         // Industry Card Preview Data & Handler
         // ============================================
         const IndustryPreviewData = {
-            healthcare: {
-                title: 'Giải pháp cho Y tế',
-                benefits: ['Tự động hóa lịch hẹn', 'Phân tích triệu chứng AI', 'Quản lý hồ sơ bệnh án'],
-                tools: ['IBM Watson Health', 'Google Health AI', 'VinDr'],
-                timeline: '4-6 tuần'
+            programming: {
+                title: 'Giải pháp cho Lập trình',
+                benefits: ['Tăng tốc code 5x với AI', 'Auto-complete thông minh', 'Review code tự động'],
+                tools: ['GitHub Copilot', 'Cursor', 'Codeium', 'TabNine'],
+                timeline: '1-2 tuần'
             },
-            finance: {
-                title: 'Giải pháp cho Tài chính',
-                benefits: ['Phát hiện gian lận', 'Chatbot tư vấn', 'Phân tích rủi ro'],
-                tools: ['FPT.AI', 'TensorFlow', 'AWS Fraud Detector'],
-                timeline: '6-8 tuần'
-            },
-            education: {
-                title: 'Giải pháp cho Giáo dục',
-                benefits: ['Cá nhân hóa học tập', 'Tự động chấm điểm', 'Tạo nội dung AI'],
-                tools: ['ChatGPT', 'Claude', 'Canva AI'],
-                timeline: '3-4 tuần'
-            },
-            ecommerce: {
-                title: 'Giải pháp cho E-commerce',
-                benefits: ['Gợi ý sản phẩm', 'Chatbot bán hàng', 'Phân tích hành vi'],
-                tools: ['AWS Personalize', 'Google Recommendations AI', 'Dialogflow'],
-                timeline: '4-6 tuần'
-            },
-            manufacturing: {
-                title: 'Giải pháp cho Sản xuất',
-                benefits: ['Dự đoán bảo trì', 'Kiểm tra chất lượng', 'Tối ưu chuỗi cung ứng'],
-                tools: ['Azure ML', 'TensorFlow', 'AutoML'],
-                timeline: '8-12 tuần'
-            },
-            agriculture: {
-                title: 'Giải pháp cho Nông nghiệp',
-                benefits: ['Phân tích đất đai', 'Dự báo thờ i tiết', 'Tối ưu tưới tiêu'],
-                tools: ['IBM Watson', 'Google Earth Engine', 'TensorFlow'],
-                timeline: '6-8 tuần'
-            },
-            transportation: {
-                title: 'Giải pháp cho Vận tải',
-                benefits: ['Tối ưu lộ trình', 'Dự đoán nhu cầu', 'Quản lý đội xe'],
-                tools: ['Google Maps API', 'OSRM', 'Azure Maps'],
-                timeline: '4-6 tuần'
-            },
-            cybersecurity: {
-                title: 'Giải pháp cho An ninh mạng',
-                benefits: ['Phát hiện mối đe dọa', 'Phân tích log', 'Tự động phản ứng'],
-                tools: ['Splunk', 'Elastic SIEM', 'Darktrace'],
-                timeline: '6-8 tuần'
-            },
-            hospitality: {
-                title: 'Giải pháp cho Khách sạn',
-                benefits: ['Cá nhân hóa trải nghiệm', 'Tối ưu giá phòng', 'Chatbot đặt phòng'],
-                tools: ['Revinate', 'Cloudbeds', 'Quicktext'],
-                timeline: '3-5 tuần'
-            },
-            marketing: {
-                title: 'Giải pháp cho Marketing',
-                benefits: ['Tạo content tự động', 'Phân tích sentiment', 'Tối ưu quảng cáo'],
-                tools: ['Jasper', 'Copy.ai', 'Sprout Social'],
+            trading: {
+                title: 'Giải pháp cho Trading',
+                benefits: ['Phân tích kỹ thuật AI', 'Bot giao dịch tự động', 'Quản lý rủi ro thông minh'],
+                tools: ['TradingView', '3Commas', 'Tickeron', 'QuantConnect'],
                 timeline: '2-4 tuần'
+            },
+            'personal-assistant': {
+                title: 'Giải pháp Trợ lý cá nhân',
+                benefits: ['Quản lý thời gian thông minh', 'Ghi chú và tóm tắt AI', 'Research tự động'],
+                tools: ['Notion AI', 'Otter.ai', 'Reclaim AI', 'Perplexity'],
+                timeline: '1-2 tuần'
             }
         };
 
