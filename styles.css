@@ -342,7 +342,7 @@ body.ios-app-mode {
 
 .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .hover-glow:hover {
@@ -371,7 +371,7 @@ body.ios-app-mode {
     text-decoration: none;
     border-radius: 0 0 8px 0;
     font-size: 0.875rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .skip-link:hover,
@@ -550,7 +550,7 @@ button:focus-visible,
 .sticky-cta__title {
     font-size: 0.875rem;
     font-weight: 500;
-    color: white;
+    color: var(--color-text-primary);
 }
 
 .sticky-cta__button {
@@ -586,7 +586,7 @@ button:focus-visible,
     border-radius: 50%;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    color: white;
+    color: var(--color-text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -595,7 +595,7 @@ button:focus-visible,
     transform: translateY(20px);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 70;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .back-to-top--visible {
@@ -606,7 +606,7 @@ button:focus-visible,
 .back-to-top:hover {
     background: var(--color-surface-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .back-to-top .material-symbols-outlined {
@@ -1211,7 +1211,7 @@ body:has(.sticky-summary.visible) #main-content {
     transition: all 0.2s ease;
     pointer-events: none;
     z-index: 100;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 [data-tooltip]::after {
@@ -1574,10 +1574,10 @@ body:has(.sticky-summary.visible) #main-content {
 }
 
 .workflow-step:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
     transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* Step Number Badge - Hidden */
@@ -2595,7 +2595,7 @@ body.has-sticky-cta .fab-container {
     height: 48px;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .fab--action:hover {
@@ -2634,7 +2634,7 @@ body.has-sticky-cta .fab-container {
     background: white;
     border: 1px solid var(--color-border);
     border-radius: 1rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     z-index: 89;
     transform-origin: bottom right;
     animation: quickFormIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2762,7 +2762,7 @@ body.has-sticky-cta .fab-container {
     background: white;
     border: 1px solid var(--color-border);
     border-radius: 0.875rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     font-size: 0.9375rem;
     color: var(--color-text-primary);
     animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2934,7 +2934,7 @@ body.has-sticky-cta .fab-container {
 
 .case-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .case-card.hidden {
@@ -3344,7 +3344,7 @@ html {
     visibility: hidden;
     transition: all 0.3s ease;
     z-index: 20;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     margin-bottom: 8px;
 }
 
