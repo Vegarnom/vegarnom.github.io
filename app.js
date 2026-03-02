@@ -79,7 +79,7 @@
                     primaryTool: 'cursor',
                     supportingTools: ['githubcopilot', 'claude'],
                     icon: 'code',
-                    color: '#ec6d13'
+                    color: '#2563EB'
                 },
                 {
                     step: 2,
@@ -129,7 +129,7 @@
                     primaryTool: 'tradingview',
                     supportingTools: ['claude', 'tickeron'],
                     icon: 'analytics',
-                    color: '#ec6d13'
+                    color: '#2563EB'
                 },
                 {
                     step: 2,
@@ -179,7 +179,7 @@
                     primaryTool: 'reclaimai',
                     supportingTools: ['gemini', 'notionai'],
                     icon: 'calendar_month',
-                    color: '#ec6d13'
+                    color: '#2563EB'
                 },
                 {
                     step: 2,
@@ -1126,7 +1126,7 @@
             if (score >= 5) return { text: 'Rất phù hợp', color: '#22c55e' };
             if (score >= 4) return { text: 'Phù hợp tốt', color: '#84cc16' };
             if (score >= 3) return { text: 'Phù hợp', color: '#eab308' };
-            if (score >= 2) return { text: 'Ít phù hợp', color: '#f97316' };
+            if (score >= 2) return { text: 'Ít phù hợp', color: '#2563EB' };
             return { text: 'Không phù hợp', color: '#ef4444' };
         }
     };
@@ -1752,7 +1752,7 @@
             // Render workflow steps with improved card design
             const stepsHtml = data.workflows.map((step, index) => {
                 const isLast = index === data.workflows.length - 1;
-                const colors = ['#ec6d13', '#60a5fa', '#ec4899', '#10b981'];
+                const colors = ['#2563EB', '#60a5fa', '#ec4899', '#10b981'];
                 const color = colors[index % colors.length];
                 const textColors = ['text-primary', 'text-blue-400', 'text-pink-500', 'text-green-400'];
                 const textColor = textColors[index % textColors.length];
@@ -1886,7 +1886,7 @@
                         </div>
                         <h4 class="text-xl font-bold text-white mb-2">Chưa chọn ngành nghề</h4>
                         <p class="text-white/50 max-w-md mb-6">Vui lòng quay lại và chọn ngành nghề của bạn để xem chiến lược AI được đề xuất.</p>
-                        <button onclick="navigateTo('services')" class="px-6 py-3 rounded-xl bg-primary hover:bg-orange-600 text-white font-bold transition-all flex items-center gap-2">
+                        <button onclick="navigateTo('services')" class="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold transition-all flex items-center gap-2">
                             <span class="material-symbols-outlined">arrow_back</span>
                             Chọn ngành nghề
                         </button>

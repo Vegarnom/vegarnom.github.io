@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="vi">
+<html lang="vi">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -9,16 +9,16 @@
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' cdn.tailwindcss.com www.googletagmanager.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com unpkg.com cdn.tailwindcss.com; font-src fonts.gstatic.com; img-src 'self' images.unsplash.com data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self';"> -->
 
     <!-- SEO Meta Tags -->
-    <title>aivan.vn - Giải pháp AI tối ưu cho doanh nghiệp</title>
-    <meta name="description" content="aivan.vn - Giải pháp AI tối ưu cho doanh nghiệp. Tư vấn chiến lược AI, tự động hóa quy trình và phân tích dữ liệu giúp tăng hiệu suất 40%.">
+    <title>aivan.vn - Nền tảng AI vận hành cho doanh nghiệp Việt</title>
+    <meta name="description" content="aivan.vn - Sứ mệnh xây dựng nền tảng AI vận hành cho doanh nghiệp Việt. Tư vấn chiến lược AI, tự động hóa quy trình.">
     <meta name="keywords" content="AI, tư vấn AI, automation, data science, chuyển đổi số, doanh nghiệp">
     <meta name="author" content="aivan.vn">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#181411">
+    <meta name="theme-color" content="#2563EB">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="aivan.vn - Giải pháp AI tối ưu cho doanh nghiệp">
-    <meta property="og:description" content="Chiến lược trí tuệ nhân tạo được thiết kế riêng, nâng tầm hiệu suất và tối ưu hóa vận hành.">
+    <meta property="og:title" content="aivan.vn - Nền tảng AI vận hành cho doanh nghiệp Việt">
+    <meta property="og:description" content="Sứ mệnh xây dựng nền tảng AI vận hành cho doanh nghiệp Việt.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://aivan.vn">
     <meta property="og:site_name" content="aivan.vn">
@@ -27,8 +27,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="aivan.vn - Giải pháp AI tối ưu cho doanh nghiệp">
-    <meta name="twitter:description" content="Chiến lược trí tuệ nhân tạo được thiết kế riêng cho doanh nghiệp của bạn.">
+    <meta name="twitter:title" content="aivan.vn - Nền tảng AI vận hành cho doanh nghiệp Việt">
+    <meta name="twitter:description" content="Sứ mệnh xây dựng nền tảng AI vận hành cho doanh nghiệp Việt.">
     <meta name="twitter:image" content="https://aivan.vn/og-image.jpg">
 
     <!-- Canonical -->
@@ -54,15 +54,19 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#ec6d13",
-                        "accent-red": "#ff3b30",
-                        "surface": "#1d1d1f",
-                        "surface-hover": "#2c2c2e",
-                        "surface-dark": "#231f1a",
-                        "surface-highlight": "#2f2924",
-                        "background-dark": "#181411",
+                        "primary": "#2563EB",
+                        "primary-hover": "#1D4ED8",
+                        "primary-light": "#DBEAFE",
+                        "accent-red": "#92613A",
+                        "surface": "#FFFFFF",
+                        "surface-hover": "#F8F5F1",
+                        "surface-dark": "#3B2F25",
+                        "surface-highlight": "#EDE8E3",
+                        "background-dark": "#FFFFFF",
+                        "background-alt": "#F5F0EB",
                         "background-light": "#f8f7f6",
-                        "text-secondary": "#86868b",
+                        "text-primary": "#1E293B",
+                        "text-secondary": "#64748B",
                     },
                     fontFamily: {
                         "display": ["Inter", "system-ui", "sans-serif"],
@@ -76,7 +80,7 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-background-dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary selection:text-white">
+<body class="bg-white min-h-screen flex flex-col overflow-x-hidden selection:bg-primary selection:text-white">
 
     <!-- Page Loader -->
     <div id="page-loader" class="page-loader">
@@ -100,21 +104,21 @@
         <div class="max-w-[980px] mx-auto h-full px-5 flex items-center justify-between">
             <!-- Logo -->
             <a class="flex items-center gap-2 group cursor-pointer" onclick="navigateTo('home'); return false;" href="#home" aria-label="Về trang chủ aivan.vn">
-                <span class="material-symbols-outlined text-white text-2xl group-hover:text-primary transition-colors" aria-hidden="true">deployed_code</span>
-                <span class="text-white text-lg font-bold tracking-tight">aivan.vn</span>
+                <span class="material-symbols-outlined text-text-primary text-2xl group-hover:text-primary transition-colors" aria-hidden="true">deployed_code</span>
+                <span class="text-text-primary text-lg font-bold tracking-tight">aivan.vn</span>
             </a>
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center gap-8">
-                <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium cursor-pointer py-3 px-2" data-section="home" onclick="navigateTo('home'); return false;" href="#home">Trang chủ</a>
-                <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium cursor-pointer py-3 px-2" data-section="services" onclick="navigateTo('services'); return false;" href="#services">Dịch vụ</a>
-                <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium cursor-pointer py-3 px-2" data-section="results" onclick="navigateTo('results'); return false;" href="#results">Giải pháp</a>
-                <a class="nav-link text-xs text-[#e8e8ed] hover:text-white transition-colors font-medium py-3 px-2" href="mailto:danhngocphh@gmail.com">Liên hệ</a>
+                <a class="nav-link text-xs text-text-secondary hover:text-text-primary transition-colors font-medium cursor-pointer py-3 px-2" data-section="home" onclick="navigateTo('home'); return false;" href="#home">Trang chủ</a>
+                <a class="nav-link text-xs text-text-secondary hover:text-text-primary transition-colors font-medium cursor-pointer py-3 px-2" data-section="services" onclick="navigateTo('services'); return false;" href="#services">Dịch vụ</a>
+                <a class="nav-link text-xs text-text-secondary hover:text-text-primary transition-colors font-medium cursor-pointer py-3 px-2" data-section="results" onclick="navigateTo('results'); return false;" href="#results">Giải pháp</a>
+                <a class="nav-link text-xs text-text-secondary hover:text-text-primary transition-colors font-medium py-3 px-2" href="mailto:danhngocphh@gmail.com">Liên hệ</a>
             </div>
 
             <!-- CTA -->
             <div class="flex items-center gap-4">
-                <button class="bg-primary hover:bg-orange-600 text-white text-[10px] sm:text-xs font-medium py-1 sm:py-1.5 px-2.5 sm:px-4 rounded-full transition-all duration-300 transform hover:scale-105" onclick="navigateTo('services')" aria-label="Bắt đầu tư vấn">
+                <button class="bg-primary hover:bg-primary-hover text-white text-[10px] sm:text-xs font-medium py-1 sm:py-1.5 px-2.5 sm:px-4 rounded-full transition-all duration-300 transform hover:scale-105" onclick="navigateTo('services')" aria-label="Bắt đầu tư vấn">
                     Bắt đầu tư vấn
                 </button>
             </div>
@@ -128,34 +132,34 @@
             <main id="main-content" class="page-main flex-viewport-center">
                 <div class="container-viewport text-center">
                     <!-- Badge - Always show on mobile, hide on very short -->
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-3 sm:mb-4 hide-on-very-short">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-surface-highlight backdrop-blur-sm mb-3 sm:mb-4 hide-on-very-short">
                         <span class="w-2 h-2 rounded-full bg-accent-red animate-pulse"></span>
-                        <span class="text-xs font-medium text-white tracking-wide uppercase">AI 2026</span>
+                        <span class="text-xs font-medium text-text-primary tracking-wide uppercase">AI 2026</span>
                     </div>
 
                     <!-- Hero Headline - Responsive -->
-                    <h1 id="hero-title" class="headline-responsive text-white tracking-tighter mb-2 sm:mb-4">
-                        Giải pháp AI<br/>
-                        <span class="text-gradient">cho doanh nghiệp.</span>
+                    <h1 id="hero-title" class="headline-responsive text-text-primary tracking-tighter mb-2 sm:mb-4">
+                        Nền tảng AI vận hành<br/>
+                        <span class="text-gradient">cho doanh nghiệp Việt.</span>
                     </h1>
 
                     <!-- Subheadline - Hide on very small screens -->
                     <p class="subheadline-responsive text-text-secondary max-w-lg mx-auto mb-3 sm:mb-4 sm:max-w-2xl px-4">
-                        Chiến lược AI được thiết kế riêng, nâng tầm hiệu suất.
+                        Sứ mệnh xây dựng nền tảng AI vận hành cho doanh nghiệp Việt.
                     </p>
 
                     <!-- Stats Bar - Compact 3 columns -->
                     <div class="stats-bar-compact mb-3 sm:mb-4 w-full px-4">
                         <div class="grid grid-cols-3 gap-2 sm:gap-3 max-w-xs sm:max-w-lg mx-auto">
-                            <div class="bg-white/5 rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-white/5 text-center">
+                            <div class="bg-surface-highlight rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-border-light text-center">
                                 <div class="text-lg sm:text-2xl font-black text-primary">10+</div>
                                 <p class="text-text-secondary text-[9px] sm:text-xs leading-tight">Công cụ AI</p>
                             </div>
-                            <div class="bg-white/5 rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-white/5 text-center">
+                            <div class="bg-surface-highlight rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-border-light text-center">
                                 <div class="text-lg sm:text-2xl font-black text-primary">3</div>
                                 <p class="text-text-secondary text-[9px] sm:text-xs leading-tight">Tháng</p>
                             </div>
-                            <div class="bg-white/5 rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-white/5 text-center">
+                            <div class="bg-surface-highlight rounded-lg sm:rounded-xl p-1.5 sm:p-3 border border-border-light text-center">
                                 <div class="text-lg sm:text-2xl font-black text-primary">24/7</div>
                                 <p class="text-text-secondary text-[9px] sm:text-xs leading-tight">Hỗ trợ</p>
                             </div>
@@ -169,7 +173,7 @@
                                 <span class="material-symbols-outlined text-primary text-sm sm:text-base">bolt</span>
                                 <span class="text-text-secondary text-[10px] sm:text-xs">Tiết kiệm 70% thời gian</span>
                             </div>
-                            <span class="text-white/20">•</span>
+                            <span class="text-border">•</span>
                             <div class="flex items-center gap-1">
                                 <span class="material-symbols-outlined text-primary text-sm sm:text-base">trending_up</span>
                                 <span class="text-text-secondary text-[10px] sm:text-xs">Tăng năng suất x3</span>
@@ -180,15 +184,15 @@
                     <!-- Quick Links to Modals - Hidden on mobile -->
                     <div class="hidden sm:block section-compact--xs hide-on-short">
                         <div class="flex flex-wrap justify-center gap-3">
-                            <button onclick="IOSModalController.open('testimonials-modal')" class="text-xs text-text-secondary hover:text-white transition-colors underline underline-offset-2">
+                            <button onclick="IOSModalController.open('testimonials-modal')" class="text-xs text-text-secondary hover:text-text-primary transition-colors underline underline-offset-2">
                                 Xem đánh giá
                             </button>
-                            <span class="text-white/20">•</span>
-                            <button onclick="IOSModalController.open('comparison-modal')" class="text-xs text-text-secondary hover:text-white transition-colors underline underline-offset-2">
+                            <span class="text-border">•</span>
+                            <button onclick="IOSModalController.open('comparison-modal')" class="text-xs text-text-secondary hover:text-text-primary transition-colors underline underline-offset-2">
                                 So sánh AI
                             </button>
-                            <span class="text-white/20">•</span>
-                            <button onclick="IOSModalController.open('timeline-modal')" class="text-xs text-text-secondary hover:text-white transition-colors underline underline-offset-2">
+                            <span class="text-border">•</span>
+                            <button onclick="IOSModalController.open('timeline-modal')" class="text-xs text-text-secondary hover:text-text-primary transition-colors underline underline-offset-2">
                                 Xem lộ trình
                             </button>
                         </div>
@@ -220,10 +224,10 @@
         <div class="hidden" aria-hidden="true" id="home-hidden-content">
 
             <!-- Consulting Grid -->
-            <section class="py-24 bg-background-dark relative" aria-labelledby="services-heading">
+            <section class="py-24 bg-white relative" aria-labelledby="services-heading">
                 <div class="max-w-[980px] mx-auto px-6">
                     <div class="mb-16">
-                        <h2 id="services-heading" class="text-3xl md:text-5xl font-bold text-white tracking-tight mb-4">Chọn lĩnh vực tư vấn.</h2>
+                        <h2 id="services-heading" class="text-3xl md:text-5xl font-bold text-text-primary tracking-tight mb-4">Chọn lĩnh vực tư vấn.</h2>
                         <p class="text-text-secondary text-lg max-w-xl">
                             Chúng tôi cung cấp các giải pháp chuyên sâu cho từng khía cạnh của doanh nghiệp bạn.
                         </p>
@@ -235,19 +239,19 @@
                                 <div class="service-card__icon">
                                     <span class="material-symbols-outlined text-2xl" aria-hidden="true">code</span>
                                 </div>
-                                <h3 class="text-xl font-bold text-white mb-2">Lập trình</h3>
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Lập trình</h3>
                                 <p class="text-text-secondary text-sm leading-relaxed mb-4">
                                     AI hỗ trợ code generation, review, debug và documentation tự động cho developer và tech team.
                                 </p>
                                 <div class="flex flex-wrap gap-2 mb-4">
                                     <span class="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">+300% năng suất</span>
-                                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-text-secondary border border-white/10">Tức thì</span>
+                                    <span class="text-xs px-2 py-1 rounded-full bg-surface-highlight text-text-secondary border border-border">Tức thì</span>
                                 </div>
-                                <div class="service-card__details hidden mt-4 pt-4 border-t border-white/10">
+                                <div class="service-card__details hidden mt-4 pt-4 border-t border-border">
                                     <div class="space-y-3">
                                         <div>
                                             <p class="text-xs text-text-secondary uppercase tracking-wider mb-2">Use Cases</p>
-                                            <ul class="text-sm text-white/80 space-y-1">
+                                            <ul class="text-sm text-text-secondary space-y-1">
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>Code generation từ requirements</li>
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>AI Code Review & Debug</li>
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>Auto-generate documentation</li>
@@ -257,10 +261,10 @@
                                         <div>
                                             <p class="text-xs text-text-secondary uppercase tracking-wider mb-2">Tools đề xuất</p>
                                             <div class="flex flex-wrap gap-1">
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">Cursor</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">GitHub Copilot</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">Claude</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">Codeium</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">Cursor</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">GitHub Copilot</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">Claude</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">Codeium</span>
                                             </div>
                                         </div>
                                     </div>
@@ -271,7 +275,7 @@
                                     <span>Xem chi tiết</span>
                                     <span class="material-symbols-outlined text-sm ml-1 transition-transform" aria-hidden="true">expand_more</span>
                                 </button>
-                                <button class="flex items-center text-text-secondary hover:text-white text-sm transition-colors" onclick="navigateTo('services')">
+                                <button class="flex items-center text-text-secondary hover:text-text-primary text-sm transition-colors" onclick="navigateTo('services')">
                                     <span>Liên hệ</span>
                                     <span class="material-symbols-outlined text-sm ml-1" aria-hidden="true">arrow_forward</span>
                                 </button>
@@ -284,19 +288,19 @@
                                 <div class="service-card__icon">
                                     <span class="material-symbols-outlined text-2xl" aria-hidden="true">candlestick_chart</span>
                                 </div>
-                                <h3 class="text-xl font-bold text-white mb-2">Trading</h3>
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Trading</h3>
                                 <p class="text-text-secondary text-sm leading-relaxed mb-4">
                                     AI phân tích thị trường, tạo signals, quản lý rủi ro và automated trading cho crypto, forex, chứng khoán.
                                 </p>
                                 <div class="flex flex-wrap gap-2 mb-4">
                                     <span class="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">+65% win rate</span>
-                                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-text-secondary border border-white/10">1-2 tuần</span>
+                                    <span class="text-xs px-2 py-1 rounded-full bg-surface-highlight text-text-secondary border border-border">1-2 tuần</span>
                                 </div>
-                                <div class="service-card__details hidden mt-4 pt-4 border-t border-white/10">
+                                <div class="service-card__details hidden mt-4 pt-4 border-t border-border">
                                     <div class="space-y-3">
                                         <div>
                                             <p class="text-xs text-text-secondary uppercase tracking-wider mb-2">Use Cases</p>
-                                            <ul class="text-sm text-white/80 space-y-1">
+                                            <ul class="text-sm text-text-secondary space-y-1">
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>Technical & sentiment analysis</li>
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>AI trading signals</li>
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>Automated trading bots</li>
@@ -306,10 +310,10 @@
                                         <div>
                                             <p class="text-xs text-text-secondary uppercase tracking-wider mb-2">Tools đề xuất</p>
                                             <div class="flex flex-wrap gap-1">
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">TradingView</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">3Commas</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">Tickeron</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">QuantConnect</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">TradingView</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">3Commas</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">Tickeron</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">QuantConnect</span>
                                             </div>
                                         </div>
                                     </div>
@@ -320,7 +324,7 @@
                                     <span>Xem chi tiết</span>
                                     <span class="material-symbols-outlined text-sm ml-1 transition-transform" aria-hidden="true">expand_more</span>
                                 </button>
-                                <button class="flex items-center text-text-secondary hover:text-white text-sm transition-colors" onclick="navigateTo('services')">
+                                <button class="flex items-center text-text-secondary hover:text-text-primary text-sm transition-colors" onclick="navigateTo('services')">
                                     <span>Liên hệ</span>
                                     <span class="material-symbols-outlined text-sm ml-1" aria-hidden="true">arrow_forward</span>
                                 </button>
@@ -333,19 +337,19 @@
                                 <div class="service-card__icon">
                                     <span class="material-symbols-outlined text-2xl" aria-hidden="true">assistant</span>
                                 </div>
-                                <h3 class="text-xl font-bold text-white mb-2">Trợ lý cá nhân</h3>
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Trợ lý cá nhân</h3>
                                 <p class="text-text-secondary text-sm leading-relaxed mb-4">
                                     AI quản lý lịch, ghi chú cuộc họp, tổ chức kiến thức và tự động hóa công việc hàng ngày.
                                 </p>
                                 <div class="flex flex-wrap gap-2 mb-4">
                                     <span class="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">+50% năng suất</span>
-                                    <span class="text-xs px-2 py-1 rounded-full bg-white/5 text-text-secondary border border-white/10">Tức thì</span>
+                                    <span class="text-xs px-2 py-1 rounded-full bg-surface-highlight text-text-secondary border border-border">Tức thì</span>
                                 </div>
-                                <div class="service-card__details hidden mt-4 pt-4 border-t border-white/10">
+                                <div class="service-card__details hidden mt-4 pt-4 border-t border-border">
                                     <div class="space-y-3">
                                         <div>
                                             <p class="text-xs text-text-secondary uppercase tracking-wider mb-2">Use Cases</p>
-                                            <ul class="text-sm text-white/80 space-y-1">
+                                            <ul class="text-sm text-text-secondary space-y-1">
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>Smart calendar scheduling</li>
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>Meeting transcription & summaries</li>
                                                 <li class="flex items-center gap-2"><span class="material-symbols-outlined text-xs text-primary">check</span>Knowledge management</li>
@@ -355,10 +359,10 @@
                                         <div>
                                             <p class="text-xs text-text-secondary uppercase tracking-wider mb-2">Tools đề xuất</p>
                                             <div class="flex flex-wrap gap-1">
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">Notion AI</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">Otter.ai</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">Reclaim.ai</span>
-                                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 text-white/70">Perplexity</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">Notion AI</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">Otter.ai</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">Reclaim.ai</span>
+                                                <span class="text-xs px-2 py-0.5 rounded bg-surface-highlight text-text-secondary">Perplexity</span>
                                             </div>
                                         </div>
                                     </div>
@@ -369,7 +373,7 @@
                                     <span>Xem chi tiết</span>
                                     <span class="material-symbols-outlined text-sm ml-1 transition-transform" aria-hidden="true">expand_more</span>
                                 </button>
-                                <button class="flex items-center text-text-secondary hover:text-white text-sm transition-colors" onclick="navigateTo('services')">
+                                <button class="flex items-center text-text-secondary hover:text-text-primary text-sm transition-colors" onclick="navigateTo('services')">
                                     <span>Liên hệ</span>
                                     <span class="material-symbols-outlined text-sm ml-1" aria-hidden="true">arrow_forward</span>
                                 </button>
@@ -377,7 +381,7 @@
                         </article>
 
                         <!-- Card 4: Strategy (Featured) -->
-                        <article class="md:col-span-2 lg:col-span-3 relative rounded-2xl overflow-hidden card-hover cursor-pointer border border-white/5 min-h-[280px]" onclick="navigateTo('services')">
+                        <article class="md:col-span-2 lg:col-span-3 relative rounded-2xl overflow-hidden card-hover cursor-pointer border border-border-light min-h-[280px]" onclick="navigateTo('services')">
                             <div class="absolute inset-0 z-0 img-container">
                                 <img
                                     alt="Robot và con ngườ i cùng làm việc trong văn phòng hiện đại, thể hiện sự hợp tác giữa AI và con ngườ i"
@@ -425,20 +429,20 @@
             </section>
 
             <!-- Interactive Tools Section -->
-            <section id="interactive-tools" class="py-24 bg-background-dark border-t border-white/5">
+            <section id="interactive-tools" class="py-24 bg-white border-t border-border">
                 <div class="max-w-4xl mx-auto px-6">
                     <div class="text-center mb-12">
                         <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-4">
                             <span class="material-symbols-outlined text-sm">auto_fix_high</span>
                             Công cụ tương tác
                         </span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Khám phá tiềm năng AI cho doanh nghiệp bạn</h2>
+                        <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-4">Khám phá nền tảng AI vận hành cho doanh nghiệp bạn</h2>
                         <p class="text-text-secondary text-lg max-w-2xl mx-auto">Sử dụng các công cụ dưới đây để đánh giá mức độ sẵn sàng và tính toán lợi ích</p>
                     </div>
 
                     <!-- Tab Navigation -->
                     <div class="flex justify-center mb-8">
-                        <div class="inline-flex bg-surface rounded-xl p-1 border border-white/5">
+                        <div class="inline-flex bg-surface rounded-xl p-1  border border-border">
                             <button id="tab-quiz" class="tab-btn active px-6 py-3 rounded-lg text-sm font-medium transition-all" onclick="switchTab('quiz')">
                                 <span class="material-symbols-outlined text-sm mr-2">psychology</span>
                                 Đánh giá sẵn sàng
@@ -453,15 +457,15 @@
                     <!-- Tab Content: Quiz -->
                     <div id="content-quiz" class="tab-content active">
                         <!-- Quiz Container -->
-                        <div id="quiz-container" class="bg-surface rounded-2xl p-6 md:p-8 border border-white/5">
+                        <div id="quiz-container" class="bg-surface rounded-2xl p-6 md:p-8  border border-border">
                             <!-- Start Screen -->
                             <div id="quiz-start" class="text-center py-8">
                                 <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-purple-500/20 to-primary/20 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-4xl text-purple-400">quiz</span>
                                 </div>
-                                <h3 class="text-xl font-bold text-white mb-3">Khám phá tiềm năng AI</h3>
+                                <h3 class="text-xl font-bold text-text-primary mb-3">Khám phá nền tảng AI vận hành</h3>
                                 <p class="text-text-secondary mb-8 max-w-md mx-auto">Bài đánh giá này giúp bạn hiểu rõ doanh nghiệp đang ở đâu trên hành trình chuyển đổi số và cần chuẩn bị những gì.</p>
-                                <button onclick="QuizHandler.startQuiz()" class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 mx-auto group">
+                                <button onclick="QuizHandler.startQuiz()" class="bg-primary hover:bg-primary-hover text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 mx-auto group">
                                     <span>Bắt đầu ngay</span>
                                     <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                 </button>
@@ -476,13 +480,13 @@
                                         <span class="text-text-secondary text-sm">Câu <span id="quiz-current">1</span>/5</span>
                                         <span class="text-primary text-sm font-medium" id="quiz-progress-text">20%</span>
                                     </div>
-                                    <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                    <div class="h-2 bg-surface-highlight rounded-full overflow-hidden">
                                         <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-primary rounded-full transition-all duration-500" style="width: 20%"></div>
                                     </div>
                                 </div>
 
                                 <!-- Question -->
-                                <h3 id="quiz-question-text" class="text-xl font-bold text-white mb-6">Câu hỏi sẽ hiển thị ở đây</h3>
+                                <h3 id="quiz-question-text" class="text-xl font-bold text-text-primary mb-6">Câu hỏi sẽ hiển thị ở đây</h3>
 
                                 <!-- Options -->
                                 <div id="quiz-options" class="space-y-3">
@@ -491,7 +495,7 @@
 
                                 <!-- Navigation -->
                                 <div class="flex justify-between mt-8">
-                                    <button onclick="QuizHandler.previousQuestion()" id="quiz-prev-btn" class="px-6 py-3 rounded-xl border border-white/10 text-text-secondary hover:text-white hover:border-white/20 transition-colors flex items-center gap-2">
+                                    <button onclick="QuizHandler.previousQuestion()" id="quiz-prev-btn" class="px-6 py-3 rounded-xl border border-border text-text-secondary hover:text-text-primary hover:border-border-hover transition-colors flex items-center gap-2">
                                         <span class="material-symbols-outlined">arrow_back</span>
                                         Quay lại
                                     </button>
@@ -503,21 +507,21 @@
                                 <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-green-500/20 to-primary/20 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-4xl text-green-400">mail</span>
                                 </div>
-                                <h3 class="text-xl font-bold text-white mb-3">Nhận báo cáo chi tiết</h3>
+                                <h3 class="text-xl font-bold text-text-primary mb-3">Nhận báo cáo chi tiết</h3>
                                 <p class="text-text-secondary mb-6">Nhập email để nhận kết quả đầy đủ và roadmap phù hợp cho doanh nghiệp bạn.</p>
 
                                 <form onsubmit="QuizHandler.submitEmail(event)" class="max-w-md mx-auto">
                                     <div class="relative mb-4">
                                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary">email</span>
-                                        <input type="email" id="quiz-email-input" required placeholder="email@company.com" class="w-full bg-background-dark border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:border-primary focus:outline-none transition-colors">
+                                        <input type="email" id="quiz-email-input" required placeholder="email@company.com" class="w-full bg-white border border-border rounded-xl pl-12 pr-4 py-3 text-text-primary focus:border-primary focus:outline-none transition-colors">
                                     </div>
-                                    <button type="submit" class="w-full bg-primary hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                                    <button type="submit" class="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
                                         <span>Xem kết quả</span>
                                         <span class="material-symbols-outlined">visibility</span>
                                     </button>
                                 </form>
 
-                                <button onclick="QuizHandler.skipEmail()" class="mt-4 text-text-secondary hover:text-white text-sm transition-colors">
+                                <button onclick="QuizHandler.skipEmail()" class="mt-4 text-text-secondary hover:text-text-primary text-sm transition-colors">
                                     Bỏ qua, chỉ xem kết quả
                                 </button>
                             </div>
@@ -529,7 +533,7 @@
                                     <span id="quiz-level-name">Level 3: Sẵn sàng</span>
                                 </div>
 
-                                <h3 class="text-2xl font-bold text-white mb-4">Chúc mừng!</h3>
+                                <h3 class="text-2xl font-bold text-text-primary mb-4">Chúc mừng!</h3>
                                 <p id="quiz-level-description" class="text-text-secondary mb-6 max-w-lg mx-auto">Doanh nghiệp bạn đã sẵn sàng triển khai AI với quy mô nhỏ đến trung bình.</p>
 
                                 <div class="bg-surface-dark rounded-xl p-6 mb-6 text-left">
@@ -541,11 +545,11 @@
                                 </div>
 
                                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                                    <button onclick="FormHandler.openModal('consultation-modal')" class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2">
+                                    <button onclick="FormHandler.openModal('consultation-modal')" class="bg-primary hover:bg-primary-hover text-white font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2">
                                         <span class="material-symbols-outlined">calendar_month</span>
                                         <span>Đặt lịch tư vấn</span>
                                     </button>
-                                    <button onclick="QuizHandler.restartQuiz()" class="px-6 py-3 rounded-xl border border-white/10 text-white hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
+                                    <button onclick="QuizHandler.restartQuiz()" class="px-6 py-3 rounded-xl border border-border text-text-primary hover:bg-surface-highlight transition-colors flex items-center justify-center gap-2">
                                         <span class="material-symbols-outlined">replay</span>
                                         <span>Làm lại bài test</span>
                                     </button>
@@ -557,15 +561,15 @@
                     <!-- Tab Content: ROI -->
                     <div id="content-roi" class="tab-content hidden">
                         <!-- Input Form -->
-                        <div class="bg-surface rounded-2xl p-6 md:p-8 border border-white/5">
+                        <div class="bg-surface rounded-2xl p-6 md:p-8  border border-border">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <!-- Employees -->
                                 <div class="space-y-3">
-                                    <label class="flex justify-between text-white text-sm font-medium">
+                                    <label class="flex justify-between text-text-primary text-sm font-medium">
                                         <span>Số nhân viên</span>
                                         <span id="emp-value" class="text-primary font-bold text-lg">50</span>
                                     </label>
-                                    <input type="range" id="roi-employees" min="1" max="500" value="50" class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer roi-slider">
+                                    <input type="range" id="roi-employees" min="1" max="500" value="50" class="w-full h-2 bg-surface-highlight rounded-lg appearance-none cursor-pointer roi-slider">
                                     <div class="flex justify-between text-xs text-text-secondary">
                                         <span>1</span>
                                         <span>250</span>
@@ -575,11 +579,11 @@
 
                                 <!-- Avg Salary -->
                                 <div class="space-y-3">
-                                    <label class="flex justify-between text-white text-sm font-medium">
+                                    <label class="flex justify-between text-text-primary text-sm font-medium">
                                         <span>Lương TB/tháng (triệu VNĐ)</span>
                                         <span id="salary-value" class="text-primary font-bold text-lg">15</span>
                                     </label>
-                                    <input type="range" id="roi-salary" min="5" max="100" value="15" step="1" class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer roi-slider">
+                                    <input type="range" id="roi-salary" min="5" max="100" value="15" step="1" class="w-full h-2 bg-surface-highlight rounded-lg appearance-none cursor-pointer roi-slider">
                                     <div class="flex justify-between text-xs text-text-secondary">
                                         <span>5tr</span>
                                         <span>50tr</span>
@@ -589,10 +593,10 @@
 
                                 <!-- Industry -->
                                 <div class="space-y-3">
-                                    <label class="text-white text-sm font-medium block">Ngành nghề</label>
+                                    <label class="text-text-primary text-sm font-medium block">Ngành nghề</label>
                                     <div class="relative">
                                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary">business</span>
-                                        <select id="roi-industry" class="w-full bg-background-dark border border-white/10 rounded-xl px-10 py-3 text-white appearance-none cursor-pointer focus:border-primary focus:outline-none transition-colors">
+                                        <select id="roi-industry" class="w-full bg-white border border-border rounded-xl px-10 py-3 text-text-primary appearance-none cursor-pointer focus:border-primary focus:outline-none transition-colors">
                                             <option value="programming" selected>Lập trình</option>
                                             <option value="trading">Trading</option>
                                             <option value="personal-assistant">Trợ lý cá nhân</option>
@@ -603,15 +607,15 @@
 
                                 <!-- Company Size Badge -->
                                 <div class="space-y-3">
-                                    <label class="text-white text-sm font-medium block">Quy mô doanh nghiệp</label>
-                                    <div class="flex items-center gap-2 bg-background-dark border border-white/10 rounded-xl px-4 py-3">
+                                    <label class="text-text-primary text-sm font-medium block">Quy mô doanh nghiệp</label>
+                                    <div class="flex items-center gap-2 bg-white border border-border rounded-xl px-4 py-3">
                                         <span class="material-symbols-outlined text-primary">corporate_fare</span>
-                                        <span id="company-size-display" class="text-white">Vừa (11-50 nhân viên)</span>
+                                        <span id="company-size-display" class="text-text-primary">Vừa (11-50 nhân viên)</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <button id="btn-calculate-roi" class="w-full mt-8 bg-primary hover:bg-orange-600 text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group">
+                            <button id="btn-calculate-roi" class="w-full mt-8 bg-primary hover:bg-primary-hover text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group">
                                 <span class="material-symbols-outlined">calculate</span>
                                 <span>Tính toán ngay</span>
                                 <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
@@ -623,18 +627,18 @@
                             <div class="bg-gradient-to-br from-primary/20 via-primary/5 to-transparent rounded-2xl p-6 md:p-8 border border-primary/30">
                                 <div class="flex items-center gap-2 mb-6">
                                     <span class="material-symbols-outlined text-primary">insights</span>
-                                    <h3 class="text-xl font-bold text-white">Kết quả dự báo</h3>
+                                    <h3 class="text-xl font-bold text-text-primary">Kết quả dự báo</h3>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                                     <div class="text-center p-4 bg-surface/50 rounded-xl">
                                         <p class="text-text-secondary text-sm mb-2">Giờ tiết kiệm/tháng</p>
-                                        <p class="text-4xl font-black text-white roi-number" id="result-hours">0</p>
+                                        <p class="text-4xl font-black text-text-primary roi-number" id="result-hours">0</p>
                                         <p class="text-primary text-sm font-medium">giờ</p>
                                     </div>
                                     <div class="text-center p-4 bg-surface/50 rounded-xl">
                                         <p class="text-text-secondary text-sm mb-2">Tiết kiệm chi phí</p>
-                                        <p class="text-4xl font-black text-white roi-number" id="result-savings">0</p>
+                                        <p class="text-4xl font-black text-text-primary roi-number" id="result-savings">0</p>
                                         <p class="text-primary text-sm font-medium">VNĐ/tháng</p>
                                     </div>
                                     <div class="text-center p-4 bg-surface/50 rounded-xl border border-primary/20">
@@ -645,8 +649,8 @@
                                 </div>
 
                                 <div class="bg-surface rounded-xl p-4 mb-6">
-                                    <p class="text-white/80 text-sm text-center leading-relaxed">
-                                        💡 Với <span id="detail-employees" class="text-white font-bold">50</span> nhân viên, đầu tư
+                                    <p class="text-text-secondary text-sm text-center leading-relaxed">
+                                        💡 Với <span id="detail-employees" class="text-text-primary font-bold">50</span> nhân viên, đầu tư
                                         <span id="detail-cost" class="text-primary font-bold">2 triệu</span>/tháng vào AI tools,
                                         bạn sẽ tiết kiệm được <span id="detail-savings" class="text-green-400 font-bold">15 triệu</span>/tháng.
                                     </p>
@@ -663,10 +667,10 @@
             </section>
 
             <!-- Comparison Table Section -->
-            <section class="comparison-section bg-surface-dark border-t border-white/5" aria-labelledby="comparison-heading">
+            <section class="comparison-section bg-background-alt border-t border-border" aria-labelledby="comparison-heading">
                 <div class="max-w-[980px] mx-auto px-6 py-24">
                     <div class="text-center mb-8">
-                        <h2 id="comparison-heading" class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
+                        <h2 id="comparison-heading" class="text-3xl md:text-4xl font-bold text-text-primary tracking-tight mb-4">
                             Với AI vs Không có AI
                         </h2>
                         <p class="text-text-secondary text-lg max-w-2xl mx-auto">
@@ -743,36 +747,36 @@
             </section>
 
             <!-- Timeline Section -->
-            <section id="timeline" class="py-24 bg-background-dark border-t border-white/5">
+            <section id="timeline" class="py-24 bg-white border-t border-border">
                 <div class="max-w-4xl mx-auto px-6">
                     <div class="text-center mb-12">
                         <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-4">
                             <span class="material-symbols-outlined text-sm">schedule</span>
                             Lộ trình triển khai
                         </span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">3 tháng để chuyển đổi AI</h2>
+                        <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-4">3 tháng để chuyển đổi AI</h2>
                         <p class="text-text-secondary text-lg">Quy trình triển khai được tối ưu hóa của chúng tôi</p>
                     </div>
 
                     <div class="relative">
                         <!-- Timeline Line -->
-                        <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-white/10 md:-translate-x-1/2"></div>
+                        <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-surface-highlight md:-translate-x-1/2"></div>
 
                         <!-- Month 1 -->
                         <div class="relative flex flex-col md:flex-row items-start gap-8 mb-12">
                             <div class="md:w-1/2 md:text-right md:pr-12 order-2 md:order-1">
-                                <h3 class="text-xl font-bold text-white mb-2">Tháng 1: Đánh giá</h3>
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Tháng 1: Đánh giá</h3>
                                 <p class="text-text-secondary mb-4">Audit hiện trạng, xác định use case priority</p>
                                 <ul class="space-y-2">
-                                    <li class="text-white/70 text-sm flex items-center md:justify-end gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center md:justify-end gap-2">
                                         <span>Phỏng vấn stakeholders</span>
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                     </li>
-                                    <li class="text-white/70 text-sm flex items-center md:justify-end gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center md:justify-end gap-2">
                                         <span>Đánh giá dữ liệu hiện có</span>
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                     </li>
-                                    <li class="text-white/70 text-sm flex items-center md:justify-end gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center md:justify-end gap-2">
                                         <span>Xác định KPIs</span>
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                     </li>
@@ -782,9 +786,9 @@
                                 <span class="text-white text-sm font-bold">1</span>
                             </div>
                             <div class="md:w-1/2 md:pl-12 order-3">
-                                <div class="bg-surface rounded-xl p-4 border border-white/5">
-                                    <p class="text-white/60 text-sm">Deliverables:</p>
-                                    <p class="text-white font-medium">Báo cáo hiện trạng + Roadmap 3 tháng</p>
+                                <div class="\n                                \u003cdiv class="bg-surface rounded-xl p-4  border border-border"\u003e
+                                    <p class="text-text-secondary text-sm">Deliverables:</p>
+                                    <p class="text-text-primary font-medium">Báo cáo hiện trạng + Roadmap 3 tháng</p>
                                 </div>
                             </div>
                         </div>
@@ -792,27 +796,27 @@
                         <!-- Month 2 -->
                         <div class="relative flex flex-col md:flex-row items-start gap-8 mb-12">
                             <div class="md:w-1/2 md:text-right md:pr-12 order-2">
-                                <div class="bg-surface rounded-xl p-4 border border-white/5">
-                                    <p class="text-white/60 text-sm">Deliverables:</p>
-                                    <p class="text-white font-medium">Báo cáo pilot + SOPs cho team</p>
+                                <div class="\n                                \u003cdiv class="bg-surface rounded-xl p-4  border border-border"\u003e
+                                    <p class="text-text-secondary text-sm">Deliverables:</p>
+                                    <p class="text-text-primary font-medium">Báo cáo pilot + SOPs cho team</p>
                                 </div>
                             </div>
                             <div class="absolute left-8 md:left-1/2 w-8 h-8 bg-primary rounded-full border-4 border-surface-dark flex items-center justify-center z-10 md:-translate-x-1/2 order-1 md:order-2">
                                 <span class="text-white text-sm font-bold">2</span>
                             </div>
                             <div class="md:w-1/2 md:pl-12 order-3">
-                                <h3 class="text-xl font-bold text-white mb-2">Tháng 2: Pilot</h3>
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Tháng 2: Pilot</h3>
                                 <p class="text-text-secondary mb-4">Triển khai thử nghiệm với 1-2 tools</p>
                                 <ul class="space-y-2">
-                                    <li class="text-white/70 text-sm flex items-center gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center gap-2">
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                         <span>Setup công cụ AI</span>
                                     </li>
-                                    <li class="text-white/70 text-sm flex items-center gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center gap-2">
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                         <span>Đào tạo nhân viên</span>
                                     </li>
-                                    <li class="text-white/70 text-sm flex items-center gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center gap-2">
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                         <span>Thu thập feedback</span>
                                     </li>
@@ -823,18 +827,18 @@
                         <!-- Month 3 -->
                         <div class="relative flex flex-col md:flex-row items-start gap-8">
                             <div class="md:w-1/2 md:text-right md:pr-12 order-2 md:order-1">
-                                <h3 class="text-xl font-bold text-white mb-2">Tháng 3: Mở rộng</h3>
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Tháng 3: Mở rộng</h3>
                                 <p class="text-text-secondary mb-4">Mở rộng toàn bộ doanh nghiệp, đo lường ROI</p>
                                 <ul class="space-y-2">
-                                    <li class="text-white/70 text-sm flex items-center md:justify-end gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center md:justify-end gap-2">
                                         <span>Rollout toàn bộ</span>
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                     </li>
-                                    <li class="text-white/70 text-sm flex items-center md:justify-end gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center md:justify-end gap-2">
                                         <span>Tích hợp workflows</span>
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                     </li>
-                                    <li class="text-white/70 text-sm flex items-center md:justify-end gap-2">
+                                    <li class="text-text-secondary text-sm flex items-center md:justify-end gap-2">
                                         <span>Optimize performance</span>
                                         <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                     </li>
@@ -844,16 +848,16 @@
                                 <span class="material-symbols-outlined text-white text-sm">check</span>
                             </div>
                             <div class="md:w-1/2 md:pl-12 order-3">
-                                <div class="bg-surface rounded-xl p-4 border border-white/5">
-                                    <p class="text-white/60 text-sm">Deliverables:</p>
-                                    <p class="text-white font-medium">Báo cáo ROI + Kế hoạch mở rộng</p>
+                                <div class="\n                                \u003cdiv class="bg-surface rounded-xl p-4  border border-border"\u003e
+                                    <p class="text-text-secondary text-sm">Deliverables:</p>
+                                    <p class="text-text-primary font-medium">Báo cáo ROI + Kế hoạch mở rộng</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="mt-12 text-center">
-                        <button onclick="FormHandler.openModal('consultation-modal')" class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full transition-all shadow-[0_0_20px_rgba(236,109,19,0.3)] hover:shadow-[0_0_30px_rgba(236,109,19,0.5)]">
+                        <button onclick="FormHandler.openModal('consultation-modal')" class="bg-primary hover:bg-primary-hover text-white font-bold py-3 px-8 rounded-full transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]">
                             Bắt đầu hành trình AI của bạn
                         </button>
                     </div>
@@ -861,39 +865,39 @@
             </section>
 
             <!-- Trust Badges Section -->
-            <section class="trust-badges bg-surface border-t border-white/5" aria-labelledby="trust-heading">
+            <section class="trust-badges bg-white border-t border-border" aria-labelledby="trust-heading">
                 <div class="max-w-[980px] mx-auto px-6 py-16">
                     <p id="trust-heading" class="trust-badges__label text-center text-text-secondary text-sm mb-8">Cam kết chất lượng dịch vụ</p>
                     <div class="trust-badges__grid grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div class="trust-badge flex items-center justify-center gap-2 bg-surface-dark rounded-xl px-4 py-3 border border-white/5">
+                        <div class="trust-badge flex items-center justify-center gap-2 bg-white rounded-xl px-4 py-3  border border-border">
                             <span class="material-symbols-outlined text-primary">verified</span>
-                            <span class="text-white text-sm font-medium">Chứng nhận ISO 27001</span>
+                            <span class="text-text-primary text-sm font-medium">Chứng nhận ISO 27001</span>
                         </div>
-                        <div class="trust-badge flex items-center justify-center gap-2 bg-surface-dark rounded-xl px-4 py-3 border border-white/5">
+                        <div class="trust-badge flex items-center justify-center gap-2 bg-white rounded-xl px-4 py-3  border border-border">
                             <span class="material-symbols-outlined text-primary">shield</span>
-                            <span class="text-white text-sm font-medium">Bảo mật dữ liệu</span>
+                            <span class="text-text-primary text-sm font-medium">Bảo mật dữ liệu</span>
                         </div>
-                        <div class="trust-badge flex items-center justify-center gap-2 bg-surface-dark rounded-xl px-4 py-3 border border-white/5">
+                        <div class="trust-badge flex items-center justify-center gap-2 bg-white rounded-xl px-4 py-3  border border-border">
                             <span class="material-symbols-outlined text-primary">support_agent</span>
-                            <span class="text-white text-sm font-medium">Hỗ trợ 24/7</span>
+                            <span class="text-text-primary text-sm font-medium">Hỗ trợ 24/7</span>
                         </div>
-                        <div class="trust-badge flex items-center justify-center gap-2 bg-surface-dark rounded-xl px-4 py-3 border border-white/5">
+                        <div class="trust-badge flex items-center justify-center gap-2 bg-white rounded-xl px-4 py-3  border border-border">
                             <span class="material-symbols-outlined text-primary">trending_up</span>
-                            <span class="text-white text-sm font-medium">ROI đo lường được</span>
+                            <span class="text-text-primary text-sm font-medium">ROI đo lường được</span>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- Final CTA Section -->
-            <section class="py-24 bg-surface-dark border-t border-white/5" aria-label="Call to action">
+            <section class="py-24 bg-surface-dark border-t border-border" aria-label="Call to action">
                 <div class="max-w-4xl mx-auto px-6 text-center">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Sẵn sàng để bứt phá?</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-6">Sẵn sàng để bứt phá?</h2>
                     <p class="text-text-secondary mb-8 text-lg">
                         Hãy để aivan.vn đồng hành cùng bạn trên con đường chinh phục kỷ nguyên số.
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <button onclick="FormHandler.openModal('consultation-modal')" class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(236,109,19,0.3)] hover:shadow-[0_0_30px_rgba(236,109,19,0.5)]">
+                        <button onclick="FormHandler.openModal('consultation-modal')" class="bg-primary hover:bg-primary-hover text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]">
                             Đặt lịch tư vấn miễn phí
                         </button>
                     </div>
@@ -914,7 +918,7 @@
                 <div class="ios-modal__body">
                     <div class="space-y-4">
                         <!-- Testimonial 1 -->
-                        <article class="bg-surface rounded-xl p-4 border border-white/5">
+                        <article class="\n                                \u003cdiv class="bg-surface rounded-xl p-4  border border-border"\u003e
                             <div class="flex items-center gap-1 mb-3">
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
@@ -922,19 +926,19 @@
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                             </div>
-                            <p class="text-white/80 text-sm mb-4">"Aivan giúp chúng tôi tự động hóa 70% quy trình. Hiệu suất tăng rõ rệt."</p>
+                            <p class="text-text-secondary text-sm mb-4">"Aivan giúp chúng tôi tự động hóa 70% quy trình. Hiệu suất tăng rõ rệt."</p>
                             <div class="flex items-center gap-2">
                                 <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-primary text-sm">person</span>
                                 </div>
                                 <div>
-                                    <p class="text-white text-sm font-medium">Nguyễn Văn A</p>
+                                    <p class="text-text-primary text-sm font-medium">Nguyễn Văn A</p>
                                     <p class="text-text-secondary text-xs">CEO, Công ty XYZ</p>
                                 </div>
                             </div>
                         </article>
                         <!-- Testimonial 2 -->
-                        <article class="bg-surface rounded-xl p-4 border border-white/5">
+                        <article class="\n                                \u003cdiv class="bg-surface rounded-xl p-4  border border-border"\u003e
                             <div class="flex items-center gap-1 mb-3">
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
@@ -942,19 +946,19 @@
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                             </div>
-                            <p class="text-white/80 text-sm mb-4">"Đội ngũ rất chuyên nghiệp, đề xuất giải pháp phù hợp."</p>
+                            <p class="text-text-secondary text-sm mb-4">"Đội ngũ rất chuyên nghiệp, đề xuất giải pháp phù hợp."</p>
                             <div class="flex items-center gap-2">
                                 <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-primary text-sm">person</span>
                                 </div>
                                 <div>
-                                    <p class="text-white text-sm font-medium">Trần Thị B</p>
+                                    <p class="text-text-primary text-sm font-medium">Trần Thị B</p>
                                     <p class="text-text-secondary text-xs">Giám đốc, BV ABC</p>
                                 </div>
                             </div>
                         </article>
                         <!-- Testimonial 3 -->
-                        <article class="bg-surface rounded-xl p-4 border border-white/5">
+                        <article class="\n                                \u003cdiv class="bg-surface rounded-xl p-4  border border-border"\u003e
                             <div class="flex items-center gap-1 mb-3">
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
@@ -962,13 +966,13 @@
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                                 <span class="material-symbols-outlined text-primary text-sm">star</span>
                             </div>
-                            <p class="text-white/80 text-sm mb-4">"ROI vượt mong đợi, hoàn vốn sau 3 tháng."</p>
+                            <p class="text-text-secondary text-sm mb-4">"ROI vượt mong đợi, hoàn vốn sau 3 tháng."</p>
                             <div class="flex items-center gap-2">
                                 <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-primary text-sm">person</span>
                                 </div>
                                 <div>
-                                    <p class="text-white text-sm font-medium">Lê Văn C</p>
+                                    <p class="text-text-primary text-sm font-medium">Lê Văn C</p>
                                     <p class="text-text-secondary text-xs">CTO, Fintech DEF</p>
                                 </div>
                             </div>
@@ -983,40 +987,40 @@
             <div class="ios-modal__overlay" onclick="IOSModalController.close()"></div>
             <div class="ios-modal__content">
                 <div class="ios-modal__header">
-                    <h2 id="comparison-modal-title" class="ios-modal__title">So sánh: Có AI vs Không AI</h2>
+                    <h2 id="comparison-modal-title" class="ios-modal__title text-text-primary">So sánh: Có AI vs Không AI</h2>
                     <button class="ios-modal__close" onclick="IOSModalController.close()" aria-label="Đóng">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
                 <div class="ios-modal__body">
                     <div class="space-y-3">
-                        <div class="grid grid-cols-3 gap-2 text-xs text-text-secondary border-b border-white/10 pb-2">
+                        <div class="grid grid-cols-3 gap-2 text-xs text-text-secondary border-b border-border pb-2">
                             <div>Tiêu chí</div>
                             <div class="text-center">Không AI</div>
                             <div class="text-center">Có AI</div>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-white/5">
-                            <div class="text-white">Tốc độ xử lý</div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-border">
+                            <div class="text-text-primary">Tốc độ xử lý</div>
                             <div class="text-center text-red-400">Chậm</div>
                             <div class="text-center text-green-400">Nhanh 10x</div>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-white/5">
-                            <div class="text-white">Chi phí nhân sự</div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-border">
+                            <div class="text-text-primary">Chi phí nhân sự</div>
                             <div class="text-center text-red-400">Cao</div>
                             <div class="text-center text-green-400">Giảm 40%</div>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-white/5">
-                            <div class="text-white">Độ chính xác</div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-border">
+                            <div class="text-text-primary">Độ chính xác</div>
                             <div class="text-center text-red-400">85%</div>
                             <div class="text-center text-green-400">98%</div>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-white/5">
-                            <div class="text-white">Hoạt động 24/7</div>
+                        <div class="grid grid-cols-3 gap-2 text-sm py-2 border-b border-border">
+                            <div class="text-text-primary">Hoạt động 24/7</div>
                             <div class="text-center text-red-400">✗</div>
                             <div class="text-center text-green-400">✓</div>
                         </div>
                         <div class="grid grid-cols-3 gap-2 text-sm py-2">
-                            <div class="text-white">Khả năng mở rộng</div>
+                            <div class="text-text-primary">Khả năng mở rộng</div>
                             <div class="text-center text-red-400">Hạn chế</div>
                             <div class="text-center text-green-400">Không giới hạn</div>
                         </div>
@@ -1030,7 +1034,7 @@
             <div class="ios-modal__overlay" onclick="IOSModalController.close()"></div>
             <div class="ios-modal__content">
                 <div class="ios-modal__header">
-                    <h2 id="timeline-modal-title" class="ios-modal__title">Lộ trình triển khai</h2>
+                    <h2 id="timeline-modal-title" class="ios-modal__title text-text-primary">Lộ trình triển khai</h2>
                     <button class="ios-modal__close" onclick="IOSModalController.close()" aria-label="Đóng">
                         <span class="material-symbols-outlined">close</span>
                     </button>
@@ -1044,7 +1048,7 @@
                                 <div class="w-0.5 h-full bg-primary/30 mt-2"></div>
                             </div>
                             <div class="flex-1 pb-6">
-                                <h3 class="text-white font-semibold mb-1">Tháng 1: Đánh giá & Lập kế hoạch</h3>
+                                <h3 class="text-text-primary font-semibold mb-1">Tháng 1: Đánh giá & Lập kế hoạch</h3>
                                 <p class="text-text-secondary text-sm">Phân tích hiện trạng, xác định mục tiêu và xây dựng roadmap chi tiết.</p>
                             </div>
                         </div>
@@ -1055,7 +1059,7 @@
                                 <div class="w-0.5 h-full bg-primary/30 mt-2"></div>
                             </div>
                             <div class="flex-1 pb-6">
-                                <h3 class="text-white font-semibold mb-1">Tháng 2: Triển khai Pilot</h3>
+                                <h3 class="text-text-primary font-semibold mb-1">Tháng 2: Triển khai Pilot</h3>
                                 <p class="text-text-secondary text-sm">Triển khai thử nghiệm với phạm vi nhỏ, đo lường và tối ưu.</p>
                             </div>
                         </div>
@@ -1065,7 +1069,7 @@
                                 <div class="w-10 h-10 rounded-full bg-primary/40 flex items-center justify-center text-white font-bold">3</div>
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-white font-semibold mb-1">Tháng 3: Mở rộng & Tối ưu</h3>
+                                <h3 class="text-text-primary font-semibold mb-1">Tháng 3: Mở rộng & Tối ưu</h3>
                                 <p class="text-text-secondary text-sm">Mở rộng quy mô, training nhân sự và chuyển giao công nghệ.</p>
                             </div>
                         </div>
@@ -1093,7 +1097,7 @@
 
                     <!-- Heading - Compact -->
                     <div class="text-center mb-4 sm:mb-6">
-                        <h1 class="text-white text-xl sm:text-2xl md:text-4xl font-black tracking-tight mb-1 sm:mb-2">
+                        <h1 class="text-text-primary text-xl sm:text-2xl md:text-4xl font-black tracking-tight mb-1 sm:mb-2">
                             Lĩnh vực cần <span class="text-gradient">giải pháp AI?</span>
                         </h1>
                         <p class="text-text-secondary text-xs sm:text-sm">Chọn lĩnh vực để nhận đề xuất phù hợp</p>
@@ -1109,7 +1113,7 @@
                                     <span class="material-symbols-outlined text-xl sm:text-2xl" style="font-variation-settings: 'FILL' 1;">code</span>
                                 </div>
                                 <div class="text-center">
-                                    <h3 class="text-white text-sm sm:text-base font-bold">Lập trình</h3>
+                                    <h3 class="text-text-primary text-sm sm:text-base font-bold">Lập trình</h3>
                                     <p class="text-text-secondary text-xs">Developer, Tech Team</p>
                                 </div>
                             </div>
@@ -1126,7 +1130,7 @@
                                     <span class="material-symbols-outlined text-xl sm:text-2xl" style="font-variation-settings: 'FILL' 1;">candlestick_chart</span>
                                 </div>
                                 <div class="text-center">
-                                    <h3 class="text-white text-sm sm:text-base font-bold">Trading</h3>
+                                    <h3 class="text-text-primary text-sm sm:text-base font-bold">Trading</h3>
                                     <p class="text-text-secondary text-xs">Crypto, Forex</p>
                                 </div>
                             </div>
@@ -1139,11 +1143,11 @@
                         <label class="industry-card">
                             <input class="industry-card__input" name="industry" type="radio" value="personal-assistant" aria-label="Trợ lý cá nhân"/>
                             <div class="industry-card__content">
-                                <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#a8edea] to-[#fed6e3] text-[#181411] shadow-lg">
+                                <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#a8edea] to-[#fed6e3] text-[text-primary] shadow-lg">
                                     <span class="material-symbols-outlined text-xl sm:text-2xl" style="font-variation-settings: 'FILL' 1;">assistant</span>
                                 </div>
                                 <div class="text-center">
-                                    <h3 class="text-white text-sm sm:text-base font-bold">Trợ lý</h3>
+                                    <h3 class="text-text-primary text-sm sm:text-base font-bold">Trợ lý</h3>
                                     <p class="text-text-secondary text-xs">Productivity</p>
                                 </div>
                             </div>
@@ -1188,17 +1192,17 @@
                     <!-- Compact Heading -->
                     <div class="flex flex-col gap-1 sm:gap-2 mb-3 sm:mb-4 animate-fade-in-up">
                         <!-- Breadcrumb (compact) -->
-                        <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-xs text-white/40 font-medium hidden sm:flex">
+                        <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-xs text-text-secondary font-medium hidden sm:flex">
                             <a class="hover:text-primary transition-colors cursor-pointer" onclick="navigateTo('home')">Dịch vụ</a>
                             <span class="material-symbols-outlined text-[12px]" aria-hidden="true">chevron_right</span>
                             <a class="hover:text-primary transition-colors cursor-pointer" onclick="navigateTo('services')" data-breadcrumb="industry">Lĩnh vực</a>
                             <span class="material-symbols-outlined text-[12px]" aria-hidden="true">chevron_right</span>
-                            <span class="text-white/60">Chiến lược</span>
+                            <span class="text-text-secondary">Chiến lược</span>
                         </nav>
 
                         <!-- Title -->
-                        <h1 class="headline-responsive font-black text-white tracking-tight leading-tight">
-                            Chiến lược AI cho <span id="results-industry-name" class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Doanh nghiệp</span>
+                        <h1 class="text-text-primary font-black text-text-primary tracking-tight leading-tight">
+                            Nền tảng AI vận hành cho <span id="results-industry-name" class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#92613A]">Doanh nghiệp</span>
                         </h1>
                     </div>
 
@@ -1206,8 +1210,8 @@
                     <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-3 md:gap-4 min-h-0">
 
                         <!-- Workflow Carousel Section -->
-                        <section class="lg:col-span-8 bg-surface-dark rounded-2xl p-3 sm:p-4 md:p-5 border border-white/5 relative overflow-hidden flex flex-col" aria-labelledby="workflow-heading">
-                            <div class="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none mix-blend-overlay" style="background-image: radial-gradient(circle at 100% 0%, #ec6d1320 0%, transparent 40%);"></div>
+                        <section class="lg:col-span-8 bg-surface-dark rounded-2xl p-3 sm:p-4 md:p-5 border border-border-light relative overflow-hidden flex flex-col" aria-labelledby="workflow-heading">
+                            <div class="absolute top-0 right-0 w-full h-full opacity-20 pointer-events-none mix-blend-overlay" style="background-image: radial-gradient(circle at 100% 0%, rgba(37,99,235,0.13) 0%, transparent 40%);"></div>
 
                             <!-- Scroll Arrow Indicator (Mobile) -->
                             <div class="scroll-arrow-hint sm:hidden">
@@ -1218,8 +1222,8 @@
                             <div class="flex items-center justify-between mb-2 sm:mb-3 relative z-10">
                                 <div class="flex items-center gap-2">
                                     <span class="material-symbols-outlined text-primary text-[18px] sm:text-[20px]" aria-hidden="true">hub</span>
-                                    <h3 id="workflow-heading" class="text-sm sm:text-lg font-bold text-white">Quy trình</h3>
-                                    <span class="text-[10px] text-white/50 sm:hidden">1/3 • Vuốt →</span>
+                                    <h3 id="workflow-heading" class="text-sm sm:text-lg font-bold text-text-primary">Quy trình</h3>
+                                    <span class="text-[10px] text-text-secondary sm:hidden">1/3 • Vuốt →</span>
                                 </div>
                                 <div class="text-[10px] sm:text-xs font-medium text-primary/80 bg-primary/10 px-2 py-0.5 sm:py-1 rounded-full">Đề xuất</div>
                             </div>
@@ -1244,29 +1248,29 @@
                         <!-- Stats Column -->
                         <div id="results-stats-container" class="lg:col-span-4 flex flex-col gap-3">
                             <!-- Main Stat -->
-                            <div class="flex-1 bg-surface-dark rounded-2xl p-4 border border-white/5 flex flex-col justify-center items-center text-center relative overflow-hidden">
+                            <div class="flex-1 bg-surface-dark rounded-2xl p-4 border border-border-light flex flex-col justify-center items-center text-center relative overflow-hidden">
                                 <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50"></div>
                                 <div class="absolute -top-8 -right-8 w-24 h-24 bg-primary/20 blur-2xl rounded-full"></div>
-                                <h4 class="text-white/50 text-xs font-medium uppercase tracking-wider mb-2 relative z-10 flex items-center gap-1">
+                                <h4 class="text-text-secondary text-xs font-medium uppercase tracking-wider mb-2 relative z-10 flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[14px]" aria-hidden="true">bar_chart</span>
                                     Hiệu suất
                                 </h4>
-                                <div id="results-stat-efficiency" class="text-5xl md:text-6xl font-black text-white mb-1 relative z-10 tracking-tighter">
-                                    <span class="text-primary">+</span>40<span class="text-2xl text-white/40">%</span>
+                                <div id="results-stat-efficiency" class="text-5xl md:text-6xl font-black text-text-primary mb-1 relative z-10 tracking-tighter">
+                                    <span class="text-primary">+</span>40<span class="text-2xl text-text-secondary">%</span>
                                 </div>
-                                <p id="results-stat-desc" class="text-white/70 text-sm font-medium relative z-10">Tăng hiệu quả vận hành</p>
+                                <p id="results-stat-desc" class="text-text-secondary text-sm font-medium relative z-10">Tăng hiệu quả vận hành</p>
                             </div>
 
                             <!-- Time Saved -->
-                            <div class="h-auto bg-[#231f1a] rounded-2xl border border-white/5 flex items-center justify-between px-4 py-3 relative overflow-hidden">
+                            <div class="h-auto bg-[surface-dark] rounded-2xl border border-border-light flex items-center justify-between px-4 py-3 relative overflow-hidden">
                                 <div class="absolute inset-0 bg-gradient-to-r from-green-500/5 to-transparent"></div>
                                 <div class="flex items-center gap-3 relative z-10">
                                     <div class="w-10 h-10 rounded-full bg-green-500/10 text-green-500 border border-green-500/20 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-[20px]" aria-hidden="true">schedule</span>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span id="results-stat-time" class="text-white font-bold text-lg">2.5h</span>
-                                        <span class="text-white/40 text-[10px] font-medium uppercase tracking-wide">Tiết kiệm / ngày</span>
+                                        <span id="results-stat-time" class="text-text-primary font-bold text-lg">2.5h</span>
+                                        <span class="text-text-secondary text-[10px] font-medium uppercase tracking-wide">Tiết kiệm / ngày</span>
                                     </div>
                                 </div>
                             </div>
@@ -1275,11 +1279,11 @@
                         <!-- Tools Horizontal Scroll -->
                         <section class="lg:col-span-12" aria-labelledby="tools-heading">
                             <div class="flex items-center justify-between mb-2 px-1">
-                                <h3 id="tools-heading" class="text-base font-bold text-white flex items-center gap-2">
+                                <h3 id="tools-heading" class="text-base font-bold text-text-primary flex items-center gap-2">
                                     <span class="w-1 h-5 bg-primary rounded-full"></span>
                                     Công cụ AI
                                 </h3>
-                                <button class="text-white/50 hover:text-white transition-colors text-xs font-medium flex items-center gap-1" onclick="showComingSoon('Xem tất cả công cụ')">
+                                <button class="text-text-secondary hover:text-text-primary transition-colors text-xs font-medium flex items-center gap-1" onclick="showComingSoon('Xem tất cả công cụ')">
                                     Xem tất cả <span class="material-symbols-outlined text-[14px]" aria-hidden="true">arrow_forward</span>
                                 </button>
                             </div>
@@ -1329,7 +1333,7 @@
             <div class="modal__handle"></div>
             <div class="modal__header">
                 <div>
-                    <h2 id="consultation-title" class="modal__title">Đặt lịch tư vấn</h2>
+                    <h2 id="consultation-title" class="modal__title text-text-primary">Đặt lịch tư vấn</h2>
                     <p class="modal__subtitle">Điền thông tin để nhận tư vấn miễn phí từ chuyên gia AI</p>
                 </div>
                 <button class="modal__close" onclick="FormHandler.closeModal('consultation-modal')" aria-label="Đóng">
@@ -1345,7 +1349,7 @@
                 <div class="form__grid">
                     <!-- Họ tên -->
                     <div class="form__group">
-                        <label for="consult-name" class="form__label">Họ và tên <span class="form__required">*</span></label>
+                        <label for="consult-name" class="form__label text-text-primary">Họ và tên <span class="form__required">*</span></label>
                         <div class="form__input-wrapper">
                             <span class="material-symbols-outlined form__icon">person</span>
                             <input type="text" id="consult-name" name="name" class="form__input" placeholder="Nguyễn Văn A" required minlength="2" autocomplete="name">
@@ -1355,7 +1359,7 @@
 
                     <!-- Công ty -->
                     <div class="form__group">
-                        <label for="consult-company" class="form__label">Công ty <span class="form__required">*</span></label>
+                        <label for="consult-company" class="form__label text-text-primary">Công ty <span class="form__required">*</span></label>
                         <div class="form__input-wrapper">
                             <span class="material-symbols-outlined form__icon">business</span>
                             <input type="text" id="consult-company" name="company" class="form__input" placeholder="Tên công ty" required minlength="2" autocomplete="organization">
@@ -1365,7 +1369,7 @@
 
                     <!-- Ngành -->
                     <div class="form__group">
-                        <label for="consult-industry" class="form__label">Ngành nghề <span class="form__required">*</span></label>
+                        <label for="consult-industry" class="form__label text-text-primary">Ngành nghề <span class="form__required">*</span></label>
                         <div class="form__input-wrapper">
                             <span class="material-symbols-outlined form__icon">category</span>
                             <select id="consult-industry" name="industry" class="form__select" required>
@@ -1380,7 +1384,7 @@
 
                     <!-- Quy mô -->
                     <div class="form__group">
-                        <label for="consult-size" class="form__label">Quy mô doanh nghiệp <span class="form__required">*</span></label>
+                        <label for="consult-size" class="form__label text-text-primary">Quy mô doanh nghiệp <span class="form__required">*</span></label>
                         <div class="form__input-wrapper">
                             <span class="material-symbols-outlined form__icon">groups</span>
                             <select id="consult-size" name="size" class="form__select" required>
@@ -1398,7 +1402,7 @@
 
                 <!-- Nhu cầu -->
                 <div class="form__group form__group--full">
-                    <label for="consult-needs" class="form__label">Nhu cầu của bạn <span class="form__required">*</span></label>
+                    <label for="consult-needs" class="form__label text-text-primary">Nhu cầu của bạn <span class="form__required">*</span></label>
                     <div class="form__input-wrapper form__input-wrapper--textarea">
                         <span class="material-symbols-outlined form__icon">edit_note</span>
                         <textarea id="consult-needs" name="needs" class="form__textarea" rows="3" placeholder="Mô tả ngắn về nhu cầu áp dụng AI vào doanh nghiệp..." required minlength="10"></textarea>
@@ -1409,7 +1413,7 @@
                 <div class="form__grid">
                     <!-- Email -->
                     <div class="form__group">
-                        <label for="consult-email" class="form__label">Email <span class="form__required">*</span></label>
+                        <label for="consult-email" class="form__label text-text-primary">Email <span class="form__required">*</span></label>
                         <div class="form__input-wrapper">
                             <span class="material-symbols-outlined form__icon">email</span>
                             <input type="email" id="consult-email" name="email" class="form__input" placeholder="email@company.com" required autocomplete="email">
@@ -1419,7 +1423,7 @@
 
                     <!-- Phone -->
                     <div class="form__group">
-                        <label for="consult-phone" class="form__label">Số điện thoại <span class="form__required">*</span></label>
+                        <label for="consult-phone" class="form__label text-text-primary">Số điện thoại <span class="form__required">*</span></label>
                         <div class="form__input-wrapper">
                             <span class="material-symbols-outlined form__icon">phone</span>
                             <input type="tel" id="consult-phone" name="phone" class="form__input" placeholder="0901234567" required pattern="[0-9\s]{10,14}" autocomplete="tel">
@@ -1430,7 +1434,7 @@
 
                 <!-- Thờ i gian liên hệ -->
                 <div class="form__group form__group--full">
-                    <label class="form__label">Thờ i gian liên hệ phù hợp</label>
+                    <label class="form__label text-text-primary">Thờ i gian liên hệ phù hợp</label>
                     <div class="form__radio-group">
                         <label class="form__radio">
                             <input type="radio" name="preferredTime" value="morning" checked>
@@ -1473,7 +1477,7 @@
             <div class="newsletter-section__content">
                 <span class="material-symbols-outlined newsletter-section__icon">mail</span>
                 <div>
-                    <h3 class="newsletter-section__title">Nhận cập nhật AI hàng tuần</h3>
+                    <h3 class="newsletter-section__title text-text-primary">Nhận cập nhật AI hàng tuần</h3>
                     <p class="newsletter-section__desc">Công cụ AI mới, case studies và tips từ chuyên gia</p>
                 </div>
             </div>
@@ -1573,7 +1577,7 @@
         "name": "aivan.vn",
         "url": "https://aivan.vn",
         "logo": "https://aivan.vn/logo.png",
-        "description": "Giải pháp AI tối ưu cho doanh nghiệp. Tư vấn chiến lược AI, tự động hóa quy trình và phân tích dữ liệu.",
+        "description": "Nền tảng AI vận hành cho doanh nghiệp Việt. Tư vấn chiến lược AI, tự động hóa quy trình và phân tích dữ liệu.",
         "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
@@ -1611,8 +1615,8 @@
             <div class="exit-modal__icon">
                 <span class="material-symbols-outlined" style="font-size: 32px;">support_agent</span>
             </div>
-            <h3 class="exit-modal__title">Chờ chút!</h3>
-            <p class="exit-modal__text">Đặt lịch tư vấn miễn phí 15 phút với chuyên gia AI. Chúng tôi sẽ giúp bạn tìm giải pháp phù hợp nhất!</p>
+            <h3 class="exit-modal__title text-text-primary">Chờ chút!</h3>
+            <p class="exit-modal__text text-text-secondary">Đặt lịch tư vấn miễn phí 15 phút với chuyên gia AI. Chúng tôi sẽ giúp bạn tìm giải pháp phù hợp nhất!</p>
             <div class="exit-modal__buttons">
                 <button onclick="ExitIntent.claimOffer()" class="btn btn-primary">
                     <span class="material-symbols-outlined">calendar_month</span>
@@ -1631,41 +1635,41 @@
     </button>
 
     <!-- Footer (hidden for iOS app-like experience) -->
-    <footer id="footer" class="bg-background-dark border-t border-white/10 pt-16 pb-8 text-xs mt-auto" role="contentinfo" hidden>
+    <footer id="footer" class="bg-white border-t border-border pt-16 pb-8 text-xs mt-auto" role="contentinfo" hidden>
         <div class="max-w-[980px] mx-auto px-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                 <!-- Column 1 -->
                 <nav aria-label="Khám phá" class="flex flex-col gap-3">
-                    <h4 class="text-white font-semibold mb-1">Khám phá</h4>
-                    <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#about" onclick="showComingSoon('Về chúng tôi'); return false;">Về chúng tôi</a>
-                    <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#careers" onclick="showComingSoon('Sự nghiệp'); return false;">Sự nghiệp</a>
-                    <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#news" onclick="showComingSoon('Tin tức'); return false;">Tin tức</a>
+                    <h4 class="text-text-primary font-semibold mb-1">Khám phá</h4>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors coming-soon" href="#about" onclick="showComingSoon('Về chúng tôi'); return false;">Về chúng tôi</a>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors coming-soon" href="#careers" onclick="showComingSoon('Sự nghiệp'); return false;">Sự nghiệp</a>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors coming-soon" href="#news" onclick="showComingSoon('Tin tức'); return false;">Tin tức</a>
                 </nav>
 
                 <!-- Column 2 -->
                 <nav aria-label="Dịch vụ" class="flex flex-col gap-3">
-                    <h4 class="text-white font-semibold mb-1">Dịch vụ</h4>
-                    <a class="text-text-secondary hover:text-white transition-colors" onclick="navigateTo('services')" href="#services">Tư vấn AI</a>
-                    <a class="text-text-secondary hover:text-white transition-colors" onclick="navigateTo('services')" href="#services">Automation</a>
-                    <a class="text-text-secondary hover:text-white transition-colors" onclick="navigateTo('services')" href="#services">Data Science</a>
+                    <h4 class="text-text-primary font-semibold mb-1">Dịch vụ</h4>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors" onclick="navigateTo('services')" href="#services">Tư vấn AI</a>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors" onclick="navigateTo('services')" href="#services">Automation</a>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors" onclick="navigateTo('services')" href="#services">Data Science</a>
                 </nav>
 
                 <!-- Column 3 -->
                 <nav aria-label="Hỗ trợ" class="flex flex-col gap-3">
-                    <h4 class="text-white font-semibold mb-1">Hỗ trợ</h4>
-                    <a class="text-text-secondary hover:text-white transition-colors" href="mailto:danhngocphh@gmail.com">Liên hệ</a>
-                    <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#faq" onclick="showComingSoon('FAQ'); return false;">FAQ</a>
-                    <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#policy" onclick="showComingSoon('Chính sách'); return false;">Chính sách</a>
+                    <h4 class="text-text-primary font-semibold mb-1">Hỗ trợ</h4>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors" href="mailto:danhngocphh@gmail.com">Liên hệ</a>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors coming-soon" href="#faq" onclick="showComingSoon('FAQ'); return false;">FAQ</a>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors coming-soon" href="#policy" onclick="showComingSoon('Chính sách'); return false;">Chính sách</a>
                 </nav>
 
                 <!-- Column 4 -->
                 <div class="flex flex-col gap-3">
-                    <h4 class="text-white font-semibold mb-1">Kết nối</h4>
+                    <h4 class="text-text-primary font-semibold mb-1">Kết nối</h4>
                     <div class="flex gap-4">
-                        <a class="text-text-secondary hover:text-white transition-colors" href="https://aivan.vn" target="_blank" rel="noopener noreferrer" aria-label="Website">
+                        <a class="text-text-secondary hover:text-text-primary transition-colors" href="https://aivan.vn" target="_blank" rel="noopener noreferrer" aria-label="Website">
                             <span class="material-symbols-outlined text-lg" aria-hidden="true">public</span>
                         </a>
-                        <a class="text-text-secondary hover:text-white transition-colors" href="mailto:danhngocphh@gmail.com" aria-label="Email">
+                        <a class="text-text-secondary hover:text-text-primary transition-colors" href="mailto:danhngocphh@gmail.com" aria-label="Email">
                             <span class="material-symbols-outlined text-lg" aria-hidden="true">mail</span>
                         </a>
                     </div>
@@ -1673,11 +1677,11 @@
             </div>
 
             <!-- Bottom Footer -->
-            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p class="text-text-secondary">&copy; 2026 aivan.vn. All rights reserved.</p>
                 <nav aria-label="Pháp lý" class="flex gap-6">
-                    <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#privacy" onclick="showComingSoon('Quyền riêng tư'); return false;">Quyền riêng tư</a>
-                    <a class="text-text-secondary hover:text-white transition-colors coming-soon" href="#terms" onclick="showComingSoon('Điều khoản'); return false;">Điều khoản sử dụng</a>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors coming-soon" href="#privacy" onclick="showComingSoon('Quyền riêng tư'); return false;">Quyền riêng tư</a>
+                    <a class="text-text-secondary hover:text-text-primary transition-colors coming-soon" href="#terms" onclick="showComingSoon('Điều khoản'); return false;">Điều khoản sử dụng</a>
                 </nav>
             </div>
         </div>
