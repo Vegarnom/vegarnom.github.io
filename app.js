@@ -1830,8 +1830,8 @@
                             </div>
                             <span class="tag">${this.getCategoryName(tool.category)}</span>
                         </div>
-                        <h4 class="text-white font-bold text-lg mb-2">${tool.name}</h4>
-                        <p class="text-white/40 text-sm leading-relaxed">${tool.description}</p>
+                        <h4 class="font-bold text-lg mb-2" style="color: var(--color-text-primary);">${tool.name}</h4>
+                        <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">${tool.description}</p>
                     </article>
                 `;
             }).join('');
@@ -2176,7 +2176,7 @@
         show(feature = 'Tính năng') {
             // Use a non-blocking notification instead of alert
             const notification = document.createElement('div');
-            notification.className = 'fixed top-20 right-4 bg-surface-dark border border-white/10 text-white px-6 py-3 rounded-full shadow-lg z-50 animate-fade-in-down';
+            notification.className = 'fixed top-20 right-4 bg-white border border-border text-text-primary px-6 py-3 rounded-full shadow-lg z-50 animate-fade-in-down';
             notification.setAttribute('role', 'status');
             notification.setAttribute('aria-live', 'polite');
             notification.innerHTML = `
