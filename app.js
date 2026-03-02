@@ -1884,8 +1884,8 @@
                         <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                             <span class="material-symbols-outlined text-3xl text-primary">category</span>
                         </div>
-                        <h4 class="text-xl font-bold text-white mb-2">Chưa chọn ngành nghề</h4>
-                        <p class="text-white/50 max-w-md mb-6">Vui lòng quay lại và chọn ngành nghề của bạn để xem chiến lược AI được đề xuất.</p>
+                        <h4 class="text-xl font-bold text-text-primary mb-2">Chưa chọn ngành nghề</h4>
+                        <p class="text-text-secondary max-w-md mb-6">Vui lòng quay lại và chọn ngành nghề của bạn để xem chiến lược AI được đề xuất.</p>
                         <button onclick="navigateTo('services')" class="px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold transition-all flex items-center gap-2">
                             <span class="material-symbols-outlined">arrow_back</span>
                             Chọn ngành nghề
@@ -1899,7 +1899,7 @@
             if (toolsContainer) {
                 toolsContainer.innerHTML = `
                     <div class="col-span-4 text-center py-8">
-                        <p class="text-white/40">Công cụ sẽ được hiển thị sau khi chọn ngành nghề</p>
+                        <p class="text-text-secondary">Công cụ sẽ được hiển thị sau khi chọn ngành nghề</p>
                     </div>
                 `;
             }
@@ -2899,9 +2899,9 @@
             // Render options
             const optionsContainer = document.getElementById('quiz-options');
             optionsContainer.innerHTML = question.options.map((option, index) => `
-                <button onclick="QuizHandler.selectAnswer(${option.score})" class="w-full text-left p-4 rounded-xl bg-background-dark border border-white/10 hover:border-primary hover:bg-primary/5 transition-all duration-200 flex items-center gap-3 group" aria-label="${option.text}">
-                    <span class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-sm text-text-secondary group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-colors">${String.fromCharCode(65 + index)}</span>
-                    <span class="text-white/90 group-hover:text-white">${option.text}</span>
+                <button onclick="QuizHandler.selectAnswer(${option.score})" class="w-full text-left p-4 rounded-xl bg-white border border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 flex items-center gap-3 group" aria-label="${option.text}">
+                    <span class="w-8 h-8 rounded-full bg-surface-highlight border border-border flex items-center justify-center text-sm text-text-secondary group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-colors">${String.fromCharCode(65 + index)}</span>
+                    <span class="text-text-primary group-hover:text-primary">${option.text}</span>
                 </button>
             `).join('');
 
@@ -4682,16 +4682,16 @@
                 const preview = document.createElement('div');
                 preview.className = 'industry-card__preview';
                 preview.innerHTML = `
-                    <h4 class="text-white font-bold mb-2">${data.title}</h4>
+                    <h4 class="text-text-primary font-bold mb-2">${data.title}</h4>
                     <ul class="space-y-1 mb-3">
                         ${data.benefits.map(b => `
-                            <li class="text-white/70 text-xs flex items-center gap-1">
+                            <li class="text-text-secondary text-xs flex items-center gap-1">
                                 <span class="material-symbols-outlined text-primary text-xs">check</span>
                                 ${b}
                             </li>
                         `).join('')}
                     </ul>
-                    <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                    <div class="flex items-center justify-between pt-2 border-t border-border">
                         <span class="text-text-secondary text-xs">${data.tools.length} công cụ</span>
                         <span class="text-primary text-xs font-medium">${data.timeline}</span>
                     </div>
