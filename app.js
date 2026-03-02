@@ -1792,7 +1792,7 @@
 
             if (data.stats) {
                 if (efficiencyEl) {
-                    efficiencyEl.innerHTML = `<span class="text-primary">${data.stats.efficiency.charAt(0)}</span>${data.stats.efficiency.slice(1).replace('%', '')}<span class="text-3xl text-white/40">%</span>`;
+                    efficiencyEl.innerHTML = `<span class="text-primary">${data.stats.efficiency.charAt(0)}</span>${data.stats.efficiency.slice(1).replace('%', '')}<span class="text-3xl text-text-secondary">%</span>`;
                 }
                 if (descEl) {
                     descEl.textContent = data.stats.description || 'Tăng hiệu quả vận hành';
@@ -1836,7 +1836,7 @@
                 `;
             }).join('');
 
-            container.innerHTML = toolsHtml || '<p class="text-white/50 col-span-4 text-center">Chưa có dữ liệu công cụ cho ngành này</p>';
+            container.innerHTML = toolsHtml || '<p class="text-text-secondary col-span-4 text-center">Chưa có dữ liệu công cụ cho ngành này</p>';
         },
 
         /**
