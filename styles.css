@@ -3642,10 +3642,10 @@ html:has(.page-viewport.active) {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(24, 20, 17, 0.95);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--color-border);
     padding: 1rem 1.5rem;
     padding-bottom: calc(1rem + var(--safe-area-bottom));
     z-index: 50;
@@ -3722,13 +3722,13 @@ html:has(.page-viewport.active) {
 
 .bottom-action-bar__btn--secondary {
     background: transparent;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
 }
 
 .bottom-action-bar__btn--secondary:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
 }
 
 /* Buttons Container */
@@ -3758,7 +3758,7 @@ html:has(.page-viewport.active) {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--color-border-hover);
     border: none;
     padding: 0;
     cursor: pointer;
@@ -3772,7 +3772,7 @@ html:has(.page-viewport.active) {
 }
 
 .page-dot:hover:not(.page-dot--active):not(.active) {
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--color-text-secondary);
 }
 
 /* ============================================
