@@ -3588,9 +3588,13 @@
                 }
             });
 
-            // Add tooltips to navigation icons
+            // Add tooltips to navigation icons (exclude logo)
             document.querySelectorAll('nav .material-symbols-outlined').forEach(icon => {
                 const link = icon.closest('a');
+                // Skip if it's the logo (has onclick="navigateTo('home')" and contains aivan.vn text)
+                if (link && link.getAttribute('onclick')?.includes("navigateTo('home')") && link.textContent.includes('aivan.vn')) {
+                    return;
+                }
                 if (link && !link.hasAttribute('data-tooltip')) {
                     const text = link.textContent.trim();
                     if (text) {
