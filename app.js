@@ -2883,18 +2883,12 @@
 
         renderQuestion() {
             const question = this.questions[this.currentQuestion];
-            const progress = ((this.currentQuestion + 1) / this.questions.length) * 100;
-
-            // Update progress
-            document.getElementById('quiz-current').textContent = this.currentQuestion + 1;
-            document.getElementById('quiz-progress-text').textContent = `${Math.round(progress)}%`;
-            document.getElementById('quiz-progress-bar').style.width = `${progress}%`;
 
             // Update question text
             document.getElementById('quiz-question-text').textContent = question.question;
 
-            // Announce progress to screen readers
-            this.announceProgress(`Câu hỏi ${this.currentQuestion + 1} trên ${this.questions.length}: ${question.question}`);
+            // Announce question to screen readers
+            this.announceProgress(`Câu hỏi ${this.currentQuestion + 1}/${this.questions.length}: ${question.question}`);
 
             // Render options
             const optionsContainer = document.getElementById('quiz-options');
